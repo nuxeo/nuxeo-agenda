@@ -6,4 +6,5 @@ Bundle-Vendor: Nuxeo
 Bundle-Version: 1.0.0
 Nuxeo-Component: OSGI-INF/agenda-core-types-contrib.xml,
  OSGI-INF/agenda-ecm-types-contrib.xml,
- OSGI-INF/agenda-layout-contrib.xml
+ OSGI-INF/agenda-layout-contrib.xml,
+ OSGI-INF/agenda-service-framework.xml
