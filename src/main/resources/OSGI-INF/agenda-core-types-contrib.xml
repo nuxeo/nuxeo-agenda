@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.ecm.agenda.core.types">
+
+  <require>org.nuxeo.ecm.core.CoreExtensions</require>
+
+  <extension target="org.nuxeo.ecm.core.schema.TypeService"
+             point="schema">
+    <schema name="agendum" prefix="agd" src="schemas/agendum.xsd"/>
+  </extension>
+
+  <extension target="org.nuxeo.ecm.core.schema.TypeService"
+             point="doctype">
+    <doctype name="Agendum" extends="Document">
+      <schema name="common"/>
+      <schema name="uid"/>
+      <schema name="dublincore"/>
+      <schema name="agendum"/>
+      <facet name="Commentable"/>
+    </doctype>
+  </extension>
+
+  <extension target="org.nuxeo.ecm.core.lifecycle.LifeCycleService"
+             point="types">
+    <types>
+      <type name="Agendum">default</type>
+    </types>
+  </extension>
+</component>

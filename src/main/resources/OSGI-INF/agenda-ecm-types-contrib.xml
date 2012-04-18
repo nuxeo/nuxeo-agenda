@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.ecm.agenda.ecm.types">
+  <require>org.nuxeo.ecm.platform.types</require>
+
+  <extension target="org.nuxeo.ecm.platform.types.TypeService"
+             point="types">
+    <type id="Agendum">
+      <label>Agendum</label>
+      <icon>/icons/agendum.gif</icon>
+      <bigIcon>/icons/agendum_100.png</bigIcon>
+      <category>SimpleDocument</category>
+      <description>Agendum.description</description>
+      <default-view>view_documents</default-view>
+      <layouts mode="any">
+        <layout>agendum</layout>
+      </layouts>
+    </type>
+
+    <type id="Workspace">
+      <subtypes>
+        <type>Agendum</type>
+      </subtypes>
+    </type>
+
+    <type id="Folder">
+      <subtypes>
+        <type>Agendum</type>
+      </subtypes>
+    </type>
+  </extension>
+</component>

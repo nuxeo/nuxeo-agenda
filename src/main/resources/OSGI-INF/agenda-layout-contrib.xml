@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.ecm.agenda.layout">
+
+  <require>org.nuxeo.ecm.platform.forms.layouts.webapp.summary</require>
+  <require>org.nuxeo.ecm.platform.forms.layouts.webapp.base</require>
+
+  <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager"
+             point="layouts">
+
+    <layout name="agendum">
+      <templates>
+        <template mode="any">/layouts/layout_default_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>title</widget>
+        </row>
+        <row>
+          <widget>agendum_place</widget>
+        </row>
+        <row>
+          <widget>description</widget>
+        </row>
+        <row>
+          <widget>agendum_startDate</widget>
+          <widget>agendum_endDate</widget>
+        </row>
+        <row>
+          <widget>agendum_startTime</widget>
+          <widget>agendum_endTime</widget>
+        </row>
+      </rows>
+    </layout>
+  </extension>
+
+  <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager"
+             point="widgets">
+    <widget name="agendum_startDate" type="datetime">
+      <labels>
+        <label mode="any">label.agendum.startDate</label>
+      </labels>
+      <translated>true</translated>
+      <fields>
+        <field>agd:startDate</field>
+      </fields>
+      <properties widgetMode="view">
+        <property name="pattern">#{nxu:basicDateFormater()}</property>
+      </properties>
+      <properties widgetMode="edit">
+        <property name="required">true</property>
+        <property name="format">#{nxu:basicDateFormater()}</property>
+      </properties>
+    </widget>
+
+    <widget name="agendum_endDate" type="datetime">
+      <labels>
+        <label mode="any">label.agendum.endDate</label>
+      </labels>
+      <translated>true</translated>
+      <fields>
+        <field>agd:endDate</field>
+      </fields>
+      <properties widgetMode="view">
+        <property name="pattern">#{nxu:basicDateFormater()}</property>
+      </properties>
+      <properties widgetMode="edit">
+        <property name="required">true</property>
+        <property name="format">#{nxu:basicDateFormater()}</property>
+      </properties>
+    </widget>
+
+    <widget name="agendum_startTime" type="text">
+      <labels>
+        <label mode="any">label.agendum.startTime</label>
+      </labels>
+      <translated>true</translated>
+      <fields>
+        <field>agd:startTime</field>
+      </fields>
+    </widget>
+
+    <widget name="agendum_endTime" type="text">
+      <labels>
+        <label mode="any">label.agendum.endTime</label>
+      </labels>
+      <translated>true</translated>
+      <fields>
+        <field>agd:endTime</field>
+      </fields>
+    </widget>
+
+    <widget name="agendum_place" type="text">
+      <labels>
+        <label mode="any">label.agendum.place</label>
+      </labels>
+      <translated>true</translated>
+      <fields>
+        <field>agd:place</field>
+      </fields>
+    </widget>
+  </extension>
+</component>
