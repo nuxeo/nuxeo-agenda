@@ -2,16 +2,18 @@ package org.nuxeo.ecm.agenda.operations;
 
 import java.util.Date;
 
+import org.nuxeo.ecm.agenda.AgendaEventBuilder;
+import org.nuxeo.ecm.agenda.AgendaService;
 import org.nuxeo.ecm.automation.core.Constants;
 import org.nuxeo.ecm.automation.core.annotations.Context;
 import org.nuxeo.ecm.automation.core.annotations.Operation;
 import org.nuxeo.ecm.automation.core.annotations.OperationMethod;
 import org.nuxeo.ecm.automation.core.annotations.Param;
+import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
-import org.nuxeo.ecm.core.api.DocumentModel;
 
 /**
- * Operation to create a new Agendum document
+ * Operation to create a new Agenda Event document
  * 
  * @author <a href="mailto:akervern@nuxeo.com">Arnaud Kervern</a>
  * @since 5.6
@@ -23,16 +25,19 @@ public class CreateAgendaEvent {
     @Context
     protected CoreSession session;
 
+    @Context
+    protected AgendaService agendaService;
+
     @Param(name = "summary")
     protected String summary;
 
     @Param(name = "dtStart")
     protected Date dtStart;
 
-    @Param(name = "dtEnd")
+    @Param(name = "dtEnd", required = false)
     protected Date dtEnd;
 
-    @Param(name = "contextPath")
+    @Param(name = "contextPath", required = false)
     protected String contextPath;
 
     @Param(name = "description", required = false)
@@ -42,7 +47,9 @@ public class CreateAgendaEvent {
     protected String location = "";
 
     @OperationMethod
-    public DocumentModel run(DocumentModel doc) {
-        return null;
+    public void run() throws ClientException {
+        AgendaEventBuilder aeb = AgendaEventBuilder.build(summary, dtStart,
+                dtEnd).description(description).location(location);
+        agendaService.createEvent(session, contextPath, aeb.toMap());
     }
 }

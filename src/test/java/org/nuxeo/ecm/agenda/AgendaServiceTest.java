@@ -57,6 +57,7 @@ public class AgendaServiceTest {
         // Ensure to commit after UserWorkspace creation.
         getUserWorkspace();
         session.save();
+        assertEquals(0, session.query(QUERY_LIST_ALL_EVENTS).size());
     }
 
     @Test
@@ -84,8 +85,6 @@ public class AgendaServiceTest {
 
     @Test
     public void testEventsList() throws ClientException {
-        assertEquals(0, session.query(QUERY_LIST_ALL_EVENTS).size());
-
         AgendaEventBuilder pastEvent = AgendaEventBuilder.build("past event",
                 NOW().minusDays(10).toDate(), NOW().minusDays(9).toDate());
         AgendaEventBuilder incomingEvent = AgendaEventBuilder.build(
@@ -125,8 +124,6 @@ public class AgendaServiceTest {
 
     @Test
     public void testLimitCase() throws ClientException {
-        assertEquals(0, session.query(QUERY_LIST_ALL_EVENTS).size());
-
         AgendaEventBuilder midnightTickParty = AgendaEventBuilder.build(
                 "past event", NOW().withTime(0, 0, 0, 0).toDate(),
                 NOW().withTime(0, 0, 0, 0).toDate());
@@ -164,7 +161,7 @@ public class AgendaServiceTest {
         aeb.description("description");
         aeb.location("location");
 
-        Map<String,Serializable> properties = aeb.toMap();
+        Map<String, Serializable> properties = aeb.toMap();
         properties.put("dummy:content", "should not be thrown");
         DocumentModel event = agendaService.createEvent(session, null,
                 properties);

@@ -1,0 +1,115 @@
+package org.nuxeo.ecm.agenda.operations;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.nuxeo.ecm.agenda.AgendaComponent.VEVENT_TYPE;
+import static org.nuxeo.ecm.agenda.AgendaServiceTest.QUERY_LIST_ALL_EVENTS;
+
+import java.util.Date;
+
+import com.google.inject.Inject;
+import org.joda.time.DateTime;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.nuxeo.ecm.agenda.AgendaEventBuilder;
+import org.nuxeo.ecm.agenda.AgendaService;
+import org.nuxeo.ecm.automation.AutomationService;
+import org.nuxeo.ecm.automation.client.Session;
+import org.nuxeo.ecm.automation.client.model.Documents;
+import org.nuxeo.ecm.automation.test.RestFeature;
+import org.nuxeo.ecm.core.api.ClientException;
+import org.nuxeo.ecm.core.api.CoreSession;
+import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.DocumentModelList;
+import org.nuxeo.ecm.core.test.DefaultRepositoryInit;
+import org.nuxeo.ecm.core.test.annotations.Granularity;
+import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
+import org.nuxeo.runtime.test.runner.Deploy;
+import org.nuxeo.runtime.test.runner.Features;
+import org.nuxeo.runtime.test.runner.FeaturesRunner;
+import org.nuxeo.runtime.test.runner.Jetty;
+
+/**
+ * @author <a href="mailto:akervern@nuxeo.com">Arnaud Kervern</a>
+ */
+@RunWith(FeaturesRunner.class)
+@Deploy({ "org.nuxeo.ecm.agenda", "org.nuxeo.ecm.platform.userworkspace.core",
+        "org.nuxeo.ecm.platform.userworkspace.types" })
+@Features(RestFeature.class)
+@Jetty(port = 18080)
+@RepositoryConfig(init = DefaultRepositoryInit.class, cleanup = Granularity.METHOD)
+public class AgendaOperationsTest {
+
+    @Inject
+    protected CoreSession session;
+
+    @Inject
+    protected Session clientSession;
+
+    @Inject
+    protected AgendaService agendaService;
+
+    @Inject
+    protected AutomationService automationService;
+
+    @Before
+    public void assertEmpty() throws ClientException {
+        assertEquals(0, session.query(QUERY_LIST_ALL_EVENTS).size());
+    }
+
+    @Test
+    public void testCreateOperation() throws Exception {
+        Date dtStart = NOW().plusDays(1).toDate();
+        Date dtEnd = NOW().plusDays(2).toDate();
+        Object obj = clientSession.newRequest(CreateAgendaEvent.ID).set(
+                "summary", "my new Event").set("dtStart", dtStart).set("dtEnd",
+                dtEnd).set("description", "description").set("location",
+                "location").execute();
+        assertNull(obj);
+        session.save();
+
+        DocumentModelList docs = session.query(QUERY_LIST_ALL_EVENTS);
+        assertEquals(1, docs.size());
+        DocumentModel event = docs.get(0);
+        assertEquals(event.getPropertyValue("dc:title"), "my new Event");
+        assertEquals(event.getPropertyValue("dc:description"), "description");
+        assertEquals(event.getPropertyValue("vevent:location"), "location");
+    }
+
+    @Test
+    public void testCreateWithContextPath() throws Exception {
+        clientSession.newRequest(CreateAgendaEvent.ID).set("summary",
+                "my new Event").set("dtStart", NOW().toDate()).set(
+                "contextPath", "/default-domain/").execute();
+        assertEquals(
+                1,
+                session.query(
+                        "Select * from "
+                                + VEVENT_TYPE
+                                + " where ecm:path startswith '/default-domain/'").size());
+    }
+
+    @Test
+    public void testListEvents() throws Exception {
+        AgendaEventBuilder anEvent = AgendaEventBuilder.build("current event",
+                NOW().minusDays(1).toDate(), NOW().plusDays(1).toDate());
+
+        agendaService.createEvent(session, "/default-domain/", anEvent.toMap());
+        session.save();
+
+        Documents docs = (Documents) clientSession.newRequest(
+                ListAgendaEvents.ID).set("dtStart", NOW().minusDays(4).toDate()).set(
+                "dtEnd", NOW().plusDays(3).toDate()).execute();
+        assertEquals(1, docs.size());
+
+        docs = (Documents) clientSession.newRequest(ListAgendaEvents.ID).set(
+                "dtStart", NOW().plusDays(10).toDate()).set("dtEnd",
+                NOW().plusDays(11).toDate()).execute();
+        assertEquals(0, docs.size());
+    }
+
+    protected static DateTime NOW() {
+        return new DateTime();
+    }
+}
