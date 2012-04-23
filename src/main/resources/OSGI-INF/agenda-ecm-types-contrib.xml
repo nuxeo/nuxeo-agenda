@@ -4,27 +4,27 @@
 
   <extension target="org.nuxeo.ecm.platform.types.TypeService"
              point="types">
-    <type id="Agendum">
-      <label>Agendum</label>
-      <icon>/icons/agendum.gif</icon>
-      <bigIcon>/icons/agendum_100.png</bigIcon>
+    <type id="VEVENT">
+      <label>AgendaEvent</label>
+      <icon>/icons/vevent.gif</icon>
+      <bigIcon>/icons/vevent_100.png</bigIcon>
       <category>SimpleDocument</category>
-      <description>Agendum.description</description>
+      <description>AgendaEvent.description</description>
       <default-view>view_documents</default-view>
       <layouts mode="any">
-        <layout>agendum</layout>
+        <layout>vevent</layout>
       </layouts>
     </type>
 
     <type id="Workspace">
       <subtypes>
-        <type>Agendum</type>
+        <type>AgendaEvent</type>
       </subtypes>
     </type>
 
     <type id="Folder">
       <subtypes>
-        <type>Agendum</type>
+        <type>AgendaEvent</type>
       </subtypes>
     </type>
   </extension>

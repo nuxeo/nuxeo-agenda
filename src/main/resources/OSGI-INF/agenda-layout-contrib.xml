@@ -7,7 +7,7 @@
   <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager"
              point="layouts">
 
-    <layout name="agendum">
+    <layout name="vevent">
       <templates>
         <template mode="any">/layouts/layout_default_template.xhtml</template>
       </templates>
@@ -16,18 +16,14 @@
           <widget>title</widget>
         </row>
         <row>
-          <widget>agendum_place</widget>
+          <widget>vevent_location</widget>
         </row>
         <row>
           <widget>description</widget>
         </row>
         <row>
-          <widget>agendum_startDate</widget>
-          <widget>agendum_endDate</widget>
-        </row>
-        <row>
-          <widget>agendum_startTime</widget>
-          <widget>agendum_endTime</widget>
+          <widget>vevent_dtstart</widget>
+          <widget>vevent_dtend</widget>
         </row>
       </rows>
     </layout>
@@ -35,13 +31,13 @@
 
   <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager"
              point="widgets">
-    <widget name="agendum_startDate" type="datetime">
+    <widget name="vevent_dtstart" type="datetime">
       <labels>
-        <label mode="any">label.agendum.startDate</label>
+        <label mode="any">label.vevent.startDate</label>
       </labels>
       <translated>true</translated>
       <fields>
-        <field>agd:startDate</field>
+        <field>vevent:dtstart</field>
       </fields>
       <properties widgetMode="view">
         <property name="pattern">#{nxu:basicDateFormater()}</property>
@@ -52,13 +48,13 @@
       </properties>
     </widget>
 
-    <widget name="agendum_endDate" type="datetime">
+    <widget name="vevent_dtend" type="datetime">
       <labels>
-        <label mode="any">label.agendum.endDate</label>
+        <label mode="any">label.vevent.endDate</label>
       </labels>
       <translated>true</translated>
       <fields>
-        <field>agd:endDate</field>
+        <field>vevent:dtend</field>
       </fields>
       <properties widgetMode="view">
         <property name="pattern">#{nxu:basicDateFormater()}</property>
@@ -69,33 +65,13 @@
       </properties>
     </widget>
 
-    <widget name="agendum_startTime" type="text">
+    <widget name="vevent_location" type="text">
       <labels>
-        <label mode="any">label.agendum.startTime</label>
+        <label mode="any">label.vevent.place</label>
       </labels>
       <translated>true</translated>
       <fields>
-        <field>agd:startTime</field>
-      </fields>
-    </widget>
-
-    <widget name="agendum_endTime" type="text">
-      <labels>
-        <label mode="any">label.agendum.endTime</label>
-      </labels>
-      <translated>true</translated>
-      <fields>
-        <field>agd:endTime</field>
-      </fields>
-    </widget>
-
-    <widget name="agendum_place" type="text">
-      <labels>
-        <label mode="any">label.agendum.place</label>
-      </labels>
-      <translated>true</translated>
-      <fields>
-        <field>agd:place</field>
+        <field>vevent:location</field>
       </fields>
     </widget>
   </extension>

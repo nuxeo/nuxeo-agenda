@@ -7,8 +7,8 @@ import com.google.inject.Inject;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.nuxeo.ecm.agenda.AgendaEventBuilder;
 import org.nuxeo.ecm.agenda.AgendaService;
-import org.nuxeo.ecm.agenda.AgendumBuilder;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -42,24 +42,24 @@ public class AgendaServiceTest {
     protected CoreSession session;
 
     @Test
-    public void testAgendaService() throws ClientException {
+    public void testEventCreation() throws ClientException {
         assertNotNull(agendaService);
-        AgendumBuilder build = AgendumBuilder.title("mon event",
+        AgendaEventBuilder build = AgendaEventBuilder.build("mon event",
                 NOW().toDate(), NOW().plusDays(2).toDate());
-        assertNotNull(agendaService.createAgendum(session, "/", build.toMap()));
+        assertNotNull(agendaService.createEvent(session, "/", build.toMap()));
 
-        build.title("second event");
-        assertNotNull(agendaService.createAgendum(session, null, build.toMap()));
+        build.summary("second event");
+        assertNotNull(agendaService.createEvent(session, null, build.toMap()));
 
-        build.title("third event");
-        assertNotNull(agendaService.createAgendum(session, "/default-domain/",
+        build.summary("third event");
+        assertNotNull(agendaService.createEvent(session, "/default-domain/",
                 build.toMap()));
 
-        DocumentModelList res = session.query("Select * from Agendum where ecm:path STARTSWITH '"
+        DocumentModelList res = session.query("Select * from VEVENT where ecm:path STARTSWITH '"
                 + getUserWorkspace().getPathAsString() + "'");
         assertEquals(2, res.size());
 
-        res = session.query("Select * from Agendum");
+        res = session.query("Select * from VEVENT");
         assertEquals(3, res.size());
     }
 

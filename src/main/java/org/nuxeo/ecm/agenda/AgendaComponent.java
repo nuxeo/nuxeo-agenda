@@ -22,25 +22,25 @@ import org.nuxeo.runtime.model.DefaultComponent;
  */
 public class AgendaComponent extends DefaultComponent implements AgendaService {
 
-    public static final String AGENDUM_TYPE = "Agendum";
+    public static final String VEVENT_TYPE = "VEVENT";
 
-    protected static final String QUERY = "SELECT * FROM AGENDUM WHERE ... '%s' '%s'";
+    protected static final String QUERY = "SELECT * FROM VEVENT WHERE ... '%s' '%s'";
 
     private static final Log log = LogFactory.getLog(AgendaComponent.class);
 
     @Override
-    public DocumentModelList listAgendum(CoreSession session, Date startDate,
-            Date endDate) throws ClientException {
-        return session.query(String.format(QUERY, startDate, endDate));
+    public DocumentModelList listEvents(CoreSession session, Date dtStart,
+            Date dtEnd) throws ClientException {
+        return session.query(String.format(QUERY, dtStart, dtEnd));
     }
 
     @Override
-    public DocumentModel createAgendum(CoreSession session, String path,
+    public DocumentModel createEvent(CoreSession session, String path,
             Map<String, Serializable> properties) throws ClientException {
         if (StringUtils.isBlank(path) || "/".equals(path)) {
             path = getCurrentUserWorkspacePath(session);
         }
-        DocumentModel doc = session.createDocumentModel(AGENDUM_TYPE);
+        DocumentModel doc = session.createDocumentModel(VEVENT_TYPE);
         doc.setPathInfo(path, null);
         for (String key : properties.keySet()) {
             try {

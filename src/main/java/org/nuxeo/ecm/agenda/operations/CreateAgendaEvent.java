@@ -16,21 +16,21 @@ import org.nuxeo.ecm.core.api.DocumentModel;
  * @author <a href="mailto:akervern@nuxeo.com">Arnaud Kervern</a>
  * @since 5.6
  */
-@Operation(id = CreateAgendum.ID, category = Constants.CAT_DOCUMENT, label = "Create Event", description = "Create a new Event document")
-public class CreateAgendum {
-    protected static final String ID = "Event.Create";
+@Operation(id = CreateAgendaEvent.ID, category = Constants.CAT_DOCUMENT, label = "Create Event", description = "Create a new Event document")
+public class CreateAgendaEvent {
+    protected static final String ID = "VEVENT.Create";
 
     @Context
     protected CoreSession session;
 
-    @Param(name = "title")
-    protected String title;
+    @Param(name = "summary")
+    protected String summary;
 
-    @Param(name = "startDate")
-    protected Date startDate;
+    @Param(name = "dtStart")
+    protected Date dtStart;
 
-    @Param(name = "endDate")
-    protected Date endDate;
+    @Param(name = "dtEnd")
+    protected Date dtEnd;
 
     @Param(name = "contextPath")
     protected String contextPath;
@@ -38,14 +38,8 @@ public class CreateAgendum {
     @Param(name = "description", required = false)
     protected String description = "";
 
-    @Param(name = "place", required = false)
-    protected String place = "";
-
-    @Param(name = "startTime", required = false)
-    protected String startTime = "";
-
-    @Param(name = "endTime", required = false)
-    protected String endTime = "";
+    @Param(name = "location", required = false)
+    protected String location = "";
 
     @OperationMethod
     public DocumentModel run(DocumentModel doc) {

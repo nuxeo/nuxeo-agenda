@@ -5,16 +5,16 @@
 
   <extension target="org.nuxeo.ecm.core.schema.TypeService"
              point="schema">
-    <schema name="agendum" prefix="agd" src="schemas/agendum.xsd"/>
+    <schema name="vevent" prefix="vevent" src="schemas/vevent.xsd"/>
   </extension>
 
   <extension target="org.nuxeo.ecm.core.schema.TypeService"
              point="doctype">
-    <doctype name="Agendum" extends="Document">
+    <doctype name="VEVENT" extends="Document">
       <schema name="common"/>
       <schema name="uid"/>
       <schema name="dublincore"/>
-      <schema name="agendum"/>
+      <schema name="vevent"/>
       <facet name="Commentable"/>
     </doctype>
   </extension>
@@ -22,7 +22,7 @@
   <extension target="org.nuxeo.ecm.core.lifecycle.LifeCycleService"
              point="types">
     <types>
-      <type name="Agendum">default</type>
+      <type name="VEVENT">default</type>
     </types>
   </extension>
 </component>
