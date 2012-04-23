@@ -7,6 +7,9 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -24,14 +27,36 @@ public class AgendaComponent extends DefaultComponent implements AgendaService {
 
     public static final String VEVENT_TYPE = "VEVENT";
 
-    protected static final String QUERY = "SELECT * FROM VEVENT WHERE ... '%s' '%s'";
+    protected static final DateTimeFormatter dateTimeFormatter = ISODateTimeFormat.dateTime();
+
+    protected static final String QUERY_BETWEEN_DATES = "SELECT * FROM VEVENT WHERE "
+            + "(vevent:dtstart BETWEEN TIMESTAMP '%s' AND TIMESTAMP '%s') "
+            + "OR (vevent:dtend BETWEEN TIMESTAMP '%s' AND TIMESTAMP '%s') "
+            + "OR (vevent:dtstart < TIMESTAMP '%s' AND vevent:dtend > TIMESTAMP '%s')";
 
     private static final Log log = LogFactory.getLog(AgendaComponent.class);
 
     @Override
     public DocumentModelList listEvents(CoreSession session, Date dtStart,
             Date dtEnd) throws ClientException {
-        return session.query(String.format(QUERY, dtStart, dtEnd));
+        if (dtStart == null) {
+            throw new ClientException("Start datetime should not be null");
+        }
+        if (dtEnd == null) {
+            dtEnd = new Date(dtStart.getTime() + 24 * 3600);
+        }
+        if (dtEnd.before(dtStart)) {
+            throw new ClientException("End datetime is before start datetime");
+        }
+
+        String strStart = formatDate(dtStart);
+        String strEnd = formatDate(dtEnd);
+        return session.query(String.format(QUERY_BETWEEN_DATES, strStart,
+                strEnd, strStart, strEnd, strStart, strEnd));
+    }
+
+    protected static String formatDate(Date date) {
+        return new DateTime(date.getTime()).toString(dateTimeFormatter);
     }
 
     @Override

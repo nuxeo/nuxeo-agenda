@@ -19,7 +19,7 @@ public class AgendaEventBuilder {
 
     protected String description;
 
-    private static final String SCHEMA_PREFIX = "agd:";
+    private static final String SCHEMA_PREFIX = "vevent:";
 
     protected AgendaEventBuilder() {
         // Empty constructor, just protected to be hidden
@@ -60,16 +60,12 @@ public class AgendaEventBuilder {
 
     public Map<String, Serializable> toMap() {
         Map<String, Serializable> properties = new HashMap<String, Serializable>();
-        properties.put("dc:build", summary);
+        properties.put("dc:title", summary);
         properties.put("dc:description", description);
         properties.put(SCHEMA_PREFIX + "dtstart", dtStart);
         properties.put(SCHEMA_PREFIX + "dtend", dtEnd);
         properties.put(SCHEMA_PREFIX + "location", location);
         return properties;
-    }
-
-    protected String checkTime(String startTime) {
-        return startTime;
     }
 
     protected Date checkDate(Date date) {
