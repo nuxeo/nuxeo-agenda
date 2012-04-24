@@ -95,30 +95,38 @@ public class AgendaServiceTest {
                 NOW().plusDays(1).toDate());
         AgendaEventBuilder todayEvent = AgendaEventBuilder.build("today event",
                 NOW().plusHours(1).toDate(), NOW().plusHours(2).toDate());
+        AgendaEventBuilder longCurrentEvent = AgendaEventBuilder.build(
+                "today event", NOW().minusDays(10).toDate(),
+                NOW().plusDays(20).toDate());
 
         agendaService.createEvent(session, null, pastEvent.toMap());
         agendaService.createEvent(session, null, incomingEvent.toMap());
         agendaService.createEvent(session, null, currentEvent.toMap());
         agendaService.createEvent(session, null, todayEvent.toMap());
+        agendaService.createEvent(session, null, longCurrentEvent.toMap());
         session.save();
 
-        assertEquals(4, session.query(QUERY_LIST_ALL_EVENTS).size());
+        assertEquals(5, session.query(QUERY_LIST_ALL_EVENTS).size());
 
         DocumentModelList events = agendaService.listEvents(session,
                 NOW().withTime(0, 0, 0, 0).toDate(),
                 NOW().withTime(23, 59, 59, 999).toDate());
-        assertEquals(2, events.size());
-
-        events = agendaService.listEvents(session,
-                NOW().withTime(0, 0, 0, 0).toDate(), NOW().plusDays(5).toDate());
         assertEquals(3, events.size());
 
         events = agendaService.listEvents(session,
+                NOW().withTime(0, 0, 0, 0).toDate(), NOW().plusDays(5).toDate());
+        assertEquals(4, events.size());
+
+        events = agendaService.listEvents(session,
                 NOW().minusDays(12).toDate(), NOW().minusDays(2).toDate());
-        assertEquals(1, events.size());
+        assertEquals(2, events.size());
 
         events = agendaService.listEvents(session, NOW().minusDays(3).toDate(),
                 NOW().minusDays(2).toDate());
+        assertEquals(1, events.size());
+
+        events = agendaService.listEvents(session,
+                NOW().minusDays(12).toDate(), NOW().minusDays(11).toDate());
         assertEquals(0, events.size());
     }
 

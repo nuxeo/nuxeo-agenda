@@ -32,7 +32,8 @@ public class AgendaComponent extends DefaultComponent implements AgendaService {
     protected static final String QUERY_BETWEEN_DATES = "SELECT * FROM VEVENT WHERE "
             + "(vevent:dtstart BETWEEN TIMESTAMP '%s' AND TIMESTAMP '%s') "
             + "OR (vevent:dtend BETWEEN TIMESTAMP '%s' AND TIMESTAMP '%s') "
-            + "OR (vevent:dtstart < TIMESTAMP '%s' AND vevent:dtend > TIMESTAMP '%s')";
+            + "OR (vevent:dtstart < TIMESTAMP '%s' AND vevent:dtend > TIMESTAMP '%s') "
+            + "OR (vevent:dtstart > TIMESTAMP '%s' AND vevent:dtend < TIMESTAMP '%s')";
 
     private static final Log log = LogFactory.getLog(AgendaComponent.class);
 
@@ -52,7 +53,7 @@ public class AgendaComponent extends DefaultComponent implements AgendaService {
         String strStart = formatDate(dtStart);
         String strEnd = formatDate(dtEnd);
         return session.query(String.format(QUERY_BETWEEN_DATES, strStart,
-                strEnd, strStart, strEnd, strStart, strEnd));
+                strEnd, strStart, strEnd, strStart, strEnd, strStart, strEnd));
     }
 
     protected static String formatDate(Date date) {
