@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.ecm.social.workspace.gadgets.theme">
+
+  <require>org.nuxeo.theme.nuxeo.default</require>
+
+  <extension target="org.nuxeo.theme.services.ThemeService" point="resources">
+    <resource name="gadget-agenda.css">
+      <path>css/opensocial/gadgets/agenda.css</path>
+    </resource>
+
+    <resource name="gadget-agenda.js">
+      <path>scripts/opensocial/gadgets/agenda.js</path>
+    </resource>
+    <resource name="moment.js">
+      <path>scripts/moment.min.js</path>
+    </resource>
+  </extension>
+</component>
