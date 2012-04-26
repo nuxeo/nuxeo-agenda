@@ -15,11 +15,11 @@
     <![CDATA[
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" href="${clientSideBaseUrl}nxthemes-lib/gadget-common.css,gadget-agenda.css?path=${contextPath}&basepath=${contextPath}"/>
+    <link rel="stylesheet" type="text/css" href="${clientSideBaseUrl}nxthemes-lib/gadget-common.css,gadget-agenda.css,fullcalendar.css?path=${contextPath}&basepath=${contextPath}"/>
 
     <!-- insert JS Context -->
     ${jsContext}
-    <script src="${clientSideBaseUrl}nxthemes-lib/gadget-default-automation-request.js,moment.js,jquery.js,gadget-context-management.js,gadget-agenda.js"></script>
+    <script src="${clientSideBaseUrl}nxthemes-lib/gadget-default-automation-request.js,moment.js,jquery.js,gadget-context-management.js,gadget-agenda.js,fullcalendar.js,jquery.ui.fullcalendar.js"></script>
   </head>
 
   <body>

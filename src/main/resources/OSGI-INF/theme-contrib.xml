@@ -7,12 +7,21 @@
     <resource name="gadget-agenda.css">
       <path>css/opensocial/gadgets/agenda.css</path>
     </resource>
+    <resource name="fullcalendar.css">
+      <path>css/fullcalendar.css</path>
+    </resource>
 
     <resource name="gadget-agenda.js">
       <path>scripts/opensocial/gadgets/agenda.js</path>
     </resource>
     <resource name="moment.js">
       <path>scripts/moment.min.js</path>
+    </resource>
+    <resource name="fullcalendar.js">
+      <path>scripts/fullcalendar.min.js</path>
+    </resource>
+    <resource name="jquery.ui.fullcalendar.js">
+      <path>scripts/jquery-ui-1.8.19.fullcalendar.min.js</path>
     </resource>
   </extension>
 </component>
