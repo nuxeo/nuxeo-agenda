@@ -16,7 +16,12 @@
       <schema name="dublincore"/>
       <schema name="vevent"/>
       <facet name="Commentable"/>
+      <facet name="Schedulable" />
     </doctype>
+
+    <facet name="Schedulable">
+      <schema name="vevent" />
+    </facet>
   </extension>
 
   <extension target="org.nuxeo.ecm.core.lifecycle.LifeCycleService"

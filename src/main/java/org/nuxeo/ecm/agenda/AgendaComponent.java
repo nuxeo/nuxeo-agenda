@@ -27,10 +27,13 @@ public class AgendaComponent extends DefaultComponent implements AgendaService {
 
     public static final String VEVENT_TYPE = "VEVENT";
 
+    public static final String SCHEDULABLE_TYPE = "Schedulable";
+
     protected static final DateTimeFormatter dateTimeFormatter = ISODateTimeFormat.dateTime();
 
-    protected static final String QUERY_BETWEEN_DATES = "SELECT * FROM VEVENT WHERE "
-            + "(vevent:dtstart BETWEEN TIMESTAMP '%s' AND TIMESTAMP '%s') "
+    protected static final String QUERY_BETWEEN_DATES = "SELECT * FROM Document WHERE "
+            + "ecm:mixinType = '" + SCHEDULABLE_TYPE + "' "
+            + "AND (vevent:dtstart BETWEEN TIMESTAMP '%s' AND TIMESTAMP '%s') "
             + "OR (vevent:dtend BETWEEN TIMESTAMP '%s' AND TIMESTAMP '%s') "
             + "OR (vevent:dtstart < TIMESTAMP '%s' AND vevent:dtend > TIMESTAMP '%s') "
             + "OR (vevent:dtstart > TIMESTAMP '%s' AND vevent:dtend < TIMESTAMP '%s') "
