@@ -12,10 +12,39 @@ function initAgenda() {
 }
 
 function displayCalendar() {
+
 	divContent.fadeOut(300, function() {
 		divContent.empty();
-		// add Calendar
-	}
+		divContent.fadeIn(300, function() {
+			gadgets.window.adjustHeight();
+		});
+		jQuery('<div id="calendar" />').appendTo(divContent).fullCalendar({
+			//theme: true,
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'month,agendaWeek,agendaDay'
+			},
+			events: function(start, end, callback) {
+				fetchEvent({
+					dtStart: start,
+					dtEnd: end
+				}, function(entries, nxParams) {
+					var events = [];
+					for (var index in entries) {
+						var entry = entries[index];
+						events.push({
+							title: entry.properties["dc:title"],
+							start: entry.properties["vevent:dtstart"],
+							end: entry.properties["vevent:dtend"]
+						})
+					}
+
+					callback(events)
+				})
+			}
+		});
+	});
 }
 
 function initCreateEvent() {
@@ -36,14 +65,15 @@ function initCreateEvent() {
 
 		jQuery('<span>Summary: </span><input type="text" name="summary" /><br/>').appendTo(form)
 		jQuery('<span>Description: </span><input type="text" name="description" /><br/>').appendTo(form)
-		jQuery('<span>dtStart: </span><input type="text" name="dtStart" value="432432543"/><br/>').appendTo(form)
+		jQuery('<span>dtStart: </span><input type="text" name="dtStart" value="432432543"/><br/>').appendTo(form).datepicker();
 		jQuery('<span>dtEnd: </span><input type="text" name="dtEnd" /><br/>').appendTo(form)
 		jQuery('<span>Location: </span><input type="text" name="location" /><br/>').appendTo(form)
 		jQuery('<input type="submit" value="submit" /><br/>').appendTo(form)
 		form.appendTo(divContent)
-		divContent.fadeIn(300);
+		divContent.fadeIn(300, function() {
+			gadgets.window.adjustHeight();
+		});
 	});
-
 }
 
 function initContextPanel(node) {
@@ -57,7 +87,7 @@ function initContextPanel(node) {
 	var values = ["daily", "weekly", "monthly"]
 	var clickHandler = function(value) {
 			return function(event) {
-				fetchEvent(buildListOperationParams(value));
+				fetchEventWithFade(buildListOperationParams(value));
 				var target = jQuery(event.target);
 				target.parent().children().each(function(child) {
 					jQuery(this).removeClass("selected")
@@ -82,8 +112,10 @@ function initContextPanel(node) {
 
 	// Create calendar div
 	var all = jQuery("<div />")
-	jQuery("<a />").attr('href', '#').click(displayCalendar).html(">> see all").appendTo(all);
+	jQuery("<a />").attr('href', '#').click(displayCalendar).html(">> see calendar").appendTo(all);
 	node.append(all);
+
+	gadgets.window.adjustHeight();
 }
 
 function buildListOperationParams(period) {
@@ -178,7 +210,9 @@ function displayEvents(entries, nxParams) {
 		var tableResults = findOrCreate("agenda", mkTable);
 		fillTables(tableResults, entries)
 	}
-	divContent.fadeIn(300)
+	divContent.fadeIn(300, function() {
+		gadgets.window.adjustHeight();
+	})
 }
 
 function operationExecutedCallback(response, params) {
@@ -198,6 +232,11 @@ function createEventCallback(response, params) {
 	log(response)
 }
 
+function fetchEventWithFade(params, displayMethod) {
+	divContent.fadeOut(300, function() {
+		fetchEvent(params, displayMethod)
+	})
+}
 function fetchEvent(params, displayMethod) {
 	var internalDisplayMethod = displayMethod || displayEvents;
 
@@ -213,10 +252,7 @@ function fetchEvent(params, displayMethod) {
 		noEntryLabel: prefs.getMsg('label.gadget.no.document')
 	};
 
-	divContent.fadeOut(300, function() {
-		doAutomationRequest(NXRequestEventsParams)
-	})
-
+	doAutomationRequest(NXRequestEventsParams)
 }
 
 function createEvent(params, callback) {
@@ -238,5 +274,5 @@ function createEvent(params, callback) {
 // execute automation request onload
 gadgets.util.registerOnLoadHandler(function() {
 	initAgenda()
-	fetchEvent(buildListOperationParams())
+	fetchEventWithFade(buildListOperationParams())
 });
