@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+  <ModulePrefs title="Agenda"
+               description="Display your incoming event"
+               author="Arnaud Kervern" author_email="ak@nuxeo.com"
+               height="280">
+    <Require feature="setprefs"/>
+    <#include "dynamic-translations.ftl"/>
+    <Require feature="dynamic-height"/>
+    <#include "default-oauth-prefs.ftl"/>
+  </ModulePrefs>
+  <#include "context-prefs.ftl"/>
+  <Content type="html">
+
+    <![CDATA[
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="${clientSideBaseUrl}nxthemes-lib/gadget-common.css,gadget-agenda.css?path=${contextPath}&basepath=${contextPath}"/>
+
+    <!-- insert JS Context -->
+    ${jsContext}
+    <script src="${clientSideBaseUrl}nxthemes-lib/gadget-default-automation-request.js,moment.js,jquery.js,gadget-context-management.js,gadget-agenda.js"></script>
+  </head>
+
+  <body>
+    <#include "default-request-controls.ftl"/>
+    <div class="tools"></div>
+    <div id="content"></div>
+  </body>
+</html>
+]]>
+
+  </Content>
+</Module>

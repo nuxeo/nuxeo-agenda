@@ -18,13 +18,13 @@
 
     <type id="Workspace">
       <subtypes>
-        <type>AgendaEvent</type>
+        <type>VEVENT</type>
       </subtypes>
     </type>
 
     <type id="Folder">
       <subtypes>
-        <type>AgendaEvent</type>
+        <type>VEVENT</type>
       </subtypes>
     </type>
   </extension>
