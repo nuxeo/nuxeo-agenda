@@ -33,7 +33,8 @@ public class AgendaComponent extends DefaultComponent implements AgendaService {
             + "(vevent:dtstart BETWEEN TIMESTAMP '%s' AND TIMESTAMP '%s') "
             + "OR (vevent:dtend BETWEEN TIMESTAMP '%s' AND TIMESTAMP '%s') "
             + "OR (vevent:dtstart < TIMESTAMP '%s' AND vevent:dtend > TIMESTAMP '%s') "
-            + "OR (vevent:dtstart > TIMESTAMP '%s' AND vevent:dtend < TIMESTAMP '%s')";
+            + "OR (vevent:dtstart > TIMESTAMP '%s' AND vevent:dtend < TIMESTAMP '%s') "
+            + "AND ecm:currentLifeCycleState !='deleted'";
 
     private static final Log log = LogFactory.getLog(AgendaComponent.class);
 
