@@ -16,6 +16,7 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="${clientSideBaseUrl}nxthemes-lib/gadget-common.css,gadget-agenda.css,fullcalendar.css?path=${contextPath}&basepath=${contextPath}"/>
+    <link rel="stylesheet" type="text/css" href="${clientSideBaseUrl}css/jquery-ui-fullcalendar/jquery-ui-1.8.19.custom.css" />
 
     <!-- insert JS Context -->
     ${jsContext}

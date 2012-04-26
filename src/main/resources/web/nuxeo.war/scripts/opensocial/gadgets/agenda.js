@@ -6,6 +6,8 @@ function log(txt) {
 }
 
 function initAgenda() {
+	moment.lang('en') // set 'en' first, to prevent from DE as default.
+	moment.lang(prefs.getLang())
 	divContent = jQuery("#content");
 	divTools = jQuery("div.tools");
 	initContextPanel(divTools)
@@ -19,7 +21,8 @@ function displayCalendar() {
 			gadgets.window.adjustHeight();
 		});
 		jQuery('<div id="calendar" />').appendTo(divContent).fullCalendar({
-			//theme: true,
+			theme: true,
+			timeFormat: 'H(:mm)',
 			header: {
 				left: 'prev,next today',
 				center: 'title',
@@ -33,10 +36,15 @@ function displayCalendar() {
 					var events = [];
 					for (var index in entries) {
 						var entry = entries[index];
+
+						var dtStart = moment(entry.properties["vevent:dtstart"])
+						var dtEnd = moment(entry.properties["vevent:dtend"])
+						var allDay = dtEnd.diff(dtStart, 'days') > 0;
 						events.push({
 							title: entry.properties["dc:title"],
 							start: entry.properties["vevent:dtstart"],
-							end: entry.properties["vevent:dtend"]
+							end: entry.properties["vevent:dtend"],
+							allDay: allDay
 						})
 					}
 
@@ -51,12 +59,13 @@ function initCreateEvent() {
 	divContent.fadeOut(300, function() {
 		divContent.empty();
 		var form = jQuery("<form />").submit(function(eventObject) {
-			log(eventObject)
 			var formParams = $(this).serializeArray();
 			var params = {}
 			for (var index in formParams) {
 				var field = formParams[index];
-				params[field.name] = field.value
+				if (field.value) {
+					params[field.name] = field.value
+				}
 			}
 
 			createEvent(params, createEventCallback)
@@ -65,13 +74,16 @@ function initCreateEvent() {
 
 		jQuery('<span>Summary: </span><input type="text" name="summary" /><br/>').appendTo(form)
 		jQuery('<span>Description: </span><input type="text" name="description" /><br/>').appendTo(form)
-		jQuery('<span>dtStart: </span><input type="text" name="dtStart" value="432432543"/><br/>').appendTo(form).datepicker();
-		jQuery('<span>dtEnd: </span><input type="text" name="dtEnd" /><br/>').appendTo(form)
+		jQuery('<span>dtStart: </span><input type="text" name="dtStart" class="inputDate"/><br/>').appendTo(form);
+		jQuery('<span>dtEnd: </span><input type="text" name="dtEnd" class="inputDate" /><br/>').appendTo(form)
 		jQuery('<span>Location: </span><input type="text" name="location" /><br/>').appendTo(form)
 		jQuery('<input type="submit" value="submit" /><br/>').appendTo(form)
 		form.appendTo(divContent)
 		divContent.fadeIn(300, function() {
 			gadgets.window.adjustHeight();
+			form.children(".inputDate").datepicker({
+				dateFormat: 'yy-mm-dd'
+			});
 		});
 	});
 }
@@ -137,10 +149,6 @@ function buildListOperationParams(period) {
 	}
 
 	dtEnd = moment(dtStart).add(addTime, 1)
-
-	log("Start: " + dtStart.toDate())
-	log("End:   " + dtEnd.toDate())
-
 	return {
 		dtStart: dtStart.toDate(),
 		dtEnd: dtEnd.toDate()
@@ -167,8 +175,8 @@ function fillTables(table, entries) {
 
 		var tr = jQuery("<tr/>").addClass(currState)
 		tr.append("<td>" + entry.properties["dc:title"] + "</td>");
-		tr.append("<td>" + dtStart.format("LLL") + "</td>");
-		tr.append("<td>" + dtEnd.format("LLL") + "</td>");
+		tr.append("<td>" + dtStart.calendar() + "</td>");
+		tr.append("<td>" + dtEnd.calendar() + "</td>");
 		tr.append("<td>" + entry.properties["vevent:location"] + "</td>");
 		table.append(tr);
 	}
@@ -180,7 +188,7 @@ function mkTable(nodeId) {
 }
 
 function mkBanner(nodeId) {
-	var banner = jQuery("<div/>").attr('id', nodeId)
+	var banner = jQuery("<h2/>").attr('id', nodeId)
 	return banner.appendTo(divContent);
 }
 
@@ -224,10 +232,12 @@ function createEventCallback(response, params) {
 	jQuery("#errorMessage").empty();
 	jQuery('#debugInfo').empty();
 	log("Create Event Callback")
+	log(response)
 	if (response.rc >= 500) {
 		//Server error
+		log(response)
 	} else {
-		//Success
+		fetchEventWithFade(buildListOperationParams())
 	}
 	log(response)
 }
@@ -237,6 +247,7 @@ function fetchEventWithFade(params, displayMethod) {
 		fetchEvent(params, displayMethod)
 	})
 }
+
 function fetchEvent(params, displayMethod) {
 	var internalDisplayMethod = displayMethod || displayEvents;
 
