@@ -8,6 +8,12 @@ function log(txt) {
 function initAgenda() {
 	moment.lang('en') // set 'en' first, to prevent from DE as default.
 	moment.lang(prefs.getLang())
+
+	jQuery(function($) {
+		$.timepicker.setDefaults($.timepicker.regional['']);
+		$.datepicker.setDefaults($.datepicker.regional['']);
+	});
+
 	divContent = jQuery("#content");
 	divTools = jQuery("div.tools");
 	initContextPanel(divTools)
@@ -59,6 +65,19 @@ function initCreateEvent() {
 	divContent.fadeOut(300, function() {
 		divContent.empty();
 		var form = jQuery("<form />").submit(function(eventObject) {
+
+			var isFormValid = true;
+			$('.required').parents("td").find(":last").each(function() {
+				if (!$(this).val()) {
+					$(this).addClass("warning");
+					isFormValid = false;
+				} else {
+					$(this).removeClass("warning");
+				}
+			});
+			if(!isFormValid) { return false; }
+
+
 			var formParams = $(this).serializeArray();
 			var params = {}
 			for (var index in formParams) {
@@ -72,19 +91,34 @@ function initCreateEvent() {
 			return false;
 		});
 
-		jQuery('<span>Summary: </span><input type="text" name="summary" /><br/>').appendTo(form)
-		jQuery('<span>Description: </span><input type="text" name="description" /><br/>').appendTo(form)
-		jQuery('<span>dtStart: </span><input type="text" name="dtStart" class="inputDate"/><br/>').appendTo(form);
-		jQuery('<span>dtEnd: </span><input type="text" name="dtEnd" class="inputDate" /><br/>').appendTo(form)
-		jQuery('<span>Location: </span><input type="text" name="location" /><br/>').appendTo(form)
-		jQuery('<input type="submit" value="submit" /><br/>').appendTo(form)
+		var tbl = jQuery('<table />').appendTo(form)
+		jQuery('<tr><td colspan="2"><span class="required">Summary: </span><input type="text" name="summary" /></td></tr>').appendTo(tbl)
+		jQuery('<tr><td colspan="2"><span>Description: </span><input type="text" name="description" /></td></tr>').appendTo(tbl)
+		jQuery('<tr><td><span class="required">Start: </span><input type="text" name="dtStart" class="inputDate"/></td>' + '<td><span>End: </span><input type="text" name="dtEnd" class="inputDate" /></td></tr>').appendTo(tbl)
+		jQuery('<tr><td colspan="2"><span>Location: </span><input type="text" name="location" /></td></tr>').appendTo(tbl)
+
+		jQuery('<input type="submit" value="submit" />').appendTo(form)
 		form.appendTo(divContent)
+
 		divContent.fadeIn(300, function() {
-			gadgets.window.adjustHeight();
-			form.children(".inputDate").datepicker({
-				dateFormat: 'yy-mm-dd'
-			});
+			var args = jQuery.extend({
+				dateFormat: 'yy-mm-dd',
+				touchonly: false,
+				stepMinute: 5,
+				beforeShow: function() {
+					log("Datepicker: " + jQuery("#ui-datepicker-div").outerHeight())
+				}
+			}, jQuery.datepicker.regional[prefs.getLang()], jQuery.timepicker.regional[prefs.getLang()])
+			log(tbl.find(".inputDate"))
+			tbl.find(".inputDate").datetimepicker(args);
+
+			// XXX Should not be hardcoded
+			gadgets.window.adjustHeight(300);
 		});
+
+		//gadgets.window.adjustHeight(jQuery("#ui-datepicker-div").outerHeight() + 10)
+		//gadgets.window.adjustHeight(gadgets.window.getViewportDimensions().height + jQuery("#ui-datepicker-div").height())
+		log("Datepicker: " + jQuery("#ui-datepicker-div").outerHeight())
 	});
 }
 

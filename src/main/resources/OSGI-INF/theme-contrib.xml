@@ -10,6 +10,9 @@
     <resource name="fullcalendar.css">
       <path>css/fullcalendar.css</path>
     </resource>
+    <resource name="jquery.ui.fullcalendar.timepicker.addon.css">
+    	<path>css/jquery-ui-timepicker-addon.css</path>
+    </resource>
 
     <resource name="gadget-agenda.js">
       <path>scripts/opensocial/gadgets/agenda.js</path>
@@ -22,6 +25,12 @@
     </resource>
     <resource name="jquery.ui.fullcalendar.js">
       <path>scripts/jquery-ui-1.8.19.fullcalendar.min.js</path>
+    </resource>
+    <resource name="jquery.ui.fullcalendar.timepicker.addon.js">
+      <path>scripts/jquery-ui-timepicker-addon.js</path>
+    </resource>
+    <resource name="jquery.ui.fullcalendar.lang.js">
+      <path>scripts/jquery-ui-1.8.19.fullcalendar.lang.js</path>
     </resource>
   </extension>
 </component>
