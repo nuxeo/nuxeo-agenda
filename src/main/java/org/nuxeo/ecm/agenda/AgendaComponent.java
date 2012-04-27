@@ -33,11 +33,11 @@ public class AgendaComponent extends DefaultComponent implements AgendaService {
 
     protected static final String QUERY_BETWEEN_DATES = "SELECT * FROM Document WHERE "
             + "ecm:mixinType = '" + SCHEDULABLE_TYPE + "' "
-            + "AND (vevent:dtstart BETWEEN TIMESTAMP '%s' AND TIMESTAMP '%s') "
+            + "AND ((vevent:dtstart BETWEEN TIMESTAMP '%s' AND TIMESTAMP '%s') "
             + "OR (vevent:dtend BETWEEN TIMESTAMP '%s' AND TIMESTAMP '%s') "
             + "OR (vevent:dtstart < TIMESTAMP '%s' AND vevent:dtend > TIMESTAMP '%s') "
-            + "OR (vevent:dtstart > TIMESTAMP '%s' AND vevent:dtend < TIMESTAMP '%s') "
-            + "AND ecm:currentLifeCycleState !='deleted'";
+            + "OR (vevent:dtstart > TIMESTAMP '%s' AND vevent:dtend < TIMESTAMP '%s')) "
+            + "AND ecm:currentLifeCycleState != 'deleted' ORDER BY vevent:dtstart";
 
     private static final Log log = LogFactory.getLog(AgendaComponent.class);
 

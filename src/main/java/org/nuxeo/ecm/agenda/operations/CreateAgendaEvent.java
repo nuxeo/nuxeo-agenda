@@ -2,6 +2,7 @@ package org.nuxeo.ecm.agenda.operations;
 
 import java.util.Date;
 
+import org.joda.time.DateTime;
 import org.nuxeo.ecm.agenda.AgendaEventBuilder;
 import org.nuxeo.ecm.agenda.AgendaService;
 import org.nuxeo.ecm.automation.core.Constants;
@@ -48,6 +49,10 @@ public class CreateAgendaEvent {
 
     @OperationMethod
     public void run() throws ClientException {
+        if (dtEnd == null) {
+            dtEnd = new DateTime(dtStart).plusHours(1).toDate();
+        }
+
         AgendaEventBuilder aeb = AgendaEventBuilder.build(summary, dtStart,
                 dtEnd).description(description).location(location);
         agendaService.createEvent(session, contextPath, aeb.toMap());
