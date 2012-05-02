@@ -30,7 +30,7 @@ function displayCalendar() {
         divContent.fadeIn(300, function() {
             gadgets.window.adjustHeight();
         });
-        jQuery('<div id="calendar" />').appendTo(divContent).fullCalendar({
+        var params = jQuery.extend({
             theme: true,
             timeFormat: 'H(:mm)',
             header: {
@@ -52,16 +52,18 @@ function displayCalendar() {
                         var allDay = dtEnd.diff(dtStart, 'days') > 0;
                         events.push({
                             title: entry.properties["dc:title"],
-                            start: entry.properties["vevent:dtstart"],
-                            end: entry.properties["vevent:dtend"],
+                            start: moment(entry.properties["vevent:dtstart"]).toDate(),
+                            end: moment(entry.properties["vevent:dtend"]).toDate(),
                             allDay: allDay
                         })
                     }
 
-                    callback(events)
+                    callback(events);
                 })
             }
-        });
+        }, jQuery.fullCalendar.regional[prefs.getLang()])
+
+        jQuery('<div id="calendar" />').appendTo(divContent).fullCalendar(params);
     });
 }
 
@@ -102,24 +104,20 @@ function initCreateEvent() {
         });
 
         var tbl = jQuery('<table />').appendTo(form)
-        jQuery('<tr><td colspan="2"><span class="required">'+prefs.getMsg('label.vevent.summary')+': </span><input type="text" name="summary" /></td></tr>').appendTo(tbl)
-        jQuery('<tr><td colspan="2"><span>'+prefs.getMsg('label.vevent.description')+': </span><input type="text" name="description" /></td></tr>').appendTo(tbl)
-        jQuery('<tr><td><span class="required">'+prefs.getMsg('label.vevent.startDate')+': </span><input type="text" name="dtStart" class="inputDate"/></td>' + '<td><span>'+prefs.getMsg('label.vevent.endDate')+': </span><input type="text" name="dtEnd" class="inputDate" /></td></tr>').appendTo(tbl)
-        jQuery('<tr><td colspan="2"><span>'+prefs.getMsg('label.vevent.place')+': </span><input type="text" name="location" /></td></tr>').appendTo(tbl)
+        jQuery('<tr><td colspan="2"><span class="required">' + prefs.getMsg('label.vevent.summary') + ': </span><input type="text" name="summary" /></td></tr>').appendTo(tbl)
+        jQuery('<tr><td colspan="2"><span>' + prefs.getMsg('label.vevent.description') + ': </span><input type="text" name="description" /></td></tr>').appendTo(tbl)
+        jQuery('<tr><td><span class="required">' + prefs.getMsg('label.vevent.startDate') + ': </span><input type="text" name="dtStart" class="inputDate"/></td>' + '<td><span>' + prefs.getMsg('label.vevent.endDate') + ': </span><input type="text" name="dtEnd" class="inputDate" /></td></tr>').appendTo(tbl)
+        jQuery('<tr><td colspan="2"><span>' + prefs.getMsg('label.vevent.place') + ': </span><input type="text" name="location" /></td></tr>').appendTo(tbl)
 
-        jQuery('<input type="submit" value="' + prefs.getMsg('command.create')+ ' " />').appendTo(form)
+        jQuery('<input type="submit" value="' + prefs.getMsg('command.create') + ' " />').appendTo(form)
         form.appendTo(divContent)
 
         divContent.fadeIn(300, function() {
             var args = jQuery.extend(jQuery.datepicker.regional[prefs.getLang()], jQuery.timepicker.regional[prefs.getLang()], {
                 dateFormat: 'yy-mm-dd',
                 touchonly: false,
-                stepMinute: 5,
-                beforeShow: function() {
-                    log("Datepicker: " + jQuery("#ui-datepicker-div").outerHeight())
-                }
+                stepMinute: 5
             })
-            log(tbl.find(".inputDate"))
             tbl.find(".inputDate").datetimepicker(args);
 
             // XXX Should not be hardcoded
@@ -128,7 +126,6 @@ function initCreateEvent() {
 
         //gadgets.window.adjustHeight(jQuery("#ui-datepicker-div").outerHeight() + 10)
         //gadgets.window.adjustHeight(gadgets.window.getViewportDimensions().height + jQuery("#ui-datepicker-div").height())
-        log("Datepicker: " + jQuery("#ui-datepicker-div").outerHeight())
     });
 }
 
@@ -249,14 +246,13 @@ function findOrCreate(nodeId, creationMethod) {
 function displayEvents(entries, nxParams) {
     divContent.empty()
     // Fill between banner
-    log(nxParams.operationParams)
     if (nxParams.operationParams.dtStart) {
         var banner = findOrCreate('betweenBanner', mkBanner)
         var pattern = "ddd LL";
         var dtStart = moment(nxParams.operationParams.dtStart).format(pattern);
         var dtEnd = moment(nxParams.operationParams.dtEnd).format(pattern);
 
-        banner.html(prefs.getMsg('label.vevent.between') +" " + dtStart + " " +prefs.getMsg('command.add')+ " " + dtEnd);
+        banner.html(prefs.getMsg('label.vevent.between') + " " + dtStart + " " + prefs.getMsg('command.add') + " " + dtEnd);
     }
 
     if (!entries || entries.length <= 0) {
@@ -273,22 +269,18 @@ function displayEvents(entries, nxParams) {
 }
 
 function operationExecutedCallback(response, params) {
-    console.log("Operation executed")
+    //console.log("Operation executed")
 }
 
 function createEventCallback(response, params) {
     jQuery("#waitMessage").empty();
     jQuery("#errorMessage").empty();
     jQuery('#debugInfo').empty();
-    log("Create Event Callback")
-    log(response)
     if (response.rc >= 500) {
         //Server error
-        log(response)
     } else {
         fetchEventWithFade(buildListOperationParams())
     }
-    log(response)
 }
 
 function fetchEventWithFade(params, displayMethod) {
@@ -299,8 +291,6 @@ function fetchEventWithFade(params, displayMethod) {
 
 function fetchEvent(params, displayMethod) {
     var internalDisplayMethod = displayMethod || displayEvents;
-    log("fetch: ")
-    log(params)
     // Automation requests
     var NXRequestEventsParams = {
         operationId: 'VEVENT.List',
