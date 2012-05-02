@@ -76,7 +76,9 @@ function initCreateEvent() {
                     $(this).removeClass("warning");
                 }
             });
-            if(!isFormValid) { return false; }
+            if (!isFormValid) {
+                return false;
+            }
             // build params
             var formParams = $(this).serializeArray();
             var params = {}
@@ -105,14 +107,14 @@ function initCreateEvent() {
         form.appendTo(divContent)
 
         divContent.fadeIn(300, function() {
-            var args = jQuery.extend({
+            var args = jQuery.extend(jQuery.datepicker.regional[prefs.getLang()], jQuery.timepicker.regional[prefs.getLang()], {
                 dateFormat: 'yy-mm-dd',
                 touchonly: false,
                 stepMinute: 5,
                 beforeShow: function() {
                     log("Datepicker: " + jQuery("#ui-datepicker-div").outerHeight())
                 }
-            }, jQuery.datepicker.regional[prefs.getLang()], jQuery.timepicker.regional[prefs.getLang()])
+            })
             log(tbl.find(".inputDate"))
             tbl.find(".inputDate").datetimepicker(args);
 
@@ -241,17 +243,17 @@ function findOrCreate(nodeId, creationMethod) {
 
 function displayEvents(entries, nxParams) {
     divContent.empty()
-    if (entries && entries.length <= 0) {
-        divContent.html = '<p>' + nxParams.noEntryLabel + '</p>';
+    // Fill between banner
+    var banner = findOrCreate('betweenBanner', mkBanner)
+    var pattern = "ddd LL";
+    var dtStart = moment(nxParams.operationParams.dtStart).format(pattern);
+    var dtEnd = moment(nxParams.operationParams.dtEnd).format(pattern);
+
+    banner.html("Events between " + dtStart + " and " + dtEnd);
+
+    if (!entries || entries.length <= 0) {
+        jQuery('<p>' + nxParams.noEntryLabel + '</p>').appendTo(divContent)
     } else {
-        // Fill between banner
-        var banner = findOrCreate('betweenBanner', mkBanner)
-        var pattern = "ddd, LL";
-        var dtStart = moment(nxParams.operationParams.dtStart).format(pattern);
-        var dtEnd = moment(nxParams.operationParams.dtEnd).format(pattern);
-
-        banner.html("Events between " + dtStart + " and " + dtEnd);
-
         // Fill Results Table
         var tableResults = findOrCreate("agenda", mkTable);
         fillTables(tableResults, entries)
