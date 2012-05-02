@@ -5,6 +5,10 @@ function log(txt) {
     console.log(txt)
 }
 
+function buildUrl(entry) {
+    return NXGadgetContext.serverSideBaseUrl + "nxdoc/default/" + entry.uid + "/view_documents"
+}
+
 function initAgenda() {
     moment.lang('en') // set 'en' first, to prevent from DE as default.
     moment.lang(prefs.getLang())
@@ -214,7 +218,7 @@ function fillTables(table, entries) {
         }
 
         var tr = jQuery("<tr/>").addClass(currState)
-        tr.append("<td>" + entry.properties["dc:title"] + "</td>");
+        tr.append('<td><a target="_top" href="' + buildUrl(entry) + '">' + entry.properties["dc:title"] + "</a></td>");
         tr.append("<td>" + dtStart.calendar() + "</td>");
         tr.append("<td>" + dtEnd.calendar() + "</td>");
         tr.append("<td>" + entry.properties["vevent:location"] + "</td>");
