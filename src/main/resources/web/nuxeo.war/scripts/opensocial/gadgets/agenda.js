@@ -139,8 +139,8 @@ function initContextPanel(node) {
     node.append(newEvent);
 
     // Create filter div
-    var parag = jQuery("<div>Filter: </div>")
-    var values = ["daily", "weekly", "monthly"]
+    var parag = jQuery("<div />")
+    var values = ["incoming", "today", "week", "month"]
     var clickHandler = function(value) {
             return function(event) {
                 fetchEventWithFade(buildListOperationParams(value));
@@ -180,16 +180,17 @@ function buildListOperationParams(period) {
 
     var addTime;
     switch (period) {
-    case 'monthly':
+    case 'month':
         addTime = 'months'
         break;
-    case 'weekly':
+    case 'week':
         addTime = 'weeks'
         break;
-    case 'daily':
-    default:
+    case 'today':
         addTime = 'days'
         break;
+    default:
+        return {};
     }
 
     dtEnd = moment(dtStart).add(addTime, 1)
@@ -248,12 +249,15 @@ function findOrCreate(nodeId, creationMethod) {
 function displayEvents(entries, nxParams) {
     divContent.empty()
     // Fill between banner
-    var banner = findOrCreate('betweenBanner', mkBanner)
-    var pattern = "ddd LL";
-    var dtStart = moment(nxParams.operationParams.dtStart).format(pattern);
-    var dtEnd = moment(nxParams.operationParams.dtEnd).format(pattern);
+    log(nxParams.operationParams)
+    if (nxParams.operationParams.dtStart) {
+        var banner = findOrCreate('betweenBanner', mkBanner)
+        var pattern = "ddd LL";
+        var dtStart = moment(nxParams.operationParams.dtStart).format(pattern);
+        var dtEnd = moment(nxParams.operationParams.dtEnd).format(pattern);
 
-    banner.html("Events between " + dtStart + " and " + dtEnd);
+        banner.html("Events between " + dtStart + " and " + dtEnd);
+    }
 
     if (!entries || entries.length <= 0) {
         jQuery('<p>' + nxParams.noEntryLabel + '</p>').appendTo(divContent)
@@ -294,7 +298,8 @@ function fetchEventWithFade(params, displayMethod) {
 
 function fetchEvent(params, displayMethod) {
     var internalDisplayMethod = displayMethod || displayEvents;
-
+    log("fetch: ")
+    log(params)
     // Automation requests
     var NXRequestEventsParams = {
         operationId: 'VEVENT.List',

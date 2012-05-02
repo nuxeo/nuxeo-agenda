@@ -91,7 +91,7 @@ public class AgendaOperationsTest {
     }
 
     @Test
-    public void testListEvents() throws Exception {
+    public void testListEventsWithDates() throws Exception {
         AgendaEventBuilder anEvent = AgendaEventBuilder.build("current event",
                 NOW().minusDays(1).toDate(), NOW().plusDays(1).toDate());
 
@@ -107,6 +107,27 @@ public class AgendaOperationsTest {
                 "dtStart", NOW().plusDays(10).toDate()).set("dtEnd",
                 NOW().plusDays(11).toDate()).execute();
         assertEquals(0, docs.size());
+    }
+
+    @Test
+    public void testListEventsWithLimit() throws Exception {
+        AgendaEventBuilder incEvent = AgendaEventBuilder.build("inc event",
+                        NOW().plusDays(1).toDate(), NOW().plusDays(2).toDate());
+        //create 6 events
+        agendaService.createEvent(session, "/default-domain/", incEvent.toMap());
+        agendaService.createEvent(session, "/default-domain/", incEvent.toMap());
+        agendaService.createEvent(session, "/default-domain/", incEvent.toMap());
+        agendaService.createEvent(session, "/default-domain/", incEvent.toMap());
+        agendaService.createEvent(session, "/default-domain/", incEvent.toMap());
+        agendaService.createEvent(session, "/default-domain/", incEvent.toMap());
+        session.save();
+
+        Documents docs = (Documents) clientSession.newRequest(ListAgendaEvents.ID).execute();
+        assertEquals(5, docs.size());
+        docs = (Documents) clientSession.newRequest(ListAgendaEvents.ID).set("limit", 4).execute();
+        assertEquals(4, docs.size());
+        docs = (Documents) clientSession.newRequest(ListAgendaEvents.ID).set("limit", 15).execute();
+        assertEquals(6, docs.size());
     }
 
     protected static DateTime NOW() {

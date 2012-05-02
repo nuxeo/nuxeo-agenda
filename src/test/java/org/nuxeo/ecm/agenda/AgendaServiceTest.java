@@ -131,6 +131,28 @@ public class AgendaServiceTest {
     }
 
     @Test
+    public void testListWithLimit() throws ClientException {
+        AgendaEventBuilder incEvent = AgendaEventBuilder.build("inc event",
+                NOW().plusDays(1).toDate(), NOW().plusDays(2).toDate());
+        AgendaEventBuilder pastEvent = AgendaEventBuilder.build("inc event",
+                        NOW().minusDays(1).toDate(), NOW().minusDays(1).toDate());
+        //create 2 past events
+        agendaService.createEvent(session, null, pastEvent.toMap());
+        agendaService.createEvent(session, null, pastEvent.toMap());
+
+        // create 5 inc events
+        agendaService.createEvent(session, null, incEvent.toMap());
+        agendaService.createEvent(session, null, incEvent.toMap());
+        agendaService.createEvent(session, null, incEvent.toMap());
+        agendaService.createEvent(session, null, incEvent.toMap());
+        agendaService.createEvent(session, null, incEvent.toMap());
+        session.save();
+
+        assertEquals(3, agendaService.listEvents(session, 3).size());
+        assertEquals(5, agendaService.listEvents(session, 10).size());
+    }
+
+    @Test
     public void testLimitCase() throws ClientException {
         AgendaEventBuilder midnightTickParty = AgendaEventBuilder.build(
                 "past event", NOW().withTime(0, 0, 0, 0).toDate(),

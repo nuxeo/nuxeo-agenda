@@ -28,14 +28,21 @@ public class ListAgendaEvents {
     @Context
     protected CoreSession session;
 
-    @Param(name = "dtStart")
+    @Param(name = "dtStart", required = false)
     protected Date dtStart;
 
-    @Param(name = "dtEnd")
+    @Param(name = "dtEnd", required = false)
     protected Date dtEnd;
+
+    @Param(name = "limit", required = false)
+    protected int limit = 5;
 
     @OperationMethod
     public DocumentModelList run() throws ClientException {
-        return agendaService.listEvents(session, dtStart, dtEnd);
+        if (dtStart != null) {
+            return agendaService.listEvents(session, dtStart, dtEnd);
+        } else {
+            return agendaService.listEvents(session, limit);
+        }
     }
 }

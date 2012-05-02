@@ -22,8 +22,19 @@ public interface AgendaService {
      * @param dtEnd the end date (included)
      * @return matching Event as a DocumentModelList object
      */
-    DocumentModelList listEvents(CoreSession session, Date dtStart,
-            Date dtEnd) throws ClientException;
+    DocumentModelList listEvents(CoreSession session, Date dtStart, Date dtEnd)
+            throws ClientException;
+
+    /**
+     * List incoming user readable agendum with a limit
+     * 
+     *
+     * @param limit the number of events returned must be greater than 0
+     *            otherwise ClientException is thrown
+     * @return matching Event as a DocumentModelList object
+     */
+    DocumentModelList listEvents(CoreSession session, int limit)
+            throws ClientException;
 
     /**
      * Create a new Event document to the specific path. If the path is blank or
