@@ -102,12 +102,12 @@ function initCreateEvent() {
         });
 
         var tbl = jQuery('<table />').appendTo(form)
-        jQuery('<tr><td colspan="2"><span class="required">Summary: </span><input type="text" name="summary" /></td></tr>').appendTo(tbl)
-        jQuery('<tr><td colspan="2"><span>Description: </span><input type="text" name="description" /></td></tr>').appendTo(tbl)
-        jQuery('<tr><td><span class="required">Start: </span><input type="text" name="dtStart" class="inputDate"/></td>' + '<td><span>End: </span><input type="text" name="dtEnd" class="inputDate" /></td></tr>').appendTo(tbl)
-        jQuery('<tr><td colspan="2"><span>Location: </span><input type="text" name="location" /></td></tr>').appendTo(tbl)
+        jQuery('<tr><td colspan="2"><span class="required">'+prefs.getMsg('label.vevent.summary')+': </span><input type="text" name="summary" /></td></tr>').appendTo(tbl)
+        jQuery('<tr><td colspan="2"><span>'+prefs.getMsg('label.vevent.description')+': </span><input type="text" name="description" /></td></tr>').appendTo(tbl)
+        jQuery('<tr><td><span class="required">'+prefs.getMsg('label.vevent.startDate')+': </span><input type="text" name="dtStart" class="inputDate"/></td>' + '<td><span>'+prefs.getMsg('label.vevent.endDate')+': </span><input type="text" name="dtEnd" class="inputDate" /></td></tr>').appendTo(tbl)
+        jQuery('<tr><td colspan="2"><span>'+prefs.getMsg('label.vevent.place')+': </span><input type="text" name="location" /></td></tr>').appendTo(tbl)
 
-        jQuery('<input type="submit" value="submit" />').appendTo(form)
+        jQuery('<input type="submit" value="' + prefs.getMsg('command.create')+ ' " />').appendTo(form)
         form.appendTo(divContent)
 
         divContent.fadeIn(300, function() {
@@ -135,7 +135,7 @@ function initCreateEvent() {
 function initContextPanel(node) {
     // Create Plus div
     var newEvent = jQuery("<div />")
-    jQuery("<a />").attr('href', '#').click(initCreateEvent).html("Add").appendTo(newEvent);
+    jQuery("<a />").attr('href', '#').click(initCreateEvent).html(prefs.getMsg("command.add")).appendTo(newEvent);
     node.append(newEvent);
 
     // Create filter div
@@ -158,7 +158,7 @@ function initContextPanel(node) {
         if (index != 0) {
             parag.append("<span>&nbsp;/&nbsp;</span>")
         }
-        var currNode = jQuery("<a/>").attr('href', '#').click(clickHandler(values[index])).html(values[index]);
+        var currNode = jQuery("<a/>").attr('href', '#').click(clickHandler(values[index])).html(prefs.getMsg('command.vevent.' + values[index]));
         if (index == 0) {
             currNode.addClass('selected')
         }
@@ -168,7 +168,7 @@ function initContextPanel(node) {
 
     // Create calendar div
     var all = jQuery("<div />")
-    jQuery("<a />").attr('href', '#').click(displayCalendar).html(">> see calendar").appendTo(all);
+    jQuery("<a />").attr('href', '#').click(displayCalendar).html(">> " + prefs.getMsg('command.vevent.calendar')).appendTo(all);
     node.append(all);
 
     gadgets.window.adjustHeight();
@@ -209,7 +209,7 @@ function fillTables(table, entries) {
 
         var dtStart = moment(entry.properties["vevent:dtstart"])
         var dtEnd = moment(entry.properties["vevent:dtend"])
-        var currState = 'near'
+        var currState = 'incoming'
         if (now.diff(dtStart) >= 0) {
             if (now.diff(dtEnd) >= 0) {
                 currState = 'done'
@@ -256,11 +256,12 @@ function displayEvents(entries, nxParams) {
         var dtStart = moment(nxParams.operationParams.dtStart).format(pattern);
         var dtEnd = moment(nxParams.operationParams.dtEnd).format(pattern);
 
-        banner.html("Events between " + dtStart + " and " + dtEnd);
+        banner.html(prefs.getMsg('label.vevent.between') +" " + dtStart + " " +prefs.getMsg('command.add')+ " " + dtEnd);
     }
 
     if (!entries || entries.length <= 0) {
-        jQuery('<p>' + nxParams.noEntryLabel + '</p>').appendTo(divContent)
+
+        jQuery('<p>' + prefs.getMsg('label.no.events') + '</p>').appendTo(divContent)
     } else {
         // Fill Results Table
         var tableResults = findOrCreate("agenda", mkTable);
@@ -309,7 +310,6 @@ function fetchEvent(params, displayMethod) {
         operationDocumentProperties: "dublincore,vevent",
         operationCallback: operationExecutedCallback,
         displayMethod: internalDisplayMethod,
-        noEntryLabel: prefs.getMsg('label.gadget.no.document')
     };
 
     doAutomationRequest(NXRequestEventsParams)

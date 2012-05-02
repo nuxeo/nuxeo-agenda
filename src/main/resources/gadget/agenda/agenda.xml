@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
-  <ModulePrefs title="Agenda"
+  <ModulePrefs title="agenda"
                description="Display your incoming event"
                author="Arnaud Kervern" author_email="ak@nuxeo.com"
                height="280">
