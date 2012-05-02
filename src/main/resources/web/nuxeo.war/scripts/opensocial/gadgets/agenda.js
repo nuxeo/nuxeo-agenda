@@ -256,8 +256,7 @@ function displayEvents(entries, nxParams) {
     }
 
     if (!entries || entries.length <= 0) {
-
-        jQuery('<p>' + prefs.getMsg('label.no.events') + '</p>').appendTo(divContent)
+        jQuery('<p>' + prefs.getMsg('label.no.vevents') + '</p>').appendTo(divContent)
     } else {
         // Fill Results Table
         var tableResults = findOrCreate("agenda", mkTable);
