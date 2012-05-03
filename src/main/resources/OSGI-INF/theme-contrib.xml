@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<component name="org.nuxeo.ecm.social.workspace.gadgets.theme">
+<component name="org.nuxeo.ecm.agenda.theme">
 
   <require>org.nuxeo.theme.nuxeo.default</require>
 

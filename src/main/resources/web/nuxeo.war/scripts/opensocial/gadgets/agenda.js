@@ -67,6 +67,14 @@ function displayCalendar() {
     });
 }
 
+function buildListTable(entries) {
+    var table = jQuery("<table />")
+
+
+
+    return table;
+}
+
 function initCreateEvent() {
     divContent.fadeOut(300, function() {
         divContent.empty();
