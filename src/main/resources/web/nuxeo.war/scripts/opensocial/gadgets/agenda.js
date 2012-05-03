@@ -70,7 +70,7 @@ function displayCalendar() {
 function initCreateEvent() {
     divContent.fadeOut(300, function() {
         divContent.empty();
-        var form = jQuery("<form />").submit(function(eventObject) {
+        var form = jQuery("<form />").addClass('createDocument').submit(function(eventObject) {
 
             // check required fields
             var isFormValid = true;
@@ -103,6 +103,8 @@ function initCreateEvent() {
             return false;
         });
 
+        jQuery("<h3>" + prefs.getMsg("label.vevent.create") + "</h3>").appendTo(form);
+
         var tbl = jQuery('<table />').appendTo(form)
         jQuery('<tr><td colspan="2"><span class="required">' + prefs.getMsg('label.vevent.summary') + ': </span><input type="text" name="summary" /></td></tr>').appendTo(tbl)
         jQuery('<tr><td colspan="2"><span>' + prefs.getMsg('label.vevent.description') + ': </span><input type="text" name="description" /></td></tr>').appendTo(tbl)
@@ -131,12 +133,17 @@ function initCreateEvent() {
 
 function initContextPanel(node) {
     // Create Plus div
-    var newEvent = jQuery("<div />")
-    jQuery("<a />").attr('href', '#').click(initCreateEvent).html(prefs.getMsg("command.add")).appendTo(newEvent);
+    var newEvent = jQuery("<div />").addClass("floatL")
+    jQuery("<a />").addClass("linkButton").attr('href', '#').click(initCreateEvent).html(prefs.getMsg("command.add")).appendTo(newEvent);
     node.append(newEvent);
 
+    // Create calendar div
+    var all = jQuery("<div />").addClass("floatR")
+    jQuery("<a />").attr('href', '#').click(displayCalendar).html("» " + prefs.getMsg('command.vevent.calendar')).appendTo(all);
+    node.append(all);
+
     // Create filter div
-    var parag = jQuery("<div />")
+    var parag = jQuery("<div />").addClass("floatR paddingR")
     var values = ["incoming", "today", "week", "month"]
     var clickHandler = function(value) {
             return function(event) {
@@ -163,10 +170,8 @@ function initContextPanel(node) {
     }
     node.append(parag)
 
-    // Create calendar div
-    var all = jQuery("<div />")
-    jQuery("<a />").attr('href', '#').click(displayCalendar).html(">> " + prefs.getMsg('command.vevent.calendar')).appendTo(all);
-    node.append(all);
+    //clear both
+    node.append(jQuery('<div class="clear" />'))
 
     gadgets.window.adjustHeight();
 }
@@ -225,7 +230,7 @@ function fillTables(table, entries) {
 }
 
 function mkTable(nodeId) {
-    var table = jQuery("<table/>").attr('id', nodeId);
+    var table = jQuery("<table/>").attr('id', nodeId).addClass("dataList");
     return table.appendTo(divContent);
 }
 

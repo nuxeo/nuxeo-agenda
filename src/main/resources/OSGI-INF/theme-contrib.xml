@@ -5,6 +5,9 @@
 
   <extension target="org.nuxeo.theme.services.ThemeService" point="resources">
     <resource name="gadget-agenda.css">
+      <path>css/opensocial/gadgets/gadget-common.css</path>
+    </resource>
+    <resource name="gadget-agenda.css">
       <path>css/opensocial/gadgets/agenda.css</path>
     </resource>
     <resource name="fullcalendar.css">
