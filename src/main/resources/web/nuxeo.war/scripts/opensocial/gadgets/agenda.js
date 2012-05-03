@@ -221,7 +221,7 @@ function fillTables(table, entries) {
         }
 
         var tr = jQuery("<tr/>").addClass(currState)
-        tr.append('<td><a target="_top" href="' + buildUrl(entry) + '">' + entry.properties["dc:title"] + "</a></td>");
+        tr.append('<td><a class="boldLabel" target="_top" href="' + buildUrl(entry) + '">' + entry.properties["dc:title"] + "</a></td>");
         tr.append("<td>" + dtStart.calendar() + "</td>");
         tr.append("<td>" + dtEnd.calendar() + "</td>");
         tr.append("<td>" + entry.properties["vevent:location"] + "</td>");

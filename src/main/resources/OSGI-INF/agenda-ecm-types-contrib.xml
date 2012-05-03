@@ -6,8 +6,8 @@
              point="types">
     <type id="VEVENT">
       <label>AgendaEvent</label>
-      <icon>/icons/vevent.gif</icon>
-      <bigIcon>/icons/vevent_100.png</bigIcon>
+      <icon>/icons/agenda.png</icon>
+      <bigIcon>/icons/agenda_100.png</bigIcon>
       <category>SimpleDocument</category>
       <description>AgendaEvent.description</description>
       <default-view>view_documents</default-view>
