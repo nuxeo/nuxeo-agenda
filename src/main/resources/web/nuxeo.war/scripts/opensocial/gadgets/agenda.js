@@ -252,7 +252,7 @@ function displayEvents(entries, nxParams) {
         var dtStart = moment(nxParams.operationParams.dtStart).format(pattern);
         var dtEnd = moment(nxParams.operationParams.dtEnd).format(pattern);
 
-        banner.html(prefs.getMsg('label.vevent.between') + " " + dtStart + " " + prefs.getMsg('command.add') + " " + dtEnd);
+        banner.html(prefs.getMsg('label.vevent.between') + " " + dtStart + " " + prefs.getMsg('label.vevent.between.and') + " " + dtEnd);
     }
 
     if (!entries || entries.length <= 0) {
