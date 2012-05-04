@@ -15,12 +15,13 @@
     <![CDATA[
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" href="${clientSideBaseUrl}nxthemes-lib/gadget-common.css,agenda.css,fullcalendar.css,jquery-ui-timepicker-addon.css?path=${contextPath}&basepath=${contextPath}"/>
+    <link rel="stylesheet" type="text/css" href="${clientSideBaseUrl}nxthemes-lib/gadget-common.css,gadget-agenda.css,fullcalendar.css,jquery.ui.fullcalendar.timepicker.addon.css?path=${contextPath}&basepath=${contextPath}"/>
     <link rel="stylesheet" type="text/css" href="${clientSideBaseUrl}css/jquery-ui-fullcalendar/jquery-ui-1.8.19.custom.css" />
 
     <!-- insert JS Context -->
     ${jsContext}
     <script src="${clientSideBaseUrl}nxthemes-lib/gadget-default-automation-request.js,moment.js,jquery.js,jquery.ui.fullcalendar.timepicker.addon.js,gadget-context-management.js,gadget-agenda.js,jquery.ui.fullcalendar.js,jquery.ui.fullcalendar.lang.js,fullcalendar.js"></script>
+    <script src="${clientSideBaseUrl}scripts/mustache.js"></script>
   </head>
 
   <body>

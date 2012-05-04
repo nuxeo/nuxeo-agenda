@@ -1,6 +1,55 @@
 var prefs = new gadgets.Prefs();
 var divContent, divTools;
 
+var formTemplate = '<table>{{#rows}}<tr>{{#columns}}<td>' +
+'<span class="{{labelClass}}">{{label}}</span></td><td colspan="{{colspan}}">'+
+'<input type="{{input}}" name="{{name}}" class="{{inputClass}}" />' +
+'</td>{{/columns}}</tr>{{/rows}}</table>';
+
+var createEventLayout = {
+    maxColumns: 2,
+    rows: [{
+        nbColumns: 1,
+        columns: [{
+            colspan: 3,
+            input: "text",
+            name: "summary",
+            label: prefs.getMsg('label.vevent.summary'),
+            labelClass: "required",
+        }]
+    }, {
+        nbColumns: 1,
+        columns: [{
+            colspan: 3,
+            input: "text",
+            name: "description",
+            label: prefs.getMsg('label.vevent.description'),
+        }]
+    }, {
+        nbColumns: 2,
+        columns: [{
+            input: "text",
+            inputClass: "inputDate",
+            name: "dtStart",
+            label: prefs.getMsg('label.vevent.startDate'),
+            labelClass: "required"
+        }, {
+            input: "text",
+            inputClass: "inputDate",
+            name: "dtEnd",
+            label: prefs.getMsg('label.vevent.endDate'),
+        }]
+    }, {
+        nbColumns: 1,
+        columns: [{
+            colspan: 3,
+            input: "text",
+            name: "location",
+            label: prefs.getMsg('label.vevent.place'),
+        }]
+    }],
+}
+
 function log(txt) {
     console.log(txt)
 }
@@ -10,6 +59,8 @@ function buildUrl(entry) {
 }
 
 function initAgenda() {
+    jQuery.getScript("../../scripts/mustache.js"); //XXX to be removed
+
     moment.lang('en') // set 'en' first, to prevent from DE as default.
     moment.lang(prefs.getLang())
 
@@ -67,14 +118,6 @@ function displayCalendar() {
     });
 }
 
-function buildListTable(entries) {
-    var table = jQuery("<table />")
-
-
-
-    return table;
-}
-
 function initCreateEvent() {
     divContent.fadeOut(300, function() {
         divContent.empty();
@@ -82,7 +125,7 @@ function initCreateEvent() {
 
             // check required fields
             var isFormValid = true;
-            $('.required').parents("td").find(":last").each(function() {
+            $('.required').parents("td").next().find(":last").each(function() {
                 if (!$(this).val()) {
                     $(this).addClass("warning");
                     isFormValid = false;
@@ -113,11 +156,7 @@ function initCreateEvent() {
 
         jQuery("<h3>" + prefs.getMsg("label.vevent.create") + "</h3>").appendTo(form);
 
-        var tbl = jQuery('<table />').appendTo(form)
-        jQuery('<tr><td colspan="2"><span class="required">' + prefs.getMsg('label.vevent.summary') + ': </span><input type="text" name="summary" /></td></tr>').appendTo(tbl)
-        jQuery('<tr><td colspan="2"><span>' + prefs.getMsg('label.vevent.description') + ': </span><input type="text" name="description" /></td></tr>').appendTo(tbl)
-        jQuery('<tr><td><span class="required">' + prefs.getMsg('label.vevent.startDate') + ': </span><input type="text" name="dtStart" class="inputDate"/></td>' + '<td><span>' + prefs.getMsg('label.vevent.endDate') + ': </span><input type="text" name="dtEnd" class="inputDate" /></td></tr>').appendTo(tbl)
-        jQuery('<tr><td colspan="2"><span>' + prefs.getMsg('label.vevent.place') + ': </span><input type="text" name="location" /></td></tr>').appendTo(tbl)
+        form.html(Mustache.render(formTemplate, createEventLayout));
 
         jQuery('<input type="submit" value="' + prefs.getMsg('command.create') + ' " />').appendTo(form)
         form.appendTo(divContent)
@@ -128,7 +167,7 @@ function initCreateEvent() {
                 touchonly: false,
                 stepMinute: 5
             })
-            tbl.find(".inputDate").datetimepicker(args);
+            divContent.find(".inputDate").datetimepicker(args);
 
             // XXX Should not be hardcoded
             gadgets.window.adjustHeight(300);
