@@ -55,7 +55,7 @@ function log(txt) {
 }
 
 function buildUrl(entry) {
-    return NXGadgetContext.serverSideBaseUrl + "nxdoc/default/" + entry.uid + "/view_documents"
+    return NXGadgetContext.clientSideBaseUrl + "nxdoc/default/" + entry.uid + "/view_documents"
 }
 
 function initAgenda() {
@@ -105,7 +105,8 @@ function displayCalendar() {
                             title: entry.properties["dc:title"],
                             start: moment(entry.properties["vevent:dtstart"]).toDate(),
                             end: moment(entry.properties["vevent:dtend"]).toDate(),
-                            allDay: allDay
+                            allDay: allDay,
+                            url: buildUrl(entry)
                         })
                     }
 
