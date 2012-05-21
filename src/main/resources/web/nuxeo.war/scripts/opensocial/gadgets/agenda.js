@@ -60,7 +60,6 @@ function buildUrl(entry) {
 
 function initAgenda() {
     jQuery.getScript("../../scripts/mustache.js"); //XXX to be removed
-
     moment.lang('en') // set 'en' first, to prevent from DE as default.
     moment.lang(prefs.getLang())
 
@@ -159,7 +158,12 @@ function initCreateEvent() {
 
         form.html(Mustache.render(formTemplate, createEventLayout));
 
-        jQuery('<input type="submit" value="' + prefs.getMsg('command.create') + ' " />').appendTo(form)
+        var actions = jQuery('<div class="actions"><input type="submit" value="' + prefs.getMsg('command.create') + '" /></div>').appendTo(form)
+        jQuery('<input type="submit" value="' + prefs.getMsg('command.cancel') + '" />').click(function(obj) {
+            fetchEventWithFade(buildListOperationParams())
+            return false;
+        }).appendTo(actions);
+
         form.appendTo(divContent)
 
         divContent.fadeIn(300, function() {
