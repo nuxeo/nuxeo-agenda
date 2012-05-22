@@ -127,7 +127,7 @@ function displayCalendar() {
 function initCreateEvent() {
     divContent.fadeOut(300, function() {
         divContent.empty();
-        var form = jQuery("<form />").addClass('createDocument').submit(function(eventObject) {
+        var form = jQuery("<form />").addClass('creationForm').submit(function(eventObject) {
 
             // check required fields
             var isFormValid = true;

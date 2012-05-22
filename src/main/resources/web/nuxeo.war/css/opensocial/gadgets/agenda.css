@@ -1,2 +1,9 @@
-.required {background:transparent url(../icons/required.gif) top right no-repeat; padding:0 1em 0 0; }
-.warning {background-color: #FFF7B0;}
+/* Toolbar filter */
+.tools a.selected { background-color: #fdff47 }
+
+/* Title */
+#betweenBanner { border-bottom: 1px dotted #ccc; font-size: 1.1em; margin: 0 0 .4em; padding: 0 0 .4em; text-align: center }
+
+/* Events in Datalist tables */
+.inProgress a.boldLabel:link { color: #2db71e}
+.done a.boldLabel:link { color: #777 }
