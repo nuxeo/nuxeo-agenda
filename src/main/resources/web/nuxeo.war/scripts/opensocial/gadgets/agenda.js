@@ -88,6 +88,12 @@ function displayCalendar() {
                 center: 'title',
                 right: 'month,agendaWeek,agendaDay'
             },
+            eventClick: function(event) {
+                if (event.url) {
+                    window.open(event.url, "_top");
+                    return false;
+                }
+            },
             events: function(start, end, callback) {
                 fetchEvent({
                     dtStart: start,
