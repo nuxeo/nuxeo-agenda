@@ -109,24 +109,24 @@ public class AgendaServiceTest {
         assertEquals(5, session.query(QUERY_LIST_ALL_EVENTS).size());
 
         DocumentModelList events = agendaService.listEvents(session,
-                NOW().withTime(0, 0, 0, 0).toDate(),
+                "/", NOW().withTime(0, 0, 0, 0).toDate(),
                 NOW().withTime(23, 59, 59, 999).toDate());
         assertEquals(3, events.size());
 
         events = agendaService.listEvents(session,
-                NOW().withTime(0, 0, 0, 0).toDate(), NOW().plusDays(5).toDate());
+                "/", NOW().withTime(0, 0, 0, 0).toDate(), NOW().plusDays(5).toDate());
         assertEquals(4, events.size());
 
         events = agendaService.listEvents(session,
-                NOW().minusDays(12).toDate(), NOW().minusDays(2).toDate());
+                "/", NOW().minusDays(12).toDate(), NOW().minusDays(2).toDate());
         assertEquals(2, events.size());
 
-        events = agendaService.listEvents(session, NOW().minusDays(3).toDate(),
+        events = agendaService.listEvents(session, "/", NOW().minusDays(3).toDate(),
                 NOW().minusDays(2).toDate());
         assertEquals(1, events.size());
 
         events = agendaService.listEvents(session,
-                NOW().minusDays(12).toDate(), NOW().minusDays(11).toDate());
+                "/", NOW().minusDays(12).toDate(), NOW().minusDays(11).toDate());
         assertEquals(0, events.size());
     }
 
@@ -148,8 +148,8 @@ public class AgendaServiceTest {
         agendaService.createEvent(session, null, incEvent.toMap());
         session.save();
 
-        assertEquals(3, agendaService.listEvents(session, 3).size());
-        assertEquals(5, agendaService.listEvents(session, 10).size());
+        assertEquals(3, agendaService.listEvents(session, "/", 3).size());
+        assertEquals(5, agendaService.listEvents(session, "/", 10).size());
     }
 
     @Test
@@ -167,18 +167,18 @@ public class AgendaServiceTest {
 
         assertEquals(2, session.query(QUERY_LIST_ALL_EVENTS).size());
         DocumentModelList events = agendaService.listEvents(session,
-                NOW().withTime(0, 0, 0, 0).toDate(), null);
+                "/", NOW().withTime(0, 0, 0, 0).toDate(), null);
         assertEquals(1, events.size());
     }
 
     @Test(expected = ClientException.class)
     public void withStartNull() throws ClientException {
-        agendaService.listEvents(session, null, NOW().toDate());
+        agendaService.listEvents(session, "/", null, NOW().toDate());
     }
 
     @Test(expected = ClientException.class)
     public void withEndBeforeStart() throws ClientException {
-        agendaService.listEvents(session, NOW().plusDays(2).toDate(),
+        agendaService.listEvents(session, "/", NOW().plusDays(2).toDate(),
                 NOW().toDate());
     }
 

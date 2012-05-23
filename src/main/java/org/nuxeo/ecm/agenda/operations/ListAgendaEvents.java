@@ -28,6 +28,9 @@ public class ListAgendaEvents {
     @Context
     protected CoreSession session;
 
+    @Param(name = "contextPath")
+    protected String contextPath;
+
     @Param(name = "dtStart", required = false)
     protected Date dtStart;
 
@@ -40,9 +43,9 @@ public class ListAgendaEvents {
     @OperationMethod
     public DocumentModelList run() throws ClientException {
         if (dtStart != null) {
-            return agendaService.listEvents(session, dtStart, dtEnd);
+            return agendaService.listEvents(session, contextPath, dtStart, dtEnd);
         } else {
-            return agendaService.listEvents(session, limit);
+            return agendaService.listEvents(session, contextPath, limit);
         }
     }
 }

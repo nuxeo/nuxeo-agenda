@@ -353,6 +353,7 @@ function fetchEventWithFade(params, displayMethod) {
 
 function fetchEvent(params, displayMethod) {
     var internalDisplayMethod = displayMethod || displayEvents;
+    params['contextPath'] = getTargetContextPath();
     // Automation requests
     var NXRequestEventsParams = {
         operationId: 'VEVENT.List',

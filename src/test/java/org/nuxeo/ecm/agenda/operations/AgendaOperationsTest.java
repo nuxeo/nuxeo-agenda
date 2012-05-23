@@ -100,20 +100,20 @@ public class AgendaOperationsTest {
 
         Documents docs = (Documents) clientSession.newRequest(
                 ListAgendaEvents.ID).set("dtStart", NOW().minusDays(4).toDate()).set(
-                "dtEnd", NOW().plusDays(3).toDate()).execute();
+                "dtEnd", NOW().plusDays(3).toDate()).set("contextPath", "/").execute();
         assertEquals(1, docs.size());
 
         docs = (Documents) clientSession.newRequest(ListAgendaEvents.ID).set(
                 "dtStart", NOW().plusDays(10).toDate()).set("dtEnd",
-                NOW().plusDays(11).toDate()).execute();
+                NOW().plusDays(11).toDate()).set("contextPath", "/").execute();
         assertEquals(0, docs.size());
     }
 
     @Test
     public void testListEventsWithLimit() throws Exception {
         AgendaEventBuilder incEvent = AgendaEventBuilder.build("inc event",
-                        NOW().plusDays(1).toDate(), NOW().plusDays(2).toDate());
-        //create 6 events
+                NOW().plusDays(1).toDate(), NOW().plusDays(2).toDate());
+        // create 6 events
         agendaService.createEvent(session, "/default-domain/", incEvent.toMap());
         agendaService.createEvent(session, "/default-domain/", incEvent.toMap());
         agendaService.createEvent(session, "/default-domain/", incEvent.toMap());
@@ -122,11 +122,14 @@ public class AgendaOperationsTest {
         agendaService.createEvent(session, "/default-domain/", incEvent.toMap());
         session.save();
 
-        Documents docs = (Documents) clientSession.newRequest(ListAgendaEvents.ID).execute();
+        Documents docs = (Documents) clientSession.newRequest(
+                ListAgendaEvents.ID).set("contextPath", "/").execute();
         assertEquals(5, docs.size());
-        docs = (Documents) clientSession.newRequest(ListAgendaEvents.ID).set("limit", 4).execute();
+        docs = (Documents) clientSession.newRequest(ListAgendaEvents.ID).set(
+                "limit", 4).set("contextPath", "/").execute();
         assertEquals(4, docs.size());
-        docs = (Documents) clientSession.newRequest(ListAgendaEvents.ID).set("limit", 15).execute();
+        docs = (Documents) clientSession.newRequest(ListAgendaEvents.ID).set(
+                "limit", 15).set("contextPath", "/").execute();
         assertEquals(6, docs.size());
     }
 
