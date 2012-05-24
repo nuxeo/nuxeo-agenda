@@ -1,10 +1,7 @@
 var prefs = new gadgets.Prefs();
 var divContent, divTools;
 
-var formTemplate = '<table>{{#rows}}<tr>{{#columns}}<td>' +
-'<span class="{{labelClass}}">{{label}}</span></td><td colspan="{{colspan}}">'+
-'<input type="{{input}}" name="{{name}}" class="{{inputClass}}" />' +
-'</td>{{/columns}}</tr>{{/rows}}</table>';
+var formTemplate = '<table>{{#rows}}<tr>{{#columns}}<td>' + '<span class="{{labelClass}}">{{label}}</span></td><td colspan="{{colspan}}">' + '<input type="{{input}}" name="{{name}}" class="{{inputClass}}" />' + '</td>{{/columns}}</tr>{{/rows}}</table>';
 
 var createEventLayout = {
     maxColumns: 2,
@@ -15,7 +12,7 @@ var createEventLayout = {
             input: "text",
             name: "summary",
             label: prefs.getMsg('label.vevent.summary'),
-            labelClass: "required",
+            labelClass: "required"
         }]
     }, {
         nbColumns: 1,
@@ -23,7 +20,7 @@ var createEventLayout = {
             colspan: 3,
             input: "text",
             name: "description",
-            label: prefs.getMsg('label.vevent.description'),
+            label: prefs.getMsg('label.vevent.description')
         }]
     }, {
         nbColumns: 2,
@@ -37,7 +34,7 @@ var createEventLayout = {
             input: "text",
             inputClass: "inputDate",
             name: "dtEnd",
-            label: prefs.getMsg('label.vevent.endDate'),
+            label: prefs.getMsg('label.vevent.endDate')
         }]
     }, {
         nbColumns: 1,
@@ -45,10 +42,10 @@ var createEventLayout = {
             colspan: 3,
             input: "text",
             name: "location",
-            label: prefs.getMsg('label.vevent.place'),
+            label: prefs.getMsg('label.vevent.place')
         }]
-    }],
-}
+    }]
+};
 
 function log(txt) {
     console.log(txt)
@@ -60,8 +57,8 @@ function buildUrl(entry) {
 
 function initAgenda() {
     jQuery.getScript("../../scripts/mustache.js"); //XXX to be removed
-    moment.lang('en') // set 'en' first, to prevent from DE as default.
-    moment.lang(prefs.getLang())
+    moment.lang('en'); // set 'en' first, to prevent from DE as default.
+    moment.lang(prefs.getLang());
 
     jQuery(function($) {
         $.timepicker.setDefaults($.timepicker.regional['']);
@@ -103,8 +100,8 @@ function displayCalendar() {
                     for (var index in entries) {
                         var entry = entries[index];
 
-                        var dtStart = moment(entry.properties["vevent:dtstart"])
-                        var dtEnd = moment(entry.properties["vevent:dtend"])
+                        var dtStart = moment(entry.properties["vevent:dtstart"]);
+                        var dtEnd = moment(entry.properties["vevent:dtend"]);
                         var allDay = dtEnd.diff(dtStart, 'days') > 0;
                         events.push({
                             title: entry.properties["dc:title"],
@@ -118,7 +115,7 @@ function displayCalendar() {
                     callback(events);
                 })
             }
-        }, jQuery.fullCalendar.regional[prefs.getLang()])
+        }, jQuery.fullCalendar.regional[prefs.getLang()]);
 
         jQuery('<div id="calendar" />').appendTo(divContent).fullCalendar(params);
     });
@@ -126,6 +123,7 @@ function displayCalendar() {
 
 function initCreateEvent() {
     divContent.fadeOut(300, function() {
+        jQuery("#filters .selected").removeClass("selected");
         divContent.empty();
         var form = jQuery("<form />").addClass('creationForm').submit(function(eventObject) {
 
@@ -144,7 +142,7 @@ function initCreateEvent() {
             }
             // build params
             var formParams = $(this).serializeArray();
-            var params = {}
+            var params = {};
             for (var index in formParams) {
                 var field = formParams[index];
                 if (field.value) {
@@ -156,7 +154,7 @@ function initCreateEvent() {
                 }
             }
 
-            createEvent(params, createEventCallback)
+            createEvent(params, createEventCallback);
             return false;
         });
 
@@ -164,20 +162,20 @@ function initCreateEvent() {
 
         form.html(Mustache.render(formTemplate, createEventLayout));
 
-        var actions = jQuery('<div class="actions"><input type="submit" value="' + prefs.getMsg('command.create') + '" /></div>').appendTo(form)
+        var actions = jQuery('<div class="actions"><input type="submit" value="' + prefs.getMsg('command.create') + '" /></div>').appendTo(form);
         jQuery('<input type="submit" value="' + prefs.getMsg('command.cancel') + '" />').click(function(obj) {
-            fetchEventWithFade(buildListOperationParams())
+            fetchEventWithFade(buildListOperationParams());
             return false;
         }).appendTo(actions);
 
-        form.appendTo(divContent)
+        form.appendTo(divContent);
 
         divContent.fadeIn(300, function() {
             var args = jQuery.extend(jQuery.datepicker.regional[prefs.getLang()], jQuery.timepicker.regional[prefs.getLang()], {
                 dateFormat: 'yy-mm-dd',
                 touchonly: false,
                 stepMinute: 5
-            })
+            });
             divContent.find(".inputDate").datetimepicker(args);
 
             // XXX Should not be hardcoded
@@ -191,26 +189,36 @@ function initCreateEvent() {
 
 function initContextPanel(node) {
     // Create Plus div
-    var newEvent = jQuery("<div />").addClass("floatL")
+    var newEvent = jQuery("<div />").addClass("floatL");
     jQuery("<a />").addClass("linkButton").attr('href', '#').click(initCreateEvent).html(prefs.getMsg("command.add")).appendTo(newEvent);
     node.append(newEvent);
 
     // Create calendar div
-    var all = jQuery("<div />").addClass("floatR")
-    jQuery("<a />").attr('href', '#').click(displayCalendar).html("» " + prefs.getMsg('command.vevent.calendar')).appendTo(all);
+    var all = jQuery("<div />").addClass("floatR");
+    jQuery("<a />").attr('href', '#').click(function() {
+        var state = jQuery("#filters").toggle().css("display");
+        jQuery(this).children().toggle();
+        newEvent.toggle();
+        console.log("YOYO: " + state)
+        if (state == 'none') {
+            displayCalendar();
+        } else {
+            jQuery("#filters .selected").click();
+        }
+    }).html("<span>» " + prefs.getMsg('command.vevent.calendar') + '</span><span style="display:none;">« ' + prefs.getMsg('command.vevent.list') + '</span>').appendTo(all);
     node.append(all);
 
     // Create filter div
-    var parag = jQuery("<div />").addClass("floatR paddingR")
-    var values = ["incoming", "today", "week", "month"]
+    var parag = jQuery('<div id="filters"/>').addClass("floatR paddingR");
+    var values = ["incoming", "month", "week", "today"];
     var clickHandler = function(value) {
             return function(event) {
                 fetchEventWithFade(buildListOperationParams(value));
                 var target = jQuery(event.target);
-                target.parent().children().each(function(child) {
+                target.parent().children().each(function() {
                     jQuery(this).removeClass("selected")
-                })
-                jQuery(event.target).addClass('selected')
+                });
+                jQuery(event.target).addClass('selected');
 
                 return false;
             }
@@ -226,10 +234,10 @@ function initContextPanel(node) {
         }
         parag.append(currNode);
     }
-    node.append(parag)
+    node.append(parag);
 
     //clear both
-    node.append(jQuery('<div class="clear" />'))
+    node.append(jQuery('<div class="clear" />'));
 
     gadgets.window.adjustHeight();
 }
@@ -241,19 +249,19 @@ function buildListOperationParams(period) {
     var addTime;
     switch (period) {
     case 'month':
-        addTime = 'months'
+        addTime = 'months';
         break;
     case 'week':
-        addTime = 'weeks'
+        addTime = 'weeks';
         break;
     case 'today':
-        addTime = 'days'
+        addTime = 'days';
         break;
     default:
         return {};
     }
 
-    dtEnd = moment(dtStart).add(addTime, 1)
+    dtEnd = moment(dtStart).add(addTime, 1);
     return {
         dtStart: dtStart.toDate(),
         dtEnd: dtEnd.toDate()
@@ -261,15 +269,15 @@ function buildListOperationParams(period) {
 }
 
 function fillTables(table, entries) {
-    table.empty()
-    var now = moment()
+    table.empty();
+    var now = moment();
 
     for (var index in entries) {
-        var entry = entries[index]
+        var entry = entries[index];
 
-        var dtStart = moment(entry.properties["vevent:dtstart"])
-        var dtEnd = moment(entry.properties["vevent:dtend"])
-        var currState = 'incoming'
+        var dtStart = moment(entry.properties["vevent:dtstart"]);
+        var dtEnd = moment(entry.properties["vevent:dtend"]);
+        var currState = 'incoming';
         if (now.diff(dtStart) >= 0) {
             if (now.diff(dtEnd) >= 0) {
                 currState = 'done'
@@ -278,7 +286,7 @@ function fillTables(table, entries) {
             }
         }
 
-        var tr = jQuery("<tr/>").addClass(currState)
+        var tr = jQuery("<tr/>").addClass(currState);
         tr.append('<td><a class="boldLabel" target="_top" href="' + buildUrl(entry) + '">' + entry.properties["dc:title"] + "</a></td>");
         tr.append("<td>" + dtStart.calendar() + "</td>");
         tr.append("<td>" + dtEnd.calendar() + "</td>");
@@ -293,7 +301,7 @@ function mkTable(nodeId) {
 }
 
 function mkBanner(nodeId) {
-    var banner = jQuery("<h2/>").attr('id', nodeId)
+    var banner = jQuery("<h2/>").attr('id', nodeId);
     return banner.appendTo(divContent);
 }
 
@@ -307,15 +315,17 @@ function findOrCreate(nodeId, creationMethod) {
 }
 
 function displayEvents(entries, nxParams) {
-    divContent.empty()
+    divContent.empty();
     // Fill between banner
+    var banner = findOrCreate('betweenBanner', mkBanner);
     if (nxParams.operationParams.dtStart) {
-        var banner = findOrCreate('betweenBanner', mkBanner)
         var pattern = "ddd LL";
         var dtStart = moment(nxParams.operationParams.dtStart).format(pattern);
         var dtEnd = moment(nxParams.operationParams.dtEnd).format(pattern);
 
         banner.html(prefs.getMsg('label.vevent.between') + " " + dtStart + " " + prefs.getMsg('label.vevent.between.and') + " " + dtEnd);
+    } else {
+        banner.html(prefs.getMsg('label.vevent.incoming'));
     }
 
     if (!entries || entries.length <= 0) {
@@ -341,7 +351,7 @@ function createEventCallback(response, params) {
     if (response.rc >= 500) {
         //Server error
     } else {
-        fetchEventWithFade(buildListOperationParams())
+        fetchEventWithFade(buildListOperationParams());
     }
 }
 
@@ -362,14 +372,14 @@ function fetchEvent(params, displayMethod) {
         operationContext: {},
         operationDocumentProperties: "dublincore,vevent",
         operationCallback: operationExecutedCallback,
-        displayMethod: internalDisplayMethod,
+        displayMethod: internalDisplayMethod
     };
 
     doAutomationRequest(NXRequestEventsParams)
 }
 
 function createEvent(params, callback) {
-    params = params || {}
+    params = params || {};
     callback = callback || operationExecutedCallback;
     params['contextPath'] = getTargetContextPath();
 
@@ -386,6 +396,6 @@ function createEvent(params, callback) {
 
 // execute automation request onload
 gadgets.util.registerOnLoadHandler(function() {
-    initAgenda()
-    fetchEventWithFade(buildListOperationParams())
+    initAgenda();
+    fetchEventWithFade(buildListOperationParams());
 });
