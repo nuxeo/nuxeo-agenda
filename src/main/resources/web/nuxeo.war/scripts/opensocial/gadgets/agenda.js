@@ -190,7 +190,8 @@ function initCreateEvent() {
 function initContextPanel(node) {
     // Create Plus div
     var newEvent = jQuery("<div />").addClass("floatL");
-    jQuery("<a />").addClass("linkButton").attr('href', '#').click(initCreateEvent).html(prefs.getMsg("command.add")).appendTo(newEvent);
+    var content = "<img src='" + NXGadgetContext.clientSideBaseUrl + "icons/action_add.gif' alt='" + prefs.getMsg("command.add") + "' title='" + prefs.getMsg("command.add") + "' />" + prefs.getMsg("command.add");
+    jQuery("<a />").addClass("linkButton").attr('href', '#').click(initCreateEvent).html(content).appendTo(newEvent);
     node.append(newEvent);
 
     // Create calendar div
@@ -287,6 +288,7 @@ function fillTables(table, entries) {
         }
 
         var tr = jQuery("<tr/>").addClass(currState);
+        tr.append('<td><img src="'+ NXGadgetContext.clientSideBaseUrl +'icons/agenda.png" alt="' + prefs.getMsg('VEVENT') + '" title="' + prefs.getMsg('VEVENT') + '" /></td>');
         tr.append('<td><a class="boldLabel" target="_top" href="' + buildUrl(entry) + '">' + entry.properties["dc:title"] + "</a></td>");
         tr.append("<td>" + dtStart.calendar() + "</td>");
         tr.append("<td>" + dtEnd.calendar() + "</td>");
