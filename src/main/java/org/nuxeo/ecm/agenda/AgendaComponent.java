@@ -40,21 +40,21 @@ public class AgendaComponent extends DefaultComponent implements AgendaService {
             + "OR (vevent:dtstart < TIMESTAMP '%s' AND vevent:dtend > TIMESTAMP '%s') "
             + "OR (vevent:dtstart > TIMESTAMP '%s' AND vevent:dtend < TIMESTAMP '%s')) "
             + "AND ecm:currentLifeCycleState != 'deleted' "
+            + "AND ecm:isCheckedInVersion = 0 AND ecm:isProxy = 0 "
             + "AND ecm:path STARTSWITH '%s' ORDER BY vevent:dtstart";
 
     protected static final String QUERY_LIMIT = "SELECT * FROM Document WHERE "
-            + "ecm:mixinType = '"
-            + SCHEDULABLE_TYPE
-            + "' "
+            + "ecm:mixinType = '" + SCHEDULABLE_TYPE + "' "
             + "AND vevent:dtend > TIMESTAMP '%s' "
             + "AND ecm:currentLifeCycleState != 'deleted' "
+            + "AND ecm:isCheckedInVersion = 0 AND ecm:isProxy = 0 "
             + "AND ecm:path STARTSWITH '%s' ORDER BY vevent:dtstart";
 
     private static final Log log = LogFactory.getLog(AgendaComponent.class);
 
     @Override
-    public DocumentModelList listEvents(CoreSession session, String path, Date dtStart,
-                                        Date dtEnd) throws ClientException {
+    public DocumentModelList listEvents(CoreSession session, String path,
+            Date dtStart, Date dtEnd) throws ClientException {
         if (dtStart == null) {
             throw new ClientException("Start datetime should not be null");
         }
@@ -68,12 +68,13 @@ public class AgendaComponent extends DefaultComponent implements AgendaService {
         String strStart = formatDate(dtStart);
         String strEnd = formatDate(dtEnd);
         return session.query(String.format(QUERY_BETWEEN_DATES, strStart,
-                strEnd, strStart, strEnd, strStart, strEnd, strStart, strEnd, path));
+                strEnd, strStart, strEnd, strStart, strEnd, strStart, strEnd,
+                path));
     }
 
     @Override
-    public DocumentModelList listEvents(CoreSession session, String path, int limit)
-            throws ClientException {
+    public DocumentModelList listEvents(CoreSession session, String path,
+            int limit) throws ClientException {
         if (limit <= 0) {
             throw new ClientException("Limit must be greater than 0");
         }
