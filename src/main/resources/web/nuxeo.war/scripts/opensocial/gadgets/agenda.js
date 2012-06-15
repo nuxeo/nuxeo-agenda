@@ -126,6 +126,7 @@ function initCreateEvent() {
         jQuery("#filters .selected").removeClass("selected");
         divContent.empty();
         var form = jQuery("<form />").addClass('creationForm').submit(function(eventObject) {
+            var that = $(this);
 
             // check required fields
             var isFormValid = true;
@@ -137,6 +138,21 @@ function initCreateEvent() {
                     $(this).removeClass("warning");
                 }
             });
+
+            var dtStart = that.find("[name='dtStart']")[0];
+            var dtEnd = that.find("[name='dtEnd']")[0];
+            if (isFormValid && dtEnd.value) {
+                $(dtEnd).removeClass("warning");
+
+                var start = moment(dtStart.value, "YYYY-MM-DD HH:mm");
+                var end = moment(dtEnd.value, "YYYY-MM-DD HH:mm");
+                if (end.diff(start) < 0) {
+                    isFormValid = false;
+
+                    $(dtEnd).addClass("warning");
+                }
+            }
+
             if (!isFormValid) {
                 return false;
             }
