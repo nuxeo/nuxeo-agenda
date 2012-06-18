@@ -20,8 +20,7 @@
 
     <!-- insert JS Context -->
     ${jsContext}
-    <script src="${clientSideBaseUrl}nxthemes-lib/gadget-default-automation-request.js,moment.js,jquery.js,jquery.ui.fullcalendar.timepicker.addon.js,gadget-context-management.js,gadget-agenda.js,jquery.ui.fullcalendar.js,jquery.ui.fullcalendar.lang.js,fullcalendar.js"></script>
-    <script src="${clientSideBaseUrl}scripts/mustache.js"></script>
+    <script src="${clientSideBaseUrl}nxthemes-lib/gadget-default-automation-request.js,moment.js,jquery.js,jquery.ui.fullcalendar.timepicker.addon.js,gadget-context-management.js,gadget-agenda.js,jquery.ui.fullcalendar.js,jquery.ui.fullcalendar.lang.js,fullcalendar.js,mustache.js"></script>
   </head>
 
   <body>

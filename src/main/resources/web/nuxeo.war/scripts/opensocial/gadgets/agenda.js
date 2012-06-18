@@ -56,7 +56,6 @@ function buildUrl(entry) {
 }
 
 function initAgenda() {
-    jQuery.getScript("../../scripts/mustache.js"); //XXX to be removed
     moment.lang('en'); // set 'en' first, to prevent from DE as default.
     moment.lang(prefs.getLang());
 

@@ -20,9 +20,6 @@
     <resource name="gadget-agenda.js">
       <path>scripts/opensocial/gadgets/agenda.js</path>
     </resource>
-    <resource name="moment.js">
-      <path>scripts/moment.min.js</path>
-    </resource>
     <resource name="fullcalendar.js">
       <path>scripts/fullcalendar.min.js</path>
     </resource>
