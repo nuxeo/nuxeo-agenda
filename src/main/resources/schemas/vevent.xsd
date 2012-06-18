@@ -5,8 +5,8 @@
 
   <xs:element name="dtstart" type="xs:dateTime" />
   <xs:element name="dtend" type="xs:dateTime" />
-  <xs:element name="location" type="xs:string" />
-  <xs:element name="categories" type="xs:string" />
+  <xs:element name="location" type="xs:string" default="" />
+  <xs:element name="categories" type="xs:string" default="" />
   <xs:element name="status" type="xs:string" default="CONFIRMED" />
   <xs:element name="transp" type="xs:string" default="OPAQUE" />
   <!--
