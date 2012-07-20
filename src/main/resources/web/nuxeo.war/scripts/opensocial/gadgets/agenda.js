@@ -307,7 +307,9 @@ function fillTables(table, entries) {
         tr.append('<td><a class="boldLabel" target="_top" href="' + buildUrl(entry) + '">' + entry.properties["dc:title"] + "</a></td>");
         tr.append("<td>" + dtStart.calendar() + "</td>");
         tr.append("<td>" + dtEnd.calendar() + "</td>");
-        tr.append("<td>" + entry.properties["vevent:location"] + "</td>");
+        var location = entry.properties["vevent:location"];
+        if (location == 'null') { location = '' };
+        tr.append("<td>" + location + "</td>");
         table.append(tr);
     }
 }
