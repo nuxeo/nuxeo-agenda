@@ -52,7 +52,7 @@ function log(txt) {
 }
 
 function buildUrl(entry) {
-    return NXGadgetContext.clientSideBaseUrl + "nxdoc/default/" + entry.uid + "/view_documents"
+    return entry.contextParameters.documentURL
 }
 
 function initAgenda() {
@@ -383,6 +383,7 @@ function fetchEventWithFade(params, displayMethod) {
 function fetchEvent(params, displayMethod) {
     var internalDisplayMethod = displayMethod || displayEvents;
     params['contextPath'] = getTargetContextPath();
+    params['documentLinkBuilder'] = prefs.getString("documentLinkBuilder");
     // Automation requests
     var NXRequestEventsParams = {
         operationId: 'VEVENT.List',
