@@ -7,7 +7,6 @@ import static org.nuxeo.ecm.agenda.AgendaServiceTest.QUERY_LIST_ALL_EVENTS;
 
 import java.util.Date;
 
-import com.google.inject.Inject;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,12 +29,16 @@ import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
 import org.nuxeo.runtime.test.runner.Jetty;
 
+import com.google.inject.Inject;
+
 /**
  * @author <a href="mailto:akervern@nuxeo.com">Arnaud Kervern</a>
  */
 @RunWith(FeaturesRunner.class)
 @Deploy({ "org.nuxeo.ecm.agenda", "org.nuxeo.ecm.platform.userworkspace.core",
-        "org.nuxeo.ecm.platform.userworkspace.types" })
+        "org.nuxeo.ecm.platform.userworkspace.types",
+        "org.nuxeo.ecm.platform.types.api",
+        "org.nuxeo.ecm.platform.types.core", "org.nuxeo.ecm.platform.url.core" })
 @Features(RestFeature.class)
 @Jetty(port = 18080)
 @RepositoryConfig(init = DefaultRepositoryInit.class, cleanup = Granularity.METHOD)
