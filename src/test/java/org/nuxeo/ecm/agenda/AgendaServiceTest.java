@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Map;
 
-import com.google.inject.Inject;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,6 +26,8 @@ import org.nuxeo.ecm.platform.userworkspace.api.UserWorkspaceService;
 import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
+
+import com.google.inject.Inject;
 
 /**
  * @author <a href="mailto:akervern@nuxeo.com">Arnaud Kervern</a>
@@ -94,7 +95,7 @@ public class AgendaServiceTest {
                 "current event", NOW().minusDays(1).toDate(),
                 NOW().plusDays(1).toDate());
         AgendaEventBuilder todayEvent = AgendaEventBuilder.build("today event",
-                NOW().plusHours(1).toDate(), NOW().plusHours(2).toDate());
+                NOW().withHourOfDay(4).toDate(), NOW().withHourOfDay(6).toDate());
         AgendaEventBuilder longCurrentEvent = AgendaEventBuilder.build(
                 "today event", NOW().minusDays(10).toDate(),
                 NOW().plusDays(20).toDate());
