@@ -23,14 +23,17 @@ var createEventLayout = {
             label: prefs.getMsg('label.vevent.description')
         }]
     }, {
-        nbColumns: 2,
+        nbColumns: 1,
         columns: [{
             input: "text",
             inputClass: "inputDate",
             name: "dtStart",
             label: prefs.getMsg('label.vevent.startDate'),
             labelClass: "required"
-        }, {
+        }]
+    }, {
+        nbColumns: 1,
+        columns: [{
             input: "text",
             inputClass: "inputDate",
             name: "dtEnd",
