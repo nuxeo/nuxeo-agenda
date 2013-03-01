@@ -30,5 +30,10 @@
         <type>VEVENT</type>
       </subtypes>
     </type>
+    <type id="OrderedFolder">
+      <subtypes>
+        <type>VEVENT</type>
+      </subtypes>
+    </type>
   </extension>
 </component>
