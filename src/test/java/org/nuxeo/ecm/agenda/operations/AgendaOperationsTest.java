@@ -16,7 +16,7 @@ import org.nuxeo.ecm.agenda.AgendaService;
 import org.nuxeo.ecm.automation.AutomationService;
 import org.nuxeo.ecm.automation.client.Session;
 import org.nuxeo.ecm.automation.client.model.Documents;
-import org.nuxeo.ecm.automation.test.RestFeature;
+import org.nuxeo.ecm.automation.test.EmbeddedAutomationServerFeature;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -39,7 +39,7 @@ import com.google.inject.Inject;
         "org.nuxeo.ecm.platform.userworkspace.types",
         "org.nuxeo.ecm.platform.types.api",
         "org.nuxeo.ecm.platform.types.core", "org.nuxeo.ecm.platform.url.core" })
-@Features(RestFeature.class)
+@Features(EmbeddedAutomationServerFeature.class)
 @Jetty(port = 18080)
 @RepositoryConfig(init = DefaultRepositoryInit.class, cleanup = Granularity.METHOD)
 public class AgendaOperationsTest {
