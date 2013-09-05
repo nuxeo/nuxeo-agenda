@@ -2,8 +2,6 @@ package org.nuxeo.ecm.agenda.operations;
 
 import java.util.Date;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.nuxeo.ecm.agenda.AgendaService;
 import org.nuxeo.ecm.automation.OperationContext;
 import org.nuxeo.ecm.automation.core.Constants;
@@ -11,12 +9,11 @@ import org.nuxeo.ecm.automation.core.annotations.Context;
 import org.nuxeo.ecm.automation.core.annotations.Operation;
 import org.nuxeo.ecm.automation.core.annotations.OperationMethod;
 import org.nuxeo.ecm.automation.core.annotations.Param;
-import org.nuxeo.ecm.automation.core.operations.services.PaginableDocumentModelListImpl;
+import org.nuxeo.ecm.automation.jaxrs.io.documents.PaginableDocumentModelListImpl;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.platform.query.core.DocumentModelListPageProvider;
-import org.nuxeo.ecm.platform.web.common.vh.VirtualHostHelper;
 
 /**
  * Operation to list events between two dates to display them into a calendar
