@@ -23,6 +23,9 @@
     <resource name="fullcalendar.js">
       <path>scripts/fullcalendar.min.js</path>
     </resource>
+    <resource name="fullcalendar.lang.js">
+      <path>scripts/fullcalendar.lang.js</path>
+    </resource>
     <resource name="jquery.ui.fullcalendar.js">
       <path>scripts/jquery-ui-1.8.19.fullcalendar.min.js</path>
     </resource>

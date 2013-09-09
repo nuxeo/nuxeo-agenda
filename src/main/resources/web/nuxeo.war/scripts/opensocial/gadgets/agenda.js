@@ -116,6 +116,9 @@ function displayCalendar() {
 
                     callback(events);
                 })
+            },
+            eventAfterAllRender: function() {
+              gadgets.window.adjustHeight();
             }
         }, jQuery.fullCalendar.regional[prefs.getLang()]);
 
@@ -218,7 +221,6 @@ function initContextPanel(node) {
         var state = jQuery("#filters").toggle().css("display");
         jQuery(this).children().toggle();
         newEvent.toggle();
-        console.log("YOYO: " + state)
         if (state == 'none') {
             displayCalendar();
         } else {
