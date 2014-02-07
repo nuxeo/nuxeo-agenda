@@ -1,4 +1,4 @@
-function loadEvents(from, to, callback) {
+function nuxeoAgendaLoadEvents(from, to, callback) {
 
 	var params = {
 		"documentSchemas" : "vevent,dublincore"
@@ -46,7 +46,7 @@ jQuery(document).ready(function() {
 			right : 'month,agendaWeek,agendaDay'
 		},
 		editable : true,
-		events : loadEvents
+		events : nuxeoAgendaLoadEvents
 	});
 
 });
