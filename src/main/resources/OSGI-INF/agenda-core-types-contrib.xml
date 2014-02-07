@@ -13,7 +13,11 @@
     <facet name="Schedulable">
       <schema name="vevent"/>
     </facet>
+    
+    <facet name="Agenda">
 
+    </facet>
+    
     <doctype name="VEVENT" extends="Document">
       <schema name="common"/>
       <schema name="uid"/>

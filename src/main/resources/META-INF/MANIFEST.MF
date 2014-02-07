@@ -10,4 +10,5 @@ Nuxeo-Component: OSGI-INF/agenda-core-types-contrib.xml,
  OSGI-INF/agenda-service-framework.xml,
  OSGI-INF/agenda-operations-contrib.xml,
  OSGI-INF/agenda-gadgets-contrib.xml,
- OSGI-INF/theme-contrib.xml
+ OSGI-INF/theme-contrib.xml,
+ OSGI-INF/agenda-actions-contrib.xml
