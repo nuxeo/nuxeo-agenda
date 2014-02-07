@@ -1,14 +1,15 @@
 <?xml version="1.0"?>
 <component name="org.nuxeo.ecm.agenda.core.actions">
-	<extension target="org.nuxeo.ecm.platform.actions.ActionService"
-		point="actions">
-		<action id="agendaAddToAgendaAction" order="20" label="label.addtoagenda"
-			type="fancybox" icon="/icons/clock.png">
-			<category>DOCUMENT_UPPER_ACTION</category>
-			<properties>
-				<property name="include">/widgets/add_to_agenda_box.xhtml</property>
-				<property name="ajaxSupport">false</property>
-			</properties>
-		</action>
-	</extension>
+  <extension target="org.nuxeo.ecm.platform.actions.ActionService"
+    point="actions">
+    <action id="agendaAddToAgendaAction" order="20"
+      label="label.addtoagenda" type="fancybox" icon="/icons/clock.png">
+      <category>DOCUMENT_UPPER_ACTION</category>
+      <properties>
+        <property name="include">/widgets/add_to_agenda_box.xhtml
+        </property>
+        <property name="ajaxSupport">false</property>
+      </properties>
+    </action>
+  </extension>
 </component>
