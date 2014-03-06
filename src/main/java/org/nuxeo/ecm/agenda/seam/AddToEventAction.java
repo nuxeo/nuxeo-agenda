@@ -40,7 +40,7 @@ import org.nuxeo.ecm.platform.ui.web.api.NavigationContext;
 
 /**
  * @author loopingz
- * @since 5.9.2
+ * @since 5.9.3
  */
 @Name("agendaAddToEventAction")
 @Scope(CONVERSATION)
