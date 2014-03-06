@@ -1,0 +1,69 @@
+<div xmlns:nxu="http://nuxeo.org/nxweb/util"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:a4j="http://richfaces.org/a4j"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:nxh="http://nuxeo.org/nxweb/html"
+  xmlns:nxl="http://nuxeo.org/nxforms/layout"
+  xmlns:nxd="http://nuxeo.org/nxweb/document">
+
+  <h3>
+    <h:outputText value="#{messages['label.agenda.addTo']}" />
+  </h3>
+  <h:form enctype="multipart/form-data" id="#{fancyboxFormId}">
+    <div class="content" style="height: 150px">
+
+      <table class="dataInput fullWidth separator">
+        <tbody>
+          <tr>
+            <td class="labelColumn required">
+              #{messages['label.agenda.agenda']}</td>
+            <td class="fieldColumn"><nxl:widgetType
+                name="singleDocumentSuggestion" mode="edit"
+                value="#{agendaAddToEventAction}"
+                field="selectedAgendaId" required="true" width="300"
+                translated="true" minChars="2"
+                placeholder="label.agenda.select.agenda.placeholder"
+                ajaxReRender="agendaAddToEvent_eventPanel"
+                pageProviderName="agenda_list_query"
+                documentSchemas="dublincore,common">
+              </nxl:widgetType></td>
+          </tr>
+        </tbody>
+      </table>
+      <a4j:outputPanel id="agendaAddToEvent_eventPanel">
+        <c:if
+          test="#{not empty agendaAddToEventAction.selectedAgendaId}">
+          <table class="dataInput fullWidth separator">
+            <tbody>
+              <tr>
+                <td class="labelColumn required">
+                  #{messages['label.agenda.event']}</td>
+                <td class="fieldColumn"><nxl:widgetType
+                    name="singleDocumentSuggestion" mode="edit"
+                    value="#{agendaAddToEventAction}"
+                    field="selectedEventId" required="true" width="300"
+                    translated="true" minChars="3"
+                    placeholder="label.agenda.select.event.placeholder"
+                    pageProviderName="agenda_list_events_query"
+                    documentSchemas="dublincore,common">
+                  </nxl:widgetType></td>
+              </tr>
+            </tbody>
+          </table>
+        </c:if>
+      </a4j:outputPanel>
+    </div>
+
+    <div class="buttonsGadget">
+      <nxh:commandButton value="#{messages['command.create']}"
+        action="#{agendaAddToEventAction.addToEvent()}"
+        styleClass="button" />
+      <a4j:commandButton value="#{messages['command.cancel']}"
+        immediate="true"
+        action="#{agendaAddToEventAction.cancelAddToEvent()}"
+        oncomplete="jQuery.fancybox.close()" styleClass="button" />
+    </div>
+  </h:form>
+</div>

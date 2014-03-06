@@ -1,0 +1,47 @@
+<component name="org.nuxeo.ecm.agenda.pageproviders">
+
+  <require>org.nuxeo.ecm.platform.forms.layouts.webapp.summary</require>
+
+  <extension point="providers"
+    target="org.nuxeo.ecm.platform.query.api.PageProviderService">
+
+    <coreQueryPageProvider name="agenda_list_query">
+      <pattern escapeParameters="true" quoteParameters="false">
+      <![CDATA[
+        SELECT *
+        FROM Document WHERE dc:title LIKE '?' AND ecm:mixinType !=
+        'HiddenInNavigation' AND ecm:mixinType='Agenda' AND
+        ecm:isCheckedInVersion = 0 AND
+        ecm:currentLifeCycleState != 'deleted'
+       ]]>
+      </pattern>
+      <pageSize>20</pageSize>
+    </coreQueryPageProvider>
+
+    <coreQueryPageProvider name="agenda_list_events_query">
+      <pattern escapeParameters="true" quoteParameters="false">
+      <![CDATA[
+        SELECT *
+        FROM Document WHERE ecm:mixinType = 'Schedulable'
+        AND ecm:fulltext.dc:title LIKE '?'
+        AND ecm:parentId = '?' AND ecm:currentLifeCycleState != 'deleted'
+        ]]>
+      </pattern>
+      <parameter>#{agendaAddToEventAction.selectedAgendaId}</parameter>
+      <pageSize>20</pageSize>
+    </coreQueryPageProvider>
+
+    <coreQueryPageProvider name="agenda_list_events_with_date_query">
+      <pattern escapeParameters="true" quoteParameters="true">
+      <![CDATA[
+        SELECT *
+        From Document WHERE ecm:mixinType != 'HiddenInNavigation'
+        AND ecm:mixinType = 'Schedulable' AND ecm:parentId=?
+        AND vevent:dtstart > TIMESTAMP ?
+        AND vevent:dtstart < TIMESTAMP ?
+        ]]>
+      </pattern>
+      <pageSize>500</pageSize>
+    </coreQueryPageProvider>
+  </extension>
+</component>
