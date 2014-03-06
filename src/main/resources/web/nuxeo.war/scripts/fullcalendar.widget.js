@@ -10,7 +10,9 @@ function nuxeoAgendaLoadEvents(from, to, callback) {
 	temp.lang = currentUserLang;
 
 	// build default operation for Document
-	temp.query = "SELECT * From Document WHERE ecm:mixinType != 'HiddenInNavigation' AND ecm:mixinType = 'Schedulable' AND ecm:parentId='"+currentDocumentId+"' AND vevent:dtstart > TIMESTAMP '"+from.toISOString()+"' AND vevent:dtstart < TIMESTAMP '"+to.toISOString()+"'";
+	temp.providerName = "agenda_list_events_with_date_query";
+	
+	temp.queryParams=currentDocumentId+","+from.toISOString()+","+to.toISOString();
 	
 	// temp.providerName = params.pageProviderName;
 	temp.page = "0";

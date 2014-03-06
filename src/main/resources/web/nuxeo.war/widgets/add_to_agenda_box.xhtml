@@ -26,9 +26,7 @@
                 translated="true" minChars="2"
                 placeholder="label.agenda.select.agenda.placeholder"
                 ajaxReRender="agendaAddToEvent_eventPanel"
-                query="SELECT * FROM  Document WHERE dc:title LIKE ? AND ecm:mixinType !=
-        'HiddenInNavigation' AND ecm:mixinType='Agenda' AND ecm:isCheckedInVersion = 0 AND
-        ecm:currentLifeCycleState != 'deleted'"
+                pageProviderName="agenda_list_query"
                 documentSchemas="dublincore,common">
               </nxl:widgetType></td>
           </tr>
@@ -48,9 +46,7 @@
                     field="selectedEventId" required="true" width="300"
                     translated="true" minChars="3"
                     placeholder="label.agenda.select.event.placeholder"
-                    query="SELECT * FROM Document WHERE ecm:mixinType = 'Schedulable'
-        AND ecm:fulltext.dc:title LIKE ?
-        AND ecm:parentId = '#{agendaAddToEventAction.selectedAgendaId}' AND ecm:currentLifeCycleState != 'deleted'"
+                    pageProviderName="agenda_list_events_query"
                     documentSchemas="dublincore,common">
                   </nxl:widgetType></td>
               </tr>

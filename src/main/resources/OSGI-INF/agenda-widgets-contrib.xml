@@ -1,0 +1,28 @@
+<component name="org.nuxeo.ecm.agenda.widgets">
+<extension point="widgettypes" target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager">
+
+    <widgetType name="calendar_widget">
+      <configuration>
+        <sinceVersion>5.9.3</sinceVersion>
+        <title>Calendar Widget</title>
+        <description>
+          <p>This widget displays a calendar from fullcalendar.js.</p>
+        </description>
+        <categories>
+          <category>summary</category>
+        </categories>
+        <supportedModes>
+          <mode>view</mode>
+        </supportedModes>
+        <!-- no configurable properties -->
+      </configuration>
+      <handler-class>
+        org.nuxeo.ecm.platform.forms.layout.facelets.plugins.TemplateWidgetTypeHandler
+      </handler-class>
+      <property name="template">
+        /widgets/agenda_widget.xhtml
+      </property>
+    </widgetType>
+
+  </extension>
+</component>
