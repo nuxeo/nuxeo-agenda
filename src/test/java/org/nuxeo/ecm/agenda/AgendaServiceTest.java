@@ -18,7 +18,6 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.test.DefaultRepositoryInit;
-import org.nuxeo.ecm.core.test.annotations.BackendType;
 import org.nuxeo.ecm.core.test.annotations.Granularity;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 import org.nuxeo.ecm.platform.test.PlatformFeature;
@@ -36,7 +35,7 @@ import com.google.inject.Inject;
 @Features(PlatformFeature.class)
 @Deploy({ "org.nuxeo.ecm.agenda", "org.nuxeo.ecm.platform.userworkspace.core",
         "org.nuxeo.ecm.platform.userworkspace.types" })
-@RepositoryConfig(type = BackendType.H2, init = DefaultRepositoryInit.class, user = "Administrator", cleanup = Granularity.METHOD)
+@RepositoryConfig(init = DefaultRepositoryInit.class, cleanup = Granularity.METHOD)
 public class AgendaServiceTest {
     public static final String QUERY_LIST_ALL_EVENTS = "Select * from "
             + VEVENT_TYPE;
