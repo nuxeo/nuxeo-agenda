@@ -28,6 +28,7 @@ import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
 import org.nuxeo.runtime.test.runner.Jetty;
+import org.nuxeo.runtime.transaction.TransactionHelper;
 
 import com.google.inject.Inject;
 
@@ -99,7 +100,8 @@ public class AgendaOperationsTest {
                 NOW().minusDays(1).toDate(), NOW().plusDays(1).toDate());
 
         agendaService.createEvent(session, "/default-domain/", anEvent.toMap());
-        session.save();
+        TransactionHelper.commitOrRollbackTransaction();
+        TransactionHelper.startTransaction();
 
         Documents docs = (Documents) clientSession.newRequest(
                 ListAgendaEvents.ID).set("dtStart", NOW().minusDays(4).toDate()).set(
@@ -123,7 +125,8 @@ public class AgendaOperationsTest {
         agendaService.createEvent(session, "/default-domain/", incEvent.toMap());
         agendaService.createEvent(session, "/default-domain/", incEvent.toMap());
         agendaService.createEvent(session, "/default-domain/", incEvent.toMap());
-        session.save();
+        TransactionHelper.commitOrRollbackTransaction();
+        TransactionHelper.startTransaction();
 
         Documents docs = (Documents) clientSession.newRequest(
                 ListAgendaEvents.ID).set("contextPath", "/").execute();
