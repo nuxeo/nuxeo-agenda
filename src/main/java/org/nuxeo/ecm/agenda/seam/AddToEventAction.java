@@ -98,22 +98,17 @@ public class AddToEventAction implements Serializable {
         this.selectedEventId = selectedEventId;
     }
 
-    public void addToEvent() throws InvalidChainException, OperationException,
-            Exception {
+    public void addToEvent() throws InvalidChainException, OperationException, Exception {
         // Do the job
-        DocumentModel doc = documentManager.getDocument(new IdRef(
-                selectedEventId));
+        DocumentModel doc = documentManager.getDocument(new IdRef(selectedEventId));
         // Create link
         DocumentModel currentDoc = navigationContext.getCurrentDocument();
         try {
-            documentRelationManager.addRelation(documentManager, currentDoc,
-                    doc, PREDICATE_TYPE, true);
+            documentRelationManager.addRelation(documentManager, currentDoc, doc, PREDICATE_TYPE, true);
 
-            facesMessages.add(StatusMessage.Severity.INFO,
-                    messages.get("label.relation.created"));
+            facesMessages.add(StatusMessage.Severity.INFO, messages.get("label.relation.created"));
         } catch (RelationAlreadyExistsException e) {
-            facesMessages.add(StatusMessage.Severity.WARN,
-                    messages.get("label.relation.already.exists"));
+            facesMessages.add(StatusMessage.Severity.WARN, messages.get("label.relation.already.exists"));
         }
     }
 

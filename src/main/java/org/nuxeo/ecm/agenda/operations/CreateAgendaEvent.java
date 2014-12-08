@@ -53,8 +53,8 @@ public class CreateAgendaEvent {
             dtEnd = new DateTime(dtStart).plusHours(1).toDate();
         }
 
-        AgendaEventBuilder aeb = AgendaEventBuilder.build(summary, dtStart,
-                dtEnd).description(description).location(location);
+        AgendaEventBuilder aeb = AgendaEventBuilder.build(summary, dtStart, dtEnd).description(description).location(
+                location);
         agendaService.createEvent(session, contextPath, aeb.toMap());
     }
 }

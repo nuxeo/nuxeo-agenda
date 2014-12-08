@@ -31,30 +31,24 @@ public class AgendaComponent extends DefaultComponent implements AgendaService {
 
     protected static final DateTimeFormatter dateTimeFormatter = ISODateTimeFormat.dateTime();
 
-    protected static final String QUERY_BETWEEN_DATES = "SELECT * FROM Document WHERE "
-            + "ecm:mixinType = '"
-            + SCHEDULABLE_TYPE
-            + "' "
-            + "AND ((vevent:dtstart BETWEEN TIMESTAMP '%s' AND TIMESTAMP '%s') "
+    protected static final String QUERY_BETWEEN_DATES = "SELECT * FROM Document WHERE " + "ecm:mixinType = '"
+            + SCHEDULABLE_TYPE + "' " + "AND ((vevent:dtstart BETWEEN TIMESTAMP '%s' AND TIMESTAMP '%s') "
             + "OR (vevent:dtend BETWEEN TIMESTAMP '%s' AND TIMESTAMP '%s') "
             + "OR (vevent:dtstart < TIMESTAMP '%s' AND vevent:dtend > TIMESTAMP '%s') "
             + "OR (vevent:dtstart > TIMESTAMP '%s' AND vevent:dtend < TIMESTAMP '%s')) "
-            + "AND ecm:currentLifeCycleState != 'deleted' "
-            + "AND ecm:isCheckedInVersion = 0 AND ecm:isProxy = 0 "
+            + "AND ecm:currentLifeCycleState != 'deleted' " + "AND ecm:isCheckedInVersion = 0 AND ecm:isProxy = 0 "
             + "AND ecm:path STARTSWITH '%s' ORDER BY vevent:dtstart";
 
-    protected static final String QUERY_LIMIT = "SELECT * FROM Document WHERE "
-            + "ecm:mixinType = '" + SCHEDULABLE_TYPE + "' "
-            + "AND vevent:dtend > TIMESTAMP '%s' "
-            + "AND ecm:currentLifeCycleState != 'deleted' "
-            + "AND ecm:isCheckedInVersion = 0 AND ecm:isProxy = 0 "
+    protected static final String QUERY_LIMIT = "SELECT * FROM Document WHERE " + "ecm:mixinType = '"
+            + SCHEDULABLE_TYPE + "' " + "AND vevent:dtend > TIMESTAMP '%s' "
+            + "AND ecm:currentLifeCycleState != 'deleted' " + "AND ecm:isCheckedInVersion = 0 AND ecm:isProxy = 0 "
             + "AND ecm:path STARTSWITH '%s' ORDER BY vevent:dtstart";
 
     private static final Log log = LogFactory.getLog(AgendaComponent.class);
 
     @Override
-    public DocumentModelList listEvents(CoreSession session, String path,
-            Date dtStart, Date dtEnd) throws ClientException {
+    public DocumentModelList listEvents(CoreSession session, String path, Date dtStart, Date dtEnd)
+            throws ClientException {
         if (dtStart == null) {
             throw new ClientException("Start datetime should not be null");
         }
@@ -67,20 +61,17 @@ public class AgendaComponent extends DefaultComponent implements AgendaService {
 
         String strStart = formatDate(dtStart);
         String strEnd = formatDate(dtEnd);
-        return session.query(String.format(QUERY_BETWEEN_DATES, strStart,
-                strEnd, strStart, strEnd, strStart, strEnd, strStart, strEnd,
-                path));
+        return session.query(String.format(QUERY_BETWEEN_DATES, strStart, strEnd, strStart, strEnd, strStart, strEnd,
+                strStart, strEnd, path));
     }
 
     @Override
-    public DocumentModelList listEvents(CoreSession session, String path,
-            int limit) throws ClientException {
+    public DocumentModelList listEvents(CoreSession session, String path, int limit) throws ClientException {
         if (limit <= 0) {
             throw new ClientException("Limit must be greater than 0");
         }
 
-        return session.query(
-                String.format(QUERY_LIMIT, formatDate(new Date()), path), limit);
+        return session.query(String.format(QUERY_LIMIT, formatDate(new Date()), path), limit);
     }
 
     protected static String formatDate(Date date) {
@@ -88,8 +79,8 @@ public class AgendaComponent extends DefaultComponent implements AgendaService {
     }
 
     @Override
-    public DocumentModel createEvent(CoreSession session, String path,
-            Map<String, Serializable> properties) throws ClientException {
+    public DocumentModel createEvent(CoreSession session, String path, Map<String, Serializable> properties)
+            throws ClientException {
         if (StringUtils.isBlank(path) || "/".equals(path)) {
             path = getCurrentUserWorkspacePath(session);
         }
@@ -105,8 +96,7 @@ public class AgendaComponent extends DefaultComponent implements AgendaService {
         return session.createDocument(doc);
     }
 
-    protected String getCurrentUserWorkspacePath(CoreSession session)
-            throws ClientException {
+    protected String getCurrentUserWorkspacePath(CoreSession session) throws ClientException {
         UserWorkspaceService userWorkspaceService = Framework.getLocalService(UserWorkspaceService.class);
         DocumentModel userPersonalWorkspace = userWorkspaceService.getUserPersonalWorkspace(
                 session.getPrincipal().getName(), session.getRootDocument());

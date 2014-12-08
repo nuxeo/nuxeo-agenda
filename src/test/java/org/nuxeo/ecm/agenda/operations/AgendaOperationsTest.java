@@ -37,8 +37,7 @@ import com.google.inject.Inject;
  */
 @RunWith(FeaturesRunner.class)
 @Deploy({ "org.nuxeo.ecm.agenda", "org.nuxeo.ecm.platform.userworkspace.core",
-        "org.nuxeo.ecm.platform.userworkspace.types",
-        "org.nuxeo.ecm.platform.types.api",
+        "org.nuxeo.ecm.platform.userworkspace.types", "org.nuxeo.ecm.platform.types.api",
         "org.nuxeo.ecm.platform.types.core", "org.nuxeo.ecm.platform.url.core" })
 @Features(EmbeddedAutomationServerFeature.class)
 @Jetty(port = 18080)
@@ -66,10 +65,8 @@ public class AgendaOperationsTest {
     public void testCreateOperation() throws Exception {
         Date dtStart = NOW().plusDays(1).toDate();
         Date dtEnd = NOW().plusDays(2).toDate();
-        Object obj = clientSession.newRequest(CreateAgendaEvent.ID).set(
-                "summary", "my new Event").set("dtStart", dtStart).set("dtEnd",
-                dtEnd).set("description", "description").set("location",
-                "location").execute();
+        Object obj = clientSession.newRequest(CreateAgendaEvent.ID).set("summary", "my new Event").set("dtStart",
+                dtStart).set("dtEnd", dtEnd).set("description", "description").set("location", "location").execute();
         assertNull(obj);
         session.save();
 
@@ -83,41 +80,34 @@ public class AgendaOperationsTest {
 
     @Test
     public void testCreateWithContextPath() throws Exception {
-        clientSession.newRequest(CreateAgendaEvent.ID).set("summary",
-                "my new Event").set("dtStart", NOW().toDate()).set(
+        clientSession.newRequest(CreateAgendaEvent.ID).set("summary", "my new Event").set("dtStart", NOW().toDate()).set(
                 "contextPath", "/default-domain/").execute();
-        assertEquals(
-                1,
-                session.query(
-                        "Select * from "
-                                + VEVENT_TYPE
-                                + " where ecm:path startswith '/default-domain/'").size());
+        assertEquals(1,
+                session.query("Select * from " + VEVENT_TYPE + " where ecm:path startswith '/default-domain/'").size());
     }
 
     @Test
     public void testListEventsWithDates() throws Exception {
-        AgendaEventBuilder anEvent = AgendaEventBuilder.build("current event",
-                NOW().minusDays(1).toDate(), NOW().plusDays(1).toDate());
+        AgendaEventBuilder anEvent = AgendaEventBuilder.build("current event", NOW().minusDays(1).toDate(),
+                NOW().plusDays(1).toDate());
 
         agendaService.createEvent(session, "/default-domain/", anEvent.toMap());
         TransactionHelper.commitOrRollbackTransaction();
         TransactionHelper.startTransaction();
 
-        Documents docs = (Documents) clientSession.newRequest(
-                ListAgendaEvents.ID).set("dtStart", NOW().minusDays(4).toDate()).set(
-                "dtEnd", NOW().plusDays(3).toDate()).set("contextPath", "/").execute();
+        Documents docs = (Documents) clientSession.newRequest(ListAgendaEvents.ID).set("dtStart",
+                NOW().minusDays(4).toDate()).set("dtEnd", NOW().plusDays(3).toDate()).set("contextPath", "/").execute();
         assertEquals(1, docs.size());
 
-        docs = (Documents) clientSession.newRequest(ListAgendaEvents.ID).set(
-                "dtStart", NOW().plusDays(10).toDate()).set("dtEnd",
-                NOW().plusDays(11).toDate()).set("contextPath", "/").execute();
+        docs = (Documents) clientSession.newRequest(ListAgendaEvents.ID).set("dtStart", NOW().plusDays(10).toDate()).set(
+                "dtEnd", NOW().plusDays(11).toDate()).set("contextPath", "/").execute();
         assertEquals(0, docs.size());
     }
 
     @Test
     public void testListEventsWithLimit() throws Exception {
-        AgendaEventBuilder incEvent = AgendaEventBuilder.build("inc event",
-                NOW().plusDays(1).toDate(), NOW().plusDays(2).toDate());
+        AgendaEventBuilder incEvent = AgendaEventBuilder.build("inc event", NOW().plusDays(1).toDate(),
+                NOW().plusDays(2).toDate());
         // create 6 events
         agendaService.createEvent(session, "/default-domain/", incEvent.toMap());
         agendaService.createEvent(session, "/default-domain/", incEvent.toMap());
@@ -128,14 +118,11 @@ public class AgendaOperationsTest {
         TransactionHelper.commitOrRollbackTransaction();
         TransactionHelper.startTransaction();
 
-        Documents docs = (Documents) clientSession.newRequest(
-                ListAgendaEvents.ID).set("contextPath", "/").execute();
+        Documents docs = (Documents) clientSession.newRequest(ListAgendaEvents.ID).set("contextPath", "/").execute();
         assertEquals(5, docs.size());
-        docs = (Documents) clientSession.newRequest(ListAgendaEvents.ID).set(
-                "limit", 4).set("contextPath", "/").execute();
+        docs = (Documents) clientSession.newRequest(ListAgendaEvents.ID).set("limit", 4).set("contextPath", "/").execute();
         assertEquals(4, docs.size());
-        docs = (Documents) clientSession.newRequest(ListAgendaEvents.ID).set(
-                "limit", 15).set("contextPath", "/").execute();
+        docs = (Documents) clientSession.newRequest(ListAgendaEvents.ID).set("limit", 15).set("contextPath", "/").execute();
         assertEquals(6, docs.size());
     }
 

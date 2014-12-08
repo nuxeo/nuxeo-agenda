@@ -54,12 +54,10 @@ public class ListAgendaEvents {
     public PaginableDocumentModelListImpl run() throws ClientException {
         DocumentModelList events;
         if (dtStart != null) {
-            events = agendaService.listEvents(session, contextPath, dtStart,
-                    dtEnd);
+            events = agendaService.listEvents(session, contextPath, dtStart, dtEnd);
         } else {
             events = agendaService.listEvents(session, contextPath, limit);
         }
-        return new PaginableDocumentModelListImpl(
-                new DocumentModelListPageProvider(events), documentLinkBuilder);
+        return new PaginableDocumentModelListImpl(new DocumentModelListPageProvider(events), documentLinkBuilder);
     }
 }
