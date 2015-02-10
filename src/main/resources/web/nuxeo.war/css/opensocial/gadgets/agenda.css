@@ -1,6 +1,0 @@
-/* Title */
-#betweenBanner { border-bottom: 1px dotted #ccc; font-size: 1.1em; margin: 0 0 .4em; padding: 0 0 .4em; text-align: center }
-
-/* Events in Datalist tables */
-.inProgress a.boldLabel:link { color: #2db71e}
-.done a.boldLabel:link { color: #777 }

@@ -1,0 +1,102 @@
+<div xmlns:nxu="http://nuxeo.org/nxweb/util"
+  xmlns:nxd="http://nuxeo.org/nxweb/document"
+  class="bubbleBox">
+
+  <div id="#{widget.id}_tools" class="bubbleHeader"></div>
+  <div id="#{widget.id}" class="boxBody"></div>
+
+  <nxu:set var="contextDocumentPath" value="#{nxd:isDocumentModel(fieldOrValue) ? fieldOrValue.pathAsString : '/'}">
+    <script type="text/javascript">
+      var nuxeo = nuxeo || {};
+      nuxeo.agenda = (function(nx) {
+        nx.clientBaseUrl = baseURL;
+        nx.contextDocumentPath = "#{contextDocumentPath}";
+        nx.messages = {
+          "lang": "#{localeSelector.language}",
+          "VEVENT": "#{messages['VEVENT']}",
+          "vevent.description": "#{messages['vevent.description']}",
+          "label.vevent.startDate": "#{messages['label.vevent.startDate']}",
+          "label.vevent.endDate": "#{messages['label.vevent.endDate']}",
+          "label.vevent.place": "#{messages['label.vevent.place']}",
+          "label.vevent.summary": "#{messages['label.vevent.summary']}",
+          "label.vevent.description": "#{messages['label.vevent.description']}",
+          "label.vevent.between": "#{messages['label.vevent.between']}",
+          "label.vevent.between.and": "#{messages['label.vevent.between.and']}",
+          "label.no.vevents": "#{messages['label.no.vevents']}",
+          "command.add": "#{messages['command.add']}",
+          "command.create": "#{messages['command.create']}",
+          "command.cancel": "#{messages['command.cancel']}",
+          "command.vevent.incoming": "#{messages['command.vevent.incoming']}",
+          "command.vevent.today": "#{messages['command.vevent.today']}",
+          "command.vevent.month": "#{messages['command.vevent.month']}",
+          "command.vevent.week": "#{messages['command.vevent.week']}",
+          "command.vevent.calendar": "#{messages['command.vevent.calendar']}",
+          "command.vevent.list": "#{messages['command.vevent.list']}",
+          "label.vevent.create": "#{messages['label.vevent.create']}",
+          "label.vevent.incoming": "#{messages['label.vevent.incoming']}",
+          "label.gadget.agenda": "#{messages['label.gadget.agenda']}",
+          "label.vevent.confirmDelete": "#{messages['label.vevent.confirmDelete']}",
+          "label.agenda.event": "#{messages['label.agenda.event']}",
+          "label.agenda.addTo": "#{messages['label.agenda.addTo']}",
+          "label.agenda.select.agenda.placeholder": "#{messages['label.agenda.select.agenda.placeholder']}",
+          "label.agenda.select.event.placeholder": "#{messages['label.agenda.select.event.placeholder']}"
+        };
+        nx.widget = "#{widget.id}";
+        nx.selectors = {
+          widget: '#' + nx.widget,
+          widgetTools: '#' + nx.widget + '_tools'
+        };
+        nx.createEventLayout = {
+          maxColumns: 2,
+          rows: [ {
+            nbColumns: 1,
+            columns: [ {
+              colspan: 3,
+              input: "text",
+              name: "summary",
+              label: nx.messages['label.vevent.summary'],
+              labelClass: "required"
+            } ]
+          }, {
+            nbColumns: 1,
+            columns: [ {
+              colspan: 3,
+              input: "text",
+              name: "description",
+              label: nx.messages['label.vevent.description']
+            } ]
+          }, {
+            nbColumns: 1,
+            columns: [ {
+              input: "text",
+              inputClass: "inputDate",
+              name: "dtStart",
+              label: nx.messages['label.vevent.startDate'],
+              labelClass: "required"
+            } ]
+          }, {
+            nbColumns: 1,
+            columns: [ {
+              input: "text",
+              inputClass: "inputDate",
+              name: "dtEnd",
+              label: nx.messages['label.vevent.endDate']
+            } ]
+          }, {
+            nbColumns: 1,
+            columns: [ {
+              colspan: 3,
+              input: "text",
+              name: "location",
+              label: nx.messages['label.vevent.place']
+            } ]
+          } ]
+        };
+
+        return nx;
+      })(nuxeo.agenda || {});
+
+      nuxeo.agenda.widgets.events.initWidget();
+    </script>
+  </nxu:set>
+</div>

@@ -1,0 +1,41 @@
+/* Title */
+#betweenBanner {
+  font-size: 1.1em;
+  margin: 0 0 .4em;
+  padding: 0 0 .4em }
+
+#nxw_default_events_widget_tools {
+  position: relative }
+
+#filters {
+  color: #ccc;
+  left: 0;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  top: 1em; }
+
+#filters a {
+  border-radius: 1em;
+  display: inline-block;
+  padding: .1em .5em }
+
+#filters .selected,
+#filters a:hover {
+  background-color: #00adff;
+  color: #fff }
+
+.bubbleHeader .button {
+  position: relative;
+  z-index: 100 }
+
+/* Events in Datalist tables */
+.inProgress a.boldLabel:link {
+  color: #2db71e }
+
+.done a.boldLabel:link {
+  color: #777 }
+
+/* override styles from fullcalendar.css */
+.fc-event-time, .fc-event-title {
+  color: #fff }

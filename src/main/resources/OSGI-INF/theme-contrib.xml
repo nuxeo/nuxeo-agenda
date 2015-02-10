@@ -1,24 +1,22 @@
 <?xml version="1.0"?>
 <component name="org.nuxeo.ecm.agenda.theme">
-
   <require>org.nuxeo.theme.nuxeo.default</require>
 
   <extension target="org.nuxeo.theme.services.ThemeService" point="resources">
-    <resource name="gadget-agenda.css">
-      <path>css/opensocial/gadgets/gadget-common.css</path>
-    </resource>
-    <resource name="gadget-agenda.css">
-      <path>css/opensocial/gadgets/agenda.css</path>
+    <resource name="agenda.css">
+      <path>css/agenda.css</path>
     </resource>
     <resource name="fullcalendar.css">
       <path>css/fullcalendar.css</path>
     </resource>
-    <resource name="jquery.ui.fullcalendar.timepicker.addon.css">
-    	<path>css/jquery-ui-timepicker-addon.css</path>
+    <resource name="jquery-ui-1.8.19.custom.css">
+      <path>css/jquery-ui-fullcalendar/jquery-ui-1.8.19.custom.css</path>
     </resource>
-
-    <resource name="gadget-agenda.js">
-      <path>scripts/opensocial/gadgets/agenda.js</path>
+    <resource name="jquery.ui.fullcalendar.timepicker.addon.css">
+      <path>css/jquery-ui-timepicker-addon.css</path>
+    </resource>
+    <resource name="events.widget.js">
+      <path>scripts/events.widget.js</path>
     </resource>
     <resource name="fullcalendar.js">
       <path>scripts/fullcalendar.min.js</path>
@@ -35,5 +33,24 @@
     <resource name="jquery.ui.fullcalendar.lang.js">
       <path>scripts/jquery-ui-1.8.19.fullcalendar.lang.js</path>
     </resource>
+  </extension>
+
+  <extension target="org.nuxeo.theme.services.ThemeService" point="views">
+    <view name="nuxeo5 includes" template-engine="jsf-facelets" merge="true">
+      <format-type>widget</format-type>
+
+      <resource>agenda.css</resource>
+      <resource>fullcalendar.css</resource>
+      <resource>jquery.ui.fullcalendar.timepicker.addon.css</resource>
+      <resource>jquery-ui-1.8.19.custom.css</resource>
+      <resource>moment.js</resource>
+      <resource>jquery.ui.fullcalendar.timepicker.addon.js</resource>
+      <resource>jquery.ui.fullcalendar.js</resource>
+      <resource>jquery.ui.fullcalendar.lang.js</resource>
+      <resource>fullcalendar.js</resource>
+      <resource>fullcalendar.lang.js</resource>
+      <resource>mustache.js</resource>
+      <resource>events.widget.js</resource>
+    </view>
   </extension>
 </component>
