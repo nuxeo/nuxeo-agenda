@@ -2,8 +2,7 @@
 <component name="org.nuxeo.ecm.agenda.ecm.types">
   <require>org.nuxeo.ecm.platform.types</require>
 
-  <extension target="org.nuxeo.ecm.platform.types.TypeService"
-             point="types">
+  <extension target="org.nuxeo.ecm.platform.types.TypeService" point="types">
     <type id="VEVENT">
       <label>VEVENT</label>
       <icon>/icons/agenda.png</icon>
@@ -15,7 +14,7 @@
         <layout>vevent</layout>
       </layouts>
       <views>
-        <view id="after-social-collaboration-creation" value="view_social_document"/>
+        <view id="after-social-collaboration-creation" value="view_social_document" />
       </views>
     </type>
 
