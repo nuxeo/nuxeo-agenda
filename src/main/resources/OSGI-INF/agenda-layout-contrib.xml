@@ -4,9 +4,7 @@
   <require>org.nuxeo.ecm.platform.forms.layouts.webapp.summary</require>
   <require>org.nuxeo.ecm.platform.forms.layouts.webapp.base</require>
 
-  <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager"
-             point="layouts">
-
+  <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="layouts">
     <layout name="vevent">
       <templates>
         <template mode="any">/layouts/layout_default_template.xhtml</template>
@@ -29,8 +27,7 @@
     </layout>
   </extension>
 
-  <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager"
-             point="widgets">
+  <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="widgets">
     <widget name="vevent_dtstart" type="datetime">
       <labels>
         <label mode="any">label.vevent.startDate</label>

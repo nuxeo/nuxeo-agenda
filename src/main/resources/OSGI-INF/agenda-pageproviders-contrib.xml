@@ -2,12 +2,11 @@
 
   <require>org.nuxeo.ecm.platform.forms.layouts.webapp.summary</require>
 
-  <extension point="providers"
-    target="org.nuxeo.ecm.platform.query.api.PageProviderService">
+  <extension point="providers" target="org.nuxeo.ecm.platform.query.api.PageProviderService">
 
     <coreQueryPageProvider name="agenda_list_query">
       <pattern escapeParameters="true" quoteParameters="false">
-      <![CDATA[
+        <![CDATA[
         SELECT *
         FROM Document WHERE dc:title LIKE '?' AND ecm:mixinType !=
         'HiddenInNavigation' AND ecm:mixinType='Agenda' AND

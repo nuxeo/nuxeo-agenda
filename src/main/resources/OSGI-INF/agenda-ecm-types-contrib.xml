@@ -18,20 +18,51 @@
       </views>
     </type>
 
+    <type id="Agenda">
+      <label>Agenda</label>
+      <icon>/icons/agenda.png</icon>
+      <bigIcon>/icons/agenda_100.png</bigIcon>
+      <category>SimpleDocument</category>
+      <description></description>
+      <default-view>view_documents</default-view>
+      <layouts mode="create">
+        <layout>heading</layout>
+      </layouts>
+      <layouts mode="edit">
+        <layout>heading</layout>
+        <layout>dublincore</layout>
+      </layouts>
+      <subtypes>
+        <type>VEVENT</type>
+      </subtypes>
+      <contentViews category="content">
+        <contentView>document_content</contentView>
+      </contentViews>
+      <contentViews category="trash_content">
+        <contentView showInExportView="false">
+          document_trash_content
+        </contentView>
+      </contentViews>
+    </type>
+
     <type id="Workspace">
       <subtypes>
         <type>VEVENT</type>
+        <type>Agenda</type>
       </subtypes>
     </type>
 
     <type id="Folder">
       <subtypes>
         <type>VEVENT</type>
+        <type>Agenda</type>
       </subtypes>
     </type>
+
     <type id="OrderedFolder">
       <subtypes>
         <type>VEVENT</type>
+        <type>Agenda</type>
       </subtypes>
     </type>
   </extension>

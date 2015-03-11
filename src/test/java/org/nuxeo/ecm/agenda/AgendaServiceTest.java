@@ -37,10 +37,11 @@ import org.nuxeo.runtime.test.runner.FeaturesRunner;
         "org.nuxeo.ecm.platform.userworkspace.types" })
 @RepositoryConfig(init = DefaultRepositoryInit.class, cleanup = Granularity.METHOD)
 public class AgendaServiceTest {
-    public static final String QUERY_LIST_ALL_EVENTS = "Select * from " + VEVENT_TYPE;
+    public static final String QUERY_LIST_ALL_EVENTS = "Select * from "
+            + VEVENT_TYPE;
 
-    public static final String QUERY_LIST_EVENTS_DIR = "Select * from " + VEVENT_TYPE
-            + " where ecm:path STARTSWITH '%s'";
+    public static final String QUERY_LIST_EVENTS_DIR = "Select * from "
+            + VEVENT_TYPE + " where ecm:path STARTSWITH '%s'";
 
     @Inject
     protected AgendaService agendaService;
@@ -62,17 +63,20 @@ public class AgendaServiceTest {
     @Test
     public void testEventCreation() throws ClientException {
         assertNotNull(agendaService);
-        AgendaEventBuilder build = AgendaEventBuilder.build("mon event", NOW().toDate(), NOW().plusDays(2).toDate());
+        AgendaEventBuilder build = AgendaEventBuilder.build("mon event",
+                NOW().toDate(), NOW().plusDays(2).toDate());
         assertNotNull(agendaService.createEvent(session, "/", build.toMap()));
 
         build.summary("second event");
         assertNotNull(agendaService.createEvent(session, null, build.toMap()));
 
         build.summary("third event");
-        assertNotNull(agendaService.createEvent(session, "/default-domain/", build.toMap()));
+        assertNotNull(agendaService.createEvent(session, "/default-domain/",
+                build.toMap()));
         session.save();
 
-        DocumentModelList res = session.query(String.format(QUERY_LIST_EVENTS_DIR, getUserWorkspace().getPathAsString()));
+        DocumentModelList res = session.query(String.format(
+                QUERY_LIST_EVENTS_DIR, getUserWorkspace().getPathAsString()));
         assertEquals(2, res.size());
 
         res = session.query(QUERY_LIST_ALL_EVENTS);
@@ -81,15 +85,19 @@ public class AgendaServiceTest {
 
     @Test
     public void testEventsList() throws ClientException {
-        AgendaEventBuilder pastEvent = AgendaEventBuilder.build("past event", NOW().minusDays(10).toDate(),
-                NOW().minusDays(9).toDate());
-        AgendaEventBuilder incomingEvent = AgendaEventBuilder.build("incoming event", NOW().plusDays(2).toDate(),
+        AgendaEventBuilder pastEvent = AgendaEventBuilder.build("past event",
+                NOW().minusDays(10).toDate(), NOW().minusDays(9).toDate());
+        AgendaEventBuilder incomingEvent = AgendaEventBuilder.build(
+                "incoming event", NOW().plusDays(2).toDate(),
                 NOW().plusDays(3).toDate());
-        AgendaEventBuilder currentEvent = AgendaEventBuilder.build("current event", NOW().minusDays(1).toDate(),
+        AgendaEventBuilder currentEvent = AgendaEventBuilder.build(
+                "current event", NOW().minusDays(1).toDate(),
                 NOW().plusDays(1).toDate());
-        AgendaEventBuilder todayEvent = AgendaEventBuilder.build("today event", NOW().withHourOfDay(4).toDate(),
+        AgendaEventBuilder todayEvent = AgendaEventBuilder.build("today event",
+                NOW().withHourOfDay(4).toDate(),
                 NOW().withHourOfDay(6).toDate());
-        AgendaEventBuilder longCurrentEvent = AgendaEventBuilder.build("today event", NOW().minusDays(10).toDate(),
+        AgendaEventBuilder longCurrentEvent = AgendaEventBuilder.build(
+                "today event", NOW().minusDays(10).toDate(),
                 NOW().plusDays(20).toDate());
 
         agendaService.createEvent(session, null, pastEvent.toMap());
@@ -101,29 +109,34 @@ public class AgendaServiceTest {
 
         assertEquals(5, session.query(QUERY_LIST_ALL_EVENTS).size());
 
-        DocumentModelList events = agendaService.listEvents(session, "/", NOW().withTime(0, 0, 0, 0).toDate(),
+        DocumentModelList events = agendaService.listEvents(session, "/",
+                NOW().withTime(0, 0, 0, 0).toDate(),
                 NOW().withTime(23, 59, 59, 999).toDate());
         assertEquals(3, events.size());
 
-        events = agendaService.listEvents(session, "/", NOW().withTime(0, 0, 0, 0).toDate(), NOW().plusDays(5).toDate());
+        events = agendaService.listEvents(session, "/",
+                NOW().withTime(0, 0, 0, 0).toDate(), NOW().plusDays(5).toDate());
         assertEquals(4, events.size());
 
-        events = agendaService.listEvents(session, "/", NOW().minusDays(12).toDate(), NOW().minusDays(2).toDate());
+        events = agendaService.listEvents(session, "/",
+                NOW().minusDays(12).toDate(), NOW().minusDays(2).toDate());
         assertEquals(2, events.size());
 
-        events = agendaService.listEvents(session, "/", NOW().minusDays(3).toDate(), NOW().minusDays(2).toDate());
+        events = agendaService.listEvents(session, "/",
+                NOW().minusDays(3).toDate(), NOW().minusDays(2).toDate());
         assertEquals(1, events.size());
 
-        events = agendaService.listEvents(session, "/", NOW().minusDays(12).toDate(), NOW().minusDays(11).toDate());
+        events = agendaService.listEvents(session, "/",
+                NOW().minusDays(12).toDate(), NOW().minusDays(11).toDate());
         assertEquals(0, events.size());
     }
 
     @Test
     public void testListWithLimit() throws ClientException {
-        AgendaEventBuilder incEvent = AgendaEventBuilder.build("inc event", NOW().plusDays(1).toDate(),
-                NOW().plusDays(2).toDate());
-        AgendaEventBuilder pastEvent = AgendaEventBuilder.build("inc event", NOW().minusDays(1).toDate(),
-                NOW().minusDays(1).toDate());
+        AgendaEventBuilder incEvent = AgendaEventBuilder.build("inc event",
+                NOW().plusDays(1).toDate(), NOW().plusDays(2).toDate());
+        AgendaEventBuilder pastEvent = AgendaEventBuilder.build("inc event",
+                NOW().minusDays(1).toDate(), NOW().minusDays(1).toDate());
         // create 2 past events
         agendaService.createEvent(session, null, pastEvent.toMap());
         agendaService.createEvent(session, null, pastEvent.toMap());
@@ -142,17 +155,20 @@ public class AgendaServiceTest {
 
     @Test
     public void testLimitCase() throws ClientException {
-        AgendaEventBuilder midnightTickParty = AgendaEventBuilder.build("past event",
-                NOW().withTime(0, 0, 0, 0).toDate(), NOW().withTime(0, 0, 0, 0).toDate());
+        AgendaEventBuilder midnightTickParty = AgendaEventBuilder.build(
+                "past event", NOW().withTime(0, 0, 0, 0).toDate(),
+                NOW().withTime(0, 0, 0, 0).toDate());
         agendaService.createEvent(session, null, midnightTickParty.toMap());
 
-        midnightTickParty = AgendaEventBuilder.build("past event", NOW().plusDays(1).withTime(0, 0, 0, 0).toDate(),
+        midnightTickParty = AgendaEventBuilder.build("past event",
+                NOW().plusDays(1).withTime(0, 0, 0, 0).toDate(),
                 NOW().plusDays(2).withTime(0, 0, 0, 0).toDate());
         agendaService.createEvent(session, null, midnightTickParty.toMap());
         session.save();
 
         assertEquals(2, session.query(QUERY_LIST_ALL_EVENTS).size());
-        DocumentModelList events = agendaService.listEvents(session, "/", NOW().withTime(0, 0, 0, 0).toDate(), null);
+        DocumentModelList events = agendaService.listEvents(session, "/",
+                NOW().withTime(0, 0, 0, 0).toDate(), null);
         assertEquals(1, events.size());
     }
 
@@ -163,25 +179,32 @@ public class AgendaServiceTest {
 
     @Test(expected = ClientException.class)
     public void withEndBeforeStart() throws ClientException {
-        agendaService.listEvents(session, "/", NOW().plusDays(2).toDate(), NOW().toDate());
+        agendaService.listEvents(session, "/", NOW().plusDays(2).toDate(),
+                NOW().toDate());
     }
 
     @Test
     public void testBuilder() throws ClientException {
         Date dtStart = NOW().withTime(0, 0, 0, 0).toDate();
         Date dtEnd = NOW().withTime(1, 0, 0, 0).toDate();
-        AgendaEventBuilder aeb = AgendaEventBuilder.build("summary", dtStart, dtEnd);
+        AgendaEventBuilder aeb = AgendaEventBuilder.build("summary", dtStart,
+                dtEnd);
         aeb.description("description");
         aeb.location("location");
 
         Map<String, Serializable> properties = aeb.toMap();
         properties.put("dummy:content", "should not be thrown");
-        DocumentModel event = agendaService.createEvent(session, null, properties);
+        DocumentModel event = agendaService.createEvent(session, null,
+                properties);
 
         assertEquals(event.getPropertyValue("dc:title"), "summary");
         assertEquals(event.getPropertyValue("dc:description"), "description");
-        assertEquals(((GregorianCalendar) event.getPropertyValue("vevent:dtstart")).getTime(), dtStart);
-        assertEquals(((GregorianCalendar) event.getPropertyValue("vevent:dtend")).getTime(), dtEnd);
+        assertEquals(
+                ((GregorianCalendar) event.getPropertyValue("vevent:dtstart")).getTime(),
+                dtStart);
+        assertEquals(
+                ((GregorianCalendar) event.getPropertyValue("vevent:dtend")).getTime(),
+                dtEnd);
         assertEquals(event.getPropertyValue("vevent:location"), "location");
         assertEquals(event.getPropertyValue("vevent:status"), "CONFIRMED");
         assertEquals(event.getPropertyValue("vevent:transp"), "OPAQUE");
@@ -192,6 +215,7 @@ public class AgendaServiceTest {
     }
 
     protected DocumentModel getUserWorkspace() throws ClientException {
-        return userWorkspaceService.getCurrentUserPersonalWorkspace(session, session.getRootDocument());
+        return userWorkspaceService.getCurrentUserPersonalWorkspace(session,
+                session.getRootDocument());
     }
 }

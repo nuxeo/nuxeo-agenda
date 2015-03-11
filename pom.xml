@@ -10,7 +10,7 @@
   <artifactId>nuxeo-agenda</artifactId>
   <name>Nuxeo Agenda</name>
   <description>Nuxeo Agenda POM</description>
-
+  
   <dependencies>
     <dependency>
       <groupId>org.nuxeo.ecm.core</groupId>
