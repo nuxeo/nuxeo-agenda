@@ -140,14 +140,6 @@ nuxeo.agenda.widgets.events = (function(nx) {
 
       form.html(Mustache.render(formTemplate, nuxeo.agenda.createEventLayout));
 
-      var actions = jQuery(
-          '<div class="actions"><input type="submit" value="' + nuxeo.agenda.messages['command.create'] + '" /></div>')
-          .appendTo(form);
-      jQuery('<input type="submit" value="' + nuxeo.agenda.messages['command.cancel'] + '" />').click(function(obj) {
-        fetchEventWithFade(buildListOperationParams());
-        return false;
-      }).appendTo(actions);
-
       form.appendTo(divContent);
 
       divContent.fadeIn(300, function() {
