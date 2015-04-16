@@ -155,14 +155,6 @@ nuxeo.agenda.widgets.events = (function(nx) {
   }
 
   function initContextPanel(node) {
-    // Create Plus div
-    var newEvent = jQuery("<div />").addClass("floatL");
-    var content = "<img src='" + nuxeo.agenda.clientBaseUrl + "icons/action_add.gif' alt='"
-        + nuxeo.agenda.messages['command.add'] + "' title='" + nuxeo.agenda.messages['command.add'] + "' />"
-        + nuxeo.agenda.messages["command.add"];
-    jQuery("<a />").addClass("button smallButton").attr('href', '#').click(initCreateEvent).html(content).appendTo(newEvent);
-    node.append(newEvent);
-
     // Create calendar div
     var all = jQuery("<div />").addClass("floatR");
     jQuery("<a />").addClass("button smallButton").attr('href', '#').click(function(e) {
