@@ -24,7 +24,7 @@
         SELECT *
         FROM Document WHERE ecm:mixinType = 'Schedulable'
         AND ecm:fulltext.dc:title LIKE '?'
-        AND ecm:parentId = '?' AND ecm:currentLifeCycleState != 'deleted'
+        AND ecm:ancestorId = '?' AND ecm:currentLifeCycleState != 'deleted'
         ]]>
       </pattern>
       <parameter>#{agendaAddToEventAction.selectedAgendaId}</parameter>
@@ -36,7 +36,7 @@
       <![CDATA[
         SELECT *
         From Document WHERE ecm:mixinType != 'HiddenInNavigation'
-        AND ecm:mixinType = 'Schedulable' AND ecm:parentId=?
+        AND ecm:mixinType = 'Schedulable' AND ecm:ancestorId = '?'
         AND vevent:dtstart > TIMESTAMP ?
         AND vevent:dtstart < TIMESTAMP ?
         ]]>
