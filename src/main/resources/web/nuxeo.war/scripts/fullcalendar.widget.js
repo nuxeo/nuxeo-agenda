@@ -12,7 +12,7 @@ function nuxeoAgendaLoadEvents(from, to, callback) {
 	// build default operation for Document
 	temp.providerName = "agenda_list_events_with_date_query";
 	
-	temp.queryParams=currentDocumentId+","+from.toISOString()+","+to.toISOString();
+	temp.queryParams = from.toISOString() + "," + to.toISOString();
 	
 	// temp.providerName = params.pageProviderName;
 	temp.page = "0";
@@ -25,6 +25,9 @@ function nuxeoAgendaLoadEvents(from, to, callback) {
 		temp.conversationId = currentConversationId;
 	}
 	op.addParameters(temp);
+    op.setHeaders({
+      "X-NXenrichers.document": "documentURL"
+    });
 	
 	op.execute(function(data, textStatus, xhr) {
 		var eventsArray = Array();

@@ -35,9 +35,8 @@
       <![CDATA[
         SELECT *
         From Document WHERE ecm:mixinType != 'HiddenInNavigation'
-        AND ecm:mixinType = 'Schedulable' AND ecm:ancestorId = '?'
-        AND vevent:dtstart > TIMESTAMP ?
-        AND vevent:dtstart < TIMESTAMP ?
+        AND ecm:mixinType = 'Schedulable' AND ecm:currentLifeCycleState != 'deleted'
+        AND (vevent:dtstart > TIMESTAMP ? OR vevent:dtend < TIMESTAMP ?)
         ]]>
       </pattern>
       <pageSize>500</pageSize>
