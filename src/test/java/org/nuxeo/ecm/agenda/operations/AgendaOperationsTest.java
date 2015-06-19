@@ -70,6 +70,10 @@ public class AgendaOperationsTest {
         assertNull(obj);
         session.save();
 
+        // MySQL needs to commit the transaction to see the updated state
+        TransactionHelper.commitOrRollbackTransaction();
+        TransactionHelper.startTransaction();
+
         DocumentModelList docs = session.query(QUERY_LIST_ALL_EVENTS);
         assertEquals(1, docs.size());
         DocumentModel event = docs.get(0);
@@ -82,6 +86,11 @@ public class AgendaOperationsTest {
     public void testCreateWithContextPath() throws Exception {
         clientSession.newRequest(CreateAgendaEvent.ID).set("summary", "my new Event").set("dtStart", NOW().toDate()).set(
                 "contextPath", "/default-domain/").execute();
+
+        // MySQL needs to commit the transaction to see the updated state
+        TransactionHelper.commitOrRollbackTransaction();
+        TransactionHelper.startTransaction();
+
         assertEquals(1,
                 session.query("Select * from " + VEVENT_TYPE + " where ecm:path startswith '/default-domain/'").size());
     }
