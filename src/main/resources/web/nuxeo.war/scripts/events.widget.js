@@ -23,11 +23,6 @@ nuxeo.agenda.widgets.events = (function(nx) {
     moment.lang('en'); // set 'en' first, to prevent from DE as default.
     moment.lang(nuxeo.agenda.messages.lang);
 
-    jQuery(function($) {
-      $.timepicker.setDefaults($.timepicker.regional['']);
-      $.datepicker.setDefaults($.datepicker.regional['']);
-    });
-
     divContent = jQuery(nuxeo.agenda.selectors.widget);
     divTools = jQuery(nuxeo.agenda.selectors.widgetTools);
     initContextPanel(divTools);
