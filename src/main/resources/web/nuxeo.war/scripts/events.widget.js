@@ -161,7 +161,6 @@ nuxeo.agenda.widgets.events = (function(nx) {
       e.preventDefault();
       var state = jQuery("#filters").toggle().css("display");
       jQuery(this).children().toggle();
-      newEvent.toggle();
       if (state == 'none') {
         displayCalendar();
       } else {
