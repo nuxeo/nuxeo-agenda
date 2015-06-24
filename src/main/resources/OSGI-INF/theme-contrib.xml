@@ -12,9 +12,6 @@
     <resource name="jquery-ui-1.8.19.custom.css">
       <path>css/jquery-ui-fullcalendar/jquery-ui-1.8.19.custom.css</path>
     </resource>
-    <resource name="jquery.ui.fullcalendar.timepicker.addon.css">
-      <path>css/jquery-ui-timepicker-addon.css</path>
-    </resource>
     <resource name="events.widget.js">
       <path>scripts/events.widget.js</path>
     </resource>
@@ -24,15 +21,6 @@
     <resource name="fullcalendar.lang.js">
       <path>scripts/fullcalendar.lang.js</path>
     </resource>
-    <resource name="jquery.ui.fullcalendar.js">
-      <path>scripts/jquery-ui-1.8.19.fullcalendar.min.js</path>
-    </resource>
-    <resource name="jquery.ui.fullcalendar.timepicker.addon.js">
-      <path>scripts/jquery-ui-timepicker-addon.js</path>
-    </resource>
-    <resource name="jquery.ui.fullcalendar.lang.js">
-      <path>scripts/jquery-ui-1.8.19.fullcalendar.lang.js</path>
-    </resource>
   </extension>
 
   <extension target="org.nuxeo.theme.services.ThemeService" point="views">
@@ -41,12 +29,8 @@
 
       <resource>agenda.css</resource>
       <resource>fullcalendar.css</resource>
-      <resource>jquery.ui.fullcalendar.timepicker.addon.css</resource>
       <resource>jquery-ui-1.8.19.custom.css</resource>
       <resource>moment.js</resource>
-      <resource>jquery.ui.fullcalendar.timepicker.addon.js</resource>
-      <resource>jquery.ui.fullcalendar.js</resource>
-      <resource>jquery.ui.fullcalendar.lang.js</resource>
       <resource>fullcalendar.js</resource>
       <resource>fullcalendar.lang.js</resource>
       <resource>mustache.js</resource>
