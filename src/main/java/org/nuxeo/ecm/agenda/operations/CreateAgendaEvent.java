@@ -48,7 +48,7 @@ public class CreateAgendaEvent {
     protected String location = "";
 
     @OperationMethod
-    public void run() throws ClientException {
+    public void run() {
         if (dtEnd == null) {
             dtEnd = new DateTime(dtStart).plusHours(1).toDate();
         }

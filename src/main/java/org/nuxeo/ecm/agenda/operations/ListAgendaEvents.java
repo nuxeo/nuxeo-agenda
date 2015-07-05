@@ -51,7 +51,7 @@ public class ListAgendaEvents {
     protected String documentLinkBuilder;
 
     @OperationMethod
-    public PaginableDocumentModelListImpl run() throws ClientException {
+    public PaginableDocumentModelListImpl run() {
         DocumentModelList events;
         if (dtStart != null) {
             events = agendaService.listEvents(session, contextPath, dtStart, dtEnd);

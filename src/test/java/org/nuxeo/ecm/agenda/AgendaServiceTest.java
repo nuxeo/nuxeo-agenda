@@ -53,7 +53,7 @@ public class AgendaServiceTest {
     protected CoreSession session;
 
     @Before
-    public void beforeTest() throws ClientException {
+    public void beforeTest() {
         // Ensure to commit after UserWorkspace creation.
         getUserWorkspace();
         session.save();
@@ -61,7 +61,7 @@ public class AgendaServiceTest {
     }
 
     @Test
-    public void testEventCreation() throws ClientException {
+    public void testEventCreation() {
         assertNotNull(agendaService);
         AgendaEventBuilder build = AgendaEventBuilder.build("mon event",
                 NOW().toDate(), NOW().plusDays(2).toDate());
@@ -84,7 +84,7 @@ public class AgendaServiceTest {
     }
 
     @Test
-    public void testEventsList() throws ClientException {
+    public void testEventsList() {
         AgendaEventBuilder pastEvent = AgendaEventBuilder.build("past event",
                 NOW().minusDays(10).toDate(), NOW().minusDays(9).toDate());
         AgendaEventBuilder incomingEvent = AgendaEventBuilder.build(
@@ -132,7 +132,7 @@ public class AgendaServiceTest {
     }
 
     @Test
-    public void testListWithLimit() throws ClientException {
+    public void testListWithLimit() {
         AgendaEventBuilder incEvent = AgendaEventBuilder.build("inc event",
                 NOW().plusDays(1).toDate(), NOW().plusDays(2).toDate());
         AgendaEventBuilder pastEvent = AgendaEventBuilder.build("inc event",
@@ -154,7 +154,7 @@ public class AgendaServiceTest {
     }
 
     @Test
-    public void testLimitCase() throws ClientException {
+    public void testLimitCase() {
         AgendaEventBuilder midnightTickParty = AgendaEventBuilder.build(
                 "past event", NOW().withTime(0, 0, 0, 0).toDate(),
                 NOW().withTime(0, 0, 0, 0).toDate());
@@ -173,18 +173,18 @@ public class AgendaServiceTest {
     }
 
     @Test(expected = ClientException.class)
-    public void withStartNull() throws ClientException {
+    public void withStartNull() {
         agendaService.listEvents(session, "/", null, NOW().toDate());
     }
 
     @Test(expected = ClientException.class)
-    public void withEndBeforeStart() throws ClientException {
+    public void withEndBeforeStart() {
         agendaService.listEvents(session, "/", NOW().plusDays(2).toDate(),
                 NOW().toDate());
     }
 
     @Test
-    public void testBuilder() throws ClientException {
+    public void testBuilder() {
         Date dtStart = NOW().withTime(0, 0, 0, 0).toDate();
         Date dtEnd = NOW().withTime(1, 0, 0, 0).toDate();
         AgendaEventBuilder aeb = AgendaEventBuilder.build("summary", dtStart,
@@ -214,7 +214,7 @@ public class AgendaServiceTest {
         return new DateTime();
     }
 
-    protected DocumentModel getUserWorkspace() throws ClientException {
+    protected DocumentModel getUserWorkspace() {
         return userWorkspaceService.getCurrentUserPersonalWorkspace(session,
                 session.getRootDocument());
     }
