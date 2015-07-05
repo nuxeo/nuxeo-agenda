@@ -48,7 +48,7 @@ public class AgendaComponent extends DefaultComponent implements AgendaService {
 
     @Override
     public DocumentModelList listEvents(CoreSession session, String path, Date dtStart, Date dtEnd)
-            throws ClientException {
+            {
         if (dtStart == null) {
             throw new ClientException("Start datetime should not be null");
         }
@@ -66,7 +66,7 @@ public class AgendaComponent extends DefaultComponent implements AgendaService {
     }
 
     @Override
-    public DocumentModelList listEvents(CoreSession session, String path, int limit) throws ClientException {
+    public DocumentModelList listEvents(CoreSession session, String path, int limit) {
         if (limit <= 0) {
             throw new ClientException("Limit must be greater than 0");
         }
@@ -80,7 +80,7 @@ public class AgendaComponent extends DefaultComponent implements AgendaService {
 
     @Override
     public DocumentModel createEvent(CoreSession session, String path, Map<String, Serializable> properties)
-            throws ClientException {
+            {
         if (StringUtils.isBlank(path) || "/".equals(path)) {
             path = getCurrentUserWorkspacePath(session);
         }
@@ -96,7 +96,7 @@ public class AgendaComponent extends DefaultComponent implements AgendaService {
         return session.createDocument(doc);
     }
 
-    protected String getCurrentUserWorkspacePath(CoreSession session) throws ClientException {
+    protected String getCurrentUserWorkspacePath(CoreSession session) {
         UserWorkspaceService userWorkspaceService = Framework.getLocalService(UserWorkspaceService.class);
         DocumentModel userPersonalWorkspace = userWorkspaceService.getUserPersonalWorkspace(
                 session.getPrincipal().getName(), session.getRootDocument());

@@ -57,7 +57,7 @@ public class AgendaOperationsTest {
     protected AutomationService automationService;
 
     @Before
-    public void assertEmpty() throws ClientException {
+    public void assertEmpty() {
         assertEquals(0, session.query(QUERY_LIST_ALL_EVENTS).size());
     }
 
