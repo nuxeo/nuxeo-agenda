@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
-import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
@@ -28,7 +27,7 @@ public interface AgendaService {
      * List incoming user readable agendum with a limit
      *
      * @param path
-     * @param limit the number of events returned must be greater than 0 otherwise ClientException is thrown
+     * @param limit the number of events returned must be greater than 0 otherwise NuxeoException is thrown
      * @return matching Event as a DocumentModelList object
      */
     DocumentModelList listEvents(CoreSession session, String path, int limit);

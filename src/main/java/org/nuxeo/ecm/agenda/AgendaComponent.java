@@ -10,10 +10,10 @@ import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
-import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
+import org.nuxeo.ecm.core.api.NuxeoException;
 import org.nuxeo.ecm.core.api.model.PropertyException;
 import org.nuxeo.ecm.platform.userworkspace.api.UserWorkspaceService;
 import org.nuxeo.runtime.api.Framework;
@@ -50,13 +50,13 @@ public class AgendaComponent extends DefaultComponent implements AgendaService {
     public DocumentModelList listEvents(CoreSession session, String path, Date dtStart, Date dtEnd)
             {
         if (dtStart == null) {
-            throw new ClientException("Start datetime should not be null");
+            throw new NuxeoException("Start datetime should not be null");
         }
         if (dtEnd == null) {
             dtEnd = new Date(dtStart.getTime() + 24 * 3600);
         }
         if (dtEnd.before(dtStart)) {
-            throw new ClientException("End datetime is before start datetime");
+            throw new NuxeoException("End datetime is before start datetime");
         }
 
         String strStart = formatDate(dtStart);
@@ -68,7 +68,7 @@ public class AgendaComponent extends DefaultComponent implements AgendaService {
     @Override
     public DocumentModelList listEvents(CoreSession session, String path, int limit) {
         if (limit <= 0) {
-            throw new ClientException("Limit must be greater than 0");
+            throw new NuxeoException("Limit must be greater than 0");
         }
 
         return session.query(String.format(QUERY_LIMIT, formatDate(new Date()), path), limit);

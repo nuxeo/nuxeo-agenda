@@ -15,10 +15,10 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
+import org.nuxeo.ecm.core.api.NuxeoException;
 import org.nuxeo.ecm.core.test.DefaultRepositoryInit;
 import org.nuxeo.ecm.core.test.annotations.Granularity;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
@@ -172,12 +172,12 @@ public class AgendaServiceTest {
         assertEquals(1, events.size());
     }
 
-    @Test(expected = ClientException.class)
+    @Test(expected = NuxeoException.class)
     public void withStartNull() {
         agendaService.listEvents(session, "/", null, NOW().toDate());
     }
 
-    @Test(expected = ClientException.class)
+    @Test(expected = NuxeoException.class)
     public void withEndBeforeStart() {
         agendaService.listEvents(session, "/", NOW().plusDays(2).toDate(),
                 NOW().toDate());
