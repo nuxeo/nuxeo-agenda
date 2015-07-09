@@ -14,7 +14,7 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.NuxeoException;
-import org.nuxeo.ecm.core.api.model.PropertyException;
+import org.nuxeo.ecm.core.api.PropertyException;
 import org.nuxeo.ecm.platform.userworkspace.api.UserWorkspaceService;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.model.DefaultComponent;
