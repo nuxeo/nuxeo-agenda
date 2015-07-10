@@ -1,40 +1,42 @@
 <?xml version="1.0"?>
 <component name="org.nuxeo.ecm.agenda.theme">
-  <require>org.nuxeo.theme.nuxeo.default</require>
 
-  <extension target="org.nuxeo.theme.services.ThemeService" point="resources">
+  <require>org.nuxeo.theme.nuxeo.webapp</require>
+
+  <extension target="org.nuxeo.ecm.platform.WebResources" point="bundles">
+    <bundle name="nuxeo_includes">
+      <resources append="true">
+        <resource>agenda.css</resource>
+        <resource>fullcalendar.css</resource>
+        <resource>jquery-ui-1.8.19.custom.css</resource>
+        <resource>moment.js</resource>
+        <resource>fullcalendar.js</resource>
+        <resource>fullcalendar.lang.js</resource>
+        <resource>mustache.js</resource>
+        <resource>events.widget.js</resource>
+      </resources>
+    </bundle>
+  </extension>
+
+  <extension target="org.nuxeo.ecm.platform.WebResources" point="resources">
     <resource name="agenda.css">
-      <path>css/agenda.css</path>
+      <uri>/css/agenda.css</uri>
     </resource>
     <resource name="fullcalendar.css">
-      <path>css/fullcalendar.css</path>
+      <uri>/css/fullcalendar.css</uri>
     </resource>
     <resource name="jquery-ui-1.8.19.custom.css">
-      <path>css/jquery-ui-fullcalendar/jquery-ui-1.8.19.custom.css</path>
+      <uri>/css/jquery-ui-fullcalendar/jquery-ui-1.8.19.custom.css</uri>
     </resource>
     <resource name="events.widget.js">
-      <path>scripts/events.widget.js</path>
+      <uri>/scripts/events.widget.js</uri>
     </resource>
     <resource name="fullcalendar.js">
-      <path>scripts/fullcalendar.min.js</path>
+      <uri>/scripts/fullcalendar.js</uri>
     </resource>
     <resource name="fullcalendar.lang.js">
-      <path>scripts/fullcalendar.lang.js</path>
+      <uri>/scripts/fullcalendar.lang.js</uri>
     </resource>
   </extension>
 
-  <extension target="org.nuxeo.theme.services.ThemeService" point="views">
-    <view name="nuxeo5 includes" template-engine="jsf-facelets" merge="true">
-      <format-type>widget</format-type>
-
-      <resource>agenda.css</resource>
-      <resource>fullcalendar.css</resource>
-      <resource>jquery-ui-1.8.19.custom.css</resource>
-      <resource>moment.js</resource>
-      <resource>fullcalendar.js</resource>
-      <resource>fullcalendar.lang.js</resource>
-      <resource>mustache.js</resource>
-      <resource>events.widget.js</resource>
-    </view>
-  </extension>
 </component>
