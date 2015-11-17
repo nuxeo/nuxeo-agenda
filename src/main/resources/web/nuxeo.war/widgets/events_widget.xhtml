@@ -1,12 +1,13 @@
 <div xmlns:nxu="http://nuxeo.org/nxweb/util"
   xmlns:nxd="http://nuxeo.org/nxweb/document"
+  xmlns:h="http://java.sun.com/jsf/html"
   class="bubbleBox">
 
   <div id="#{widget.id}_tools" class="bubbleHeader"></div>
   <div id="#{widget.id}" class="boxBody"></div>
 
   <nxu:set var="contextDocumentPath" value="#{nxd:isDocumentModel(fieldOrValue) ? fieldOrValue.pathAsString : '/'}">
-    <script type="text/javascript">
+    <h:outputScript target="#{pageJsTarget}">
       var nuxeo = nuxeo || {};
       nuxeo.agenda = (function(nx) {
         nx.clientBaseUrl = baseURL;
@@ -98,6 +99,6 @@
       })(nuxeo.agenda || {});
 
       nuxeo.agenda.widgets.events.initWidget();
-    </script>
+    </h:outputScript>
   </nxu:set>
 </div>

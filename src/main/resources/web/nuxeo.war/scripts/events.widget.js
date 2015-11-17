@@ -52,7 +52,8 @@ nuxeo.agenda.widgets.events = (function(nx) {
           }, function(entries, nxParams) {
             var events = [];
 
-            entries.each(function(entry, idx) {
+            for (var i = 0; i < entries.length; i++) {
+              var entry = entries[i];
               var dtStart = moment(entry.properties["vevent:dtstart"]);
               var dtEnd = moment(entry.properties["vevent:dtend"]);
               var allDay = dtEnd.diff(dtStart, 'days') > 0;
@@ -64,7 +65,7 @@ nuxeo.agenda.widgets.events = (function(nx) {
                 allDay: allDay,
                 url: buildUrl(entry)
               });
-            });
+            }
 
             callback(events);
           });
@@ -181,17 +182,18 @@ nuxeo.agenda.widgets.events = (function(nx) {
       }
     };
 
-    values.each(function(entry, idx) {
-      if (idx != 0) {
+    for (var i = 0; i < values.length; i++) {
+      var entry = values[i];
+      if (i != 0) {
         parag.append("<span>&nbsp;/&nbsp;</span>");
       }
       var currNode = jQuery("<a/>").attr('href', '#').click(clickHandler(entry)).html(
-          nuxeo.agenda.messages['command.vevent.' + entry]);
-      if (idx == 0) {
+        nuxeo.agenda.messages['command.vevent.' + entry]);
+      if (i == 0) {
         currNode.addClass('selected');
       }
       parag.append(currNode);
-    });
+    }
 
     node.append(parag);
     // clear both
@@ -227,7 +229,8 @@ nuxeo.agenda.widgets.events = (function(nx) {
     table.empty();
     var now = moment();
 
-    entries.each(function(entry, idx) {
+    for (var i = 0; i < entries.length; i++) {
+      var entry = entries[i];
       var dtStart = moment(entry.properties["vevent:dtstart"]);
       var dtEnd = moment(entry.properties["vevent:dtend"]);
       var currState = 'incoming';
@@ -242,9 +245,9 @@ nuxeo.agenda.widgets.events = (function(nx) {
 
       var tr = jQuery("<tr/>").addClass(currState);
       tr.append('<td><img src="' + nuxeo.agenda.clientBaseUrl + 'icons/agenda.png" alt="'
-          + nuxeo.agenda.messages['VEVENT'] + '" title="' + nuxeo.agenda.messages['VEVENT'] + '" /></td>');
+        + nuxeo.agenda.messages['VEVENT'] + '" title="' + nuxeo.agenda.messages['VEVENT'] + '" /></td>');
       tr.append('<td><a class="boldLabel" target="_top" href="' + buildUrl(entry) + '">' + entry.properties["dc:title"]
-          + "</a></td>");
+        + "</a></td>");
       tr.append("<td>" + dtStart.calendar() + "</td>");
       tr.append("<td>" + dtEnd.calendar() + "</td>");
 
@@ -255,7 +258,7 @@ nuxeo.agenda.widgets.events = (function(nx) {
 
       tr.append("<td>" + location + "</td>");
       table.append(tr);
-    });
+    }
   }
 
   function mkTable(nodeId) {

@@ -32,7 +32,7 @@
       <uri>/scripts/events.widget.js</uri>
     </resource>
     <resource name="fullcalendar.js">
-      <uri>/scripts/fullcalendar.js</uri>
+      <uri>/scripts/fullcalendar.min.js</uri>
     </resource>
     <resource name="fullcalendar.lang.js">
       <uri>/scripts/fullcalendar.lang.js</uri>
