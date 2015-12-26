@@ -47,7 +47,7 @@ import org.nuxeo.ecm.platform.ui.web.api.NavigationContext;
 @Install(precedence = FRAMEWORK)
 public class AddToEventAction implements Serializable {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 3930167063686290160L;
 
