@@ -229,6 +229,15 @@ nuxeo.agenda.widgets.events = (function(nx) {
     table.empty();
     var now = moment();
 
+    var headings = ['&nbsp;', '&nbsp;', nuxeo.agenda.messages['label.vevent.startDate'],
+      nuxeo.agenda.messages['label.vevent.endDate'], nuxeo.agenda.messages['label.vevent.place']];
+
+    var $tr = jQuery('<tr/>');
+    headings.forEach(function(heading) {
+      $tr.append('<th>' + heading + '</th>');
+    });
+    table.append($tr);
+    
     for (var i = 0; i < entries.length; i++) {
       var entry = entries[i];
       var dtStart = moment(entry.properties["vevent:dtstart"]);
