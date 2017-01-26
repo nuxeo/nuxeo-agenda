@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.ecm.agenda.layout">
+
+  <require>org.nuxeo.ecm.platform.forms.layouts.webapp.summary</require>
+  <require>org.nuxeo.ecm.platform.forms.layouts.webapp.base</require>
+
+  <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="layouts">
+    <layout name="vevent">
+      <templates>
+        <template mode="any">/layouts/layout_default_template.xhtml</template>
+      </templates>
+      <rows>
+        <row>
+          <widget>title</widget>
+        </row>
+        <row>
+          <widget>vevent_location</widget>
+        </row>
+        <row>
+          <widget>description</widget>
+        </row>
+        <row>
+          <widget>vevent_dtstart</widget>
+          <widget>vevent_dtend</widget>
+        </row>
+      </rows>
+    </layout>
+  </extension>
+
+  <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="widgets">
+    <widget name="vevent_dtstart" type="datetime">
+      <labels>
+        <label mode="any">label.vevent.startDate</label>
+      </labels>
+      <translated>true</translated>
+      <fields>
+        <field>vevent:dtstart</field>
+      </fields>
+      <properties widgetMode="view">
+        <property name="pattern">#{nxu:basicDateAndTimeFormatter()}</property>
+      </properties>
+      <properties widgetMode="edit">
+        <property name="required">true</property>
+        <property name="format">#{nxu:basicDateAndTimeFormatter()}</property>
+      </properties>
+    </widget>
+
+    <widget name="vevent_dtend" type="datetime">
+      <labels>
+        <label mode="any">label.vevent.endDate</label>
+      </labels>
+      <translated>true</translated>
+      <fields>
+        <field>vevent:dtend</field>
+      </fields>
+      <properties widgetMode="view">
+        <property name="pattern">#{nxu:basicDateAndTimeFormatter()}</property>
+      </properties>
+      <properties widgetMode="edit">
+        <property name="required">true</property>
+        <property name="format">#{nxu:basicDateAndTimeFormatter()}</property>
+      </properties>
+    </widget>
+
+    <widget name="vevent_location" type="text">
+      <labels>
+        <label mode="any">label.vevent.place</label>
+      </labels>
+      <translated>true</translated>
+      <fields>
+        <field>vevent:location</field>
+      </fields>
+    </widget>
+  </extension>
+</component>
