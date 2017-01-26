@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.ecm.agenda.core.types">
+
+  <require>org.nuxeo.ecm.core.CoreExtensions</require>
+
+  <extension target="org.nuxeo.ecm.core.schema.TypeService" point="schema">
+    <schema name="vevent" prefix="vevent" src="schemas/vevent.xsd" />
+  </extension>
+
+  <extension target="org.nuxeo.ecm.core.schema.TypeService" point="doctype">
+    <facet name="Schedulable">
+      <schema name="vevent" />
+    </facet>
+
+    <facet name="Agenda">
+    </facet>
+
+    <doctype name="Agenda" extends="Document">
+     <schema name="common" />
+      <schema name="uid" />
+      <schema name="dublincore" />
+      <facet name="Agenda" />
+      <facet name="Folderish" />
+    </doctype>
+
+    <doctype name="VEVENT" extends="Document">
+      <schema name="common" />
+      <schema name="uid" />
+      <schema name="dublincore" />
+      <schema name="vevent" />
+      <facet name="Commentable" />
+      <facet name="Schedulable" />
+    </doctype>
+  </extension>
+
+  <extension target="org.nuxeo.ecm.core.lifecycle.LifeCycleService" point="types">
+    <types>
+      <type name="VEVENT">default</type>
+      <type name="Agenda">default</type>
+    </types>
+  </extension>
+</component>

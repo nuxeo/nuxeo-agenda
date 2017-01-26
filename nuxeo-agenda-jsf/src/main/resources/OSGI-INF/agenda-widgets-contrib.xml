@@ -1,0 +1,52 @@
+<component name="org.nuxeo.ecm.agenda.widgets">
+  <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="widgettypes">
+
+    <widgetType name="calendar_widget">
+      <configuration>
+        <sinceVersion>5.9.3</sinceVersion>
+        <title>Calendar Widget</title>
+        <description>
+          <p>This widget displays a calendar from fullcalendar.js.</p>
+        </description>
+        <categories>
+          <category>summary</category>
+        </categories>
+        <supportedModes>
+          <mode>view</mode>
+        </supportedModes>
+      </configuration>
+      <handler-class>
+        org.nuxeo.ecm.platform.forms.layout.facelets.plugins.TemplateWidgetTypeHandler
+      </handler-class>
+      <property name="template">
+        /widgets/agenda_widget.xhtml
+      </property>
+    </widgetType>
+
+    <widgetType name="events_widget">
+      <configuration>
+        <sinceVersion>6.0</sinceVersion>
+        <title>Events Widget</title>
+      </configuration>
+      <handler-class>
+        org.nuxeo.ecm.platform.forms.layout.facelets.plugins.TemplateWidgetTypeHandler
+      </handler-class>
+      <property name="template">
+        /widgets/events_widget.xhtml
+      </property>
+    </widgetType>
+  </extension>
+
+  <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager" point="widgets">
+    <widget name="default_events_widget" type="events_widget" />
+  </extension>
+
+  <extension target="org.nuxeo.ecm.platform.actions.ActionService" point="actions">
+    <action id="default_events_widget" type="widget" order="40">
+      <category>DASHBOARD_RIGHT</category>
+      <properties>
+        <property name="widgetName">default_events_widget</property>
+      </properties>
+    </action>
+  </extension>
+</component>

@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.ecm.agenda.ecm.types">
+  <require>org.nuxeo.ecm.platform.types</require>
+
+  <extension target="org.nuxeo.ecm.platform.types.TypeService" point="types">
+    <type id="VEVENT">
+      <label>VEVENT</label>
+      <icon>/icons/agenda.png</icon>
+      <bigIcon>/icons/agenda_100.png</bigIcon>
+      <category>SimpleDocument</category>
+      <description>AgendaEvent.description</description>
+      <default-view>view_documents</default-view>
+      <layouts mode="any">
+        <layout>vevent</layout>
+      </layouts>
+      <views>
+        <view id="after-social-collaboration-creation" value="view_social_document" />
+      </views>
+    </type>
+
+    <type id="Agenda">
+      <label>Agenda</label>
+      <icon>/icons/agenda.png</icon>
+      <bigIcon>/icons/agenda_100.png</bigIcon>
+      <category>SimpleDocument</category>
+      <description></description>
+      <default-view>view_documents</default-view>
+      <layouts mode="create">
+        <layout>heading</layout>
+      </layouts>
+      <layouts mode="edit">
+        <layout>heading</layout>
+        <layout>dublincore</layout>
+      </layouts>
+      <subtypes>
+        <type>VEVENT</type>
+      </subtypes>
+      <contentViews category="content">
+        <contentView>document_content</contentView>
+      </contentViews>
+      <contentViews category="trash_content">
+        <contentView showInExportView="false">
+          document_trash_content
+        </contentView>
+      </contentViews>
+    </type>
+
+    <type id="Workspace">
+      <subtypes>
+        <type>VEVENT</type>
+        <type>Agenda</type>
+      </subtypes>
+    </type>
+
+    <type id="Folder">
+      <subtypes>
+        <type>VEVENT</type>
+        <type>Agenda</type>
+      </subtypes>
+    </type>
+
+    <type id="OrderedFolder">
+      <subtypes>
+        <type>VEVENT</type>
+        <type>Agenda</type>
+      </subtypes>
+    </type>
+  </extension>
+</component>

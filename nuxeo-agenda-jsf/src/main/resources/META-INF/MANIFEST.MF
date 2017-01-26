@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 1
+Bundle-Name: Nuxeo Agenda
+Bundle-SymbolicName: org.nuxeo.ecm.agenda.jsf;singleton:=true
+Bundle-Vendor: Nuxeo
+Bundle-Version: 1.0.0
+Nuxeo-Component: OSGI-INF/agenda-actions-contrib.xml,
+ OSGI-INF/agenda-layout-contrib.xml,
+ OSGI-INF/agenda-widgets-contrib.xml,
+ OSGI-INF/theme-contrib.xml
