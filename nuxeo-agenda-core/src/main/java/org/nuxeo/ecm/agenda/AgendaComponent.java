@@ -28,6 +28,7 @@ import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
+import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
@@ -103,7 +104,7 @@ public class AgendaComponent extends DefaultComponent implements AgendaService {
             path = getCurrentUserWorkspacePath(session);
         }
         DocumentModel doc = session.createDocumentModel(VEVENT_TYPE);
-        doc.setPathInfo(path, null);
+        doc.setPathInfo(path, IdUtils.generateStringId());
         for (String key : properties.keySet()) {
             try {
                 doc.setPropertyValue(key, properties.get(key));
