@@ -116,7 +116,7 @@ public class AgendaComponent extends DefaultComponent implements AgendaService {
     }
 
     protected String getCurrentUserWorkspacePath(CoreSession session) {
-        UserWorkspaceService userWorkspaceService = Framework.getLocalService(UserWorkspaceService.class);
+        UserWorkspaceService userWorkspaceService = Framework.getService(UserWorkspaceService.class);
         DocumentModel userPersonalWorkspace = userWorkspaceService.getUserPersonalWorkspace(
                 session.getPrincipal().getName(), session.getRootDocument());
         return userPersonalWorkspace.getPathAsString();
