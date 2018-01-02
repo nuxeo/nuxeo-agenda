@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2012 Nuxeo SA (http://nuxeo.com/) and others.
+ * (C) Copyright 2012-2018 Nuxeo (http://nuxeo.com/) and others.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,16 +58,15 @@ public class AgendaComponent extends DefaultComponent implements AgendaService {
             + "AND ecm:currentLifeCycleState != 'deleted' " + "AND ecm:isCheckedInVersion = 0 AND ecm:isProxy = 0 "
             + "AND ecm:path STARTSWITH '%s' ORDER BY vevent:dtstart";
 
-    protected static final String QUERY_LIMIT = "SELECT * FROM Document WHERE " + "ecm:mixinType = '"
-            + SCHEDULABLE_TYPE + "' " + "AND vevent:dtend > TIMESTAMP '%s' "
-            + "AND ecm:currentLifeCycleState != 'deleted' " + "AND ecm:isCheckedInVersion = 0 AND ecm:isProxy = 0 "
+    protected static final String QUERY_LIMIT = "SELECT * FROM Document WHERE " + "ecm:mixinType = '" + SCHEDULABLE_TYPE
+            + "' " + "AND vevent:dtend > TIMESTAMP '%s' " + "AND ecm:currentLifeCycleState != 'deleted' "
+            + "AND ecm:isCheckedInVersion = 0 AND ecm:isProxy = 0 "
             + "AND ecm:path STARTSWITH '%s' ORDER BY vevent:dtstart";
 
     private static final Log log = LogFactory.getLog(AgendaComponent.class);
 
     @Override
-    public DocumentModelList listEvents(CoreSession session, String path, Date dtStart, Date dtEnd)
-            {
+    public DocumentModelList listEvents(CoreSession session, String path, Date dtStart, Date dtEnd) {
         if (dtStart == null) {
             throw new NuxeoException("Start datetime should not be null");
         }
@@ -98,8 +97,7 @@ public class AgendaComponent extends DefaultComponent implements AgendaService {
     }
 
     @Override
-    public DocumentModel createEvent(CoreSession session, String path, Map<String, Serializable> properties)
-            {
+    public DocumentModel createEvent(CoreSession session, String path, Map<String, Serializable> properties) {
         if (StringUtils.isBlank(path) || "/".equals(path)) {
             path = getCurrentUserWorkspacePath(session);
         }
