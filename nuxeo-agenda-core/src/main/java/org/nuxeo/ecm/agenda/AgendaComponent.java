@@ -55,11 +55,11 @@ public class AgendaComponent extends DefaultComponent implements AgendaService {
             + "OR (vevent:dtend BETWEEN TIMESTAMP '%s' AND TIMESTAMP '%s') "
             + "OR (vevent:dtstart < TIMESTAMP '%s' AND vevent:dtend > TIMESTAMP '%s') "
             + "OR (vevent:dtstart > TIMESTAMP '%s' AND vevent:dtend < TIMESTAMP '%s')) "
-            + "AND ecm:currentLifeCycleState != 'deleted' " + "AND ecm:isCheckedInVersion = 0 AND ecm:isProxy = 0 "
+            + "AND ecm:isTrashed = 0 " + "AND ecm:isCheckedInVersion = 0 AND ecm:isProxy = 0 "
             + "AND ecm:path STARTSWITH '%s' ORDER BY vevent:dtstart";
 
     protected static final String QUERY_LIMIT = "SELECT * FROM Document WHERE " + "ecm:mixinType = '" + SCHEDULABLE_TYPE
-            + "' " + "AND vevent:dtend > TIMESTAMP '%s' " + "AND ecm:currentLifeCycleState != 'deleted' "
+            + "' " + "AND vevent:dtend > TIMESTAMP '%s' " + "AND ecm:isTrashed = 0 "
             + "AND ecm:isCheckedInVersion = 0 AND ecm:isProxy = 0 "
             + "AND ecm:path STARTSWITH '%s' ORDER BY vevent:dtstart";
 
