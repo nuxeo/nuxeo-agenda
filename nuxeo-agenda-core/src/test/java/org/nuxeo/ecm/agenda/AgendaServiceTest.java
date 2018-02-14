@@ -51,8 +51,9 @@ import org.nuxeo.runtime.test.runner.FeaturesRunner;
  */
 @RunWith(FeaturesRunner.class)
 @Features(PlatformFeature.class)
-@Deploy({ "org.nuxeo.ecm.agenda", "org.nuxeo.ecm.platform.userworkspace.core",
-        "org.nuxeo.ecm.platform.userworkspace.types" })
+@Deploy("org.nuxeo.ecm.agenda")
+@Deploy("org.nuxeo.ecm.platform.userworkspace.core")
+@Deploy("org.nuxeo.ecm.platform.userworkspace.types")
 @RepositoryConfig(init = DefaultRepositoryInit.class, cleanup = Granularity.METHOD)
 public class AgendaServiceTest {
     public static final String QUERY_LIST_ALL_EVENTS = "Select * from "
