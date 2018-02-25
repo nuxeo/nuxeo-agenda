@@ -10,7 +10,7 @@
         SELECT *
         FROM Document WHERE dc:title LIKE '?' AND ecm:mixinType !=
         'HiddenInNavigation' AND ecm:mixinType='Agenda' AND
-        ecm:isCheckedInVersion = 0 AND
+        ecm:isVersion = 0 AND
         ecm:isTrashed = 0
        ]]>
       </pattern>
