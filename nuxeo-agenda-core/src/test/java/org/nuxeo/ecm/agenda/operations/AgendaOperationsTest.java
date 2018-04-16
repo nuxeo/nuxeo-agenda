@@ -46,7 +46,7 @@ import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
-import org.nuxeo.runtime.test.runner.Jetty;
+import org.nuxeo.runtime.test.runner.ServletContainer;
 import org.nuxeo.runtime.transaction.TransactionHelper;
 
 /**
@@ -60,7 +60,7 @@ import org.nuxeo.runtime.transaction.TransactionHelper;
 @Deploy("org.nuxeo.ecm.platform.types.core")
 @Deploy("org.nuxeo.ecm.platform.url.core")
 @Features(EmbeddedAutomationServerFeature.class)
-@Jetty(port = 18080)
+@ServletContainer(port = 18080)
 @RepositoryConfig(init = DefaultRepositoryInit.class, cleanup = Granularity.METHOD)
 public class AgendaOperationsTest {
 
