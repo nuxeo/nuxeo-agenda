@@ -18,6 +18,8 @@
  */
 package org.nuxeo.ecm.agenda.operations;
 
+import static java.time.ZonedDateTime.now;
+import static java.util.Date.from;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.nuxeo.ecm.agenda.AgendaComponent.VEVENT_TYPE;
@@ -27,7 +29,6 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
-import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -81,10 +82,15 @@ public class AgendaOperationsTest {
 
     @Test
     public void testCreateOperation() throws Exception {
-        Date dtStart = NOW().plusDays(1).toDate();
-        Date dtEnd = NOW().plusDays(2).toDate();
-        Object obj = clientSession.newRequest(CreateAgendaEvent.ID).set("summary", "my new Event").set("dtStart",
-                dtStart).set("dtEnd", dtEnd).set("description", "description").set("location", "location").execute();
+        Date start = from(now().plusDays(1).toInstant());
+        Date end = from(now().plusDays(2).toInstant());
+        Object obj = clientSession.newRequest(CreateAgendaEvent.ID)
+                                  .set("summary", "my new Event")
+                                  .set("dtStart", start)
+                                  .set("dtEnd", end)
+                                  .set("description", "description")
+                                  .set("location", "location")
+                                  .execute();
         assertNull(obj);
         session.save();
 
@@ -102,39 +108,60 @@ public class AgendaOperationsTest {
 
     @Test
     public void testCreateWithContextPath() throws Exception {
-        clientSession.newRequest(CreateAgendaEvent.ID).set("summary", "my new Event").set("dtStart", NOW().toDate()).set(
-                "contextPath", "/default-domain/").execute();
+        Date start = from(now().toInstant());
+        clientSession.newRequest(CreateAgendaEvent.ID)
+                     .set("summary", "my new Event")
+                     .set("dtStart", start)
+                     .set("contextPath", "/default-domain/")
+                     .execute();
 
         // MySQL needs to commit the transaction to see the updated state
         TransactionHelper.commitOrRollbackTransaction();
         TransactionHelper.startTransaction();
 
-        assertEquals(1,
-                session.query("Select * from " + VEVENT_TYPE + " where ecm:path startswith '/default-domain/'").size());
+        String query = "Select * from " + VEVENT_TYPE + " where ecm:path startswith '/default-domain/'";
+        assertEquals(1, session.query(query).size());
     }
 
     @Test
     public void testListEventsWithDates() throws Exception {
-        AgendaEventBuilder anEvent = AgendaEventBuilder.build("current event", NOW().minusDays(1).toDate(),
-                NOW().plusDays(1).toDate());
+        Date start = from(now().minusDays(1).toInstant());
+        Date end = from(now().plusDays(1).toInstant());
+
+        AgendaEventBuilder anEvent = AgendaEventBuilder.build("current event", start, end);
 
         agendaService.createEvent(session, "/default-domain/", anEvent.toMap());
         TransactionHelper.commitOrRollbackTransaction();
         TransactionHelper.startTransaction();
 
-        Documents docs = (Documents) clientSession.newRequest(ListAgendaEvents.ID).set("dtStart",
-                NOW().minusDays(4).toDate()).set("dtEnd", NOW().plusDays(3).toDate()).set("contextPath", "/").execute();
+        start = from(now().minusDays(4).toInstant());
+        end = from(now().plusDays(3).toInstant());
+
+        Documents docs = (Documents) clientSession.newRequest(ListAgendaEvents.ID)
+                                                  .set("dtStart", start)
+                                                  .set("dtEnd", end)
+                                                  .set("contextPath", "/")
+                                                  .execute();
         assertEquals(1, docs.size());
 
-        docs = (Documents) clientSession.newRequest(ListAgendaEvents.ID).set("dtStart", NOW().plusDays(10).toDate()).set(
-                "dtEnd", NOW().plusDays(11).toDate()).set("contextPath", "/").execute();
+        start = from(now().plusDays(10).toInstant());
+        end = from(now().plusDays(11).toInstant());
+
+        docs = (Documents) clientSession.newRequest(ListAgendaEvents.ID)
+                                        .set("dtStart", start)
+                                        .set("dtEnd", end)
+                                        .set("contextPath", "/")
+                                        .execute();
         assertEquals(0, docs.size());
     }
 
     @Test
     public void testListEventsWithLimit() throws Exception {
-        AgendaEventBuilder incEvent = AgendaEventBuilder.build("inc event", NOW().plusDays(1).toDate(),
-                NOW().plusDays(2).toDate());
+
+        Date start = from(now().plusDays(1).toInstant());
+        Date end = from(now().plusDays(2).toInstant());
+
+        AgendaEventBuilder incEvent = AgendaEventBuilder.build("inc event", start, end);
         // create 6 events
         agendaService.createEvent(session, "/default-domain/", incEvent.toMap());
         agendaService.createEvent(session, "/default-domain/", incEvent.toMap());
@@ -147,13 +174,16 @@ public class AgendaOperationsTest {
 
         Documents docs = (Documents) clientSession.newRequest(ListAgendaEvents.ID).set("contextPath", "/").execute();
         assertEquals(5, docs.size());
-        docs = (Documents) clientSession.newRequest(ListAgendaEvents.ID).set("limit", 4).set("contextPath", "/").execute();
+        docs = (Documents) clientSession.newRequest(ListAgendaEvents.ID)
+                                        .set("limit", 4)
+                                        .set("contextPath", "/")
+                                        .execute();
         assertEquals(4, docs.size());
-        docs = (Documents) clientSession.newRequest(ListAgendaEvents.ID).set("limit", 15).set("contextPath", "/").execute();
+        docs = (Documents) clientSession.newRequest(ListAgendaEvents.ID)
+                                        .set("limit", 15)
+                                        .set("contextPath", "/")
+                                        .execute();
         assertEquals(6, docs.size());
     }
 
-    protected static DateTime NOW() {
-        return new DateTime();
-    }
 }

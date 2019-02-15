@@ -18,6 +18,8 @@
  */
 package org.nuxeo.ecm.agenda;
 
+import static org.nuxeo.common.utils.DateUtils.formatISODateTime;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
@@ -25,9 +27,6 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
 import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -47,8 +46,6 @@ public class AgendaComponent extends DefaultComponent implements AgendaService {
     public static final String VEVENT_TYPE = "VEVENT";
 
     public static final String SCHEDULABLE_TYPE = "Schedulable";
-
-    protected static final DateTimeFormatter dateTimeFormatter = ISODateTimeFormat.dateTime();
 
     protected static final String QUERY_BETWEEN_DATES = "SELECT * FROM Document WHERE " + "ecm:mixinType = '"
             + SCHEDULABLE_TYPE + "' " + "AND ((vevent:dtstart BETWEEN TIMESTAMP '%s' AND TIMESTAMP '%s') "
@@ -93,7 +90,7 @@ public class AgendaComponent extends DefaultComponent implements AgendaService {
     }
 
     protected static String formatDate(Date date) {
-        return new DateTime(date.getTime()).toString(dateTimeFormatter);
+        return formatISODateTime(date);
     }
 
     @Override

@@ -23,13 +23,13 @@ import static org.junit.Assert.assertNotNull;
 import static org.nuxeo.ecm.agenda.AgendaComponent.VEVENT_TYPE;
 
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Map;
 
 import javax.inject.Inject;
 
-import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,11 +56,11 @@ import org.nuxeo.runtime.test.runner.FeaturesRunner;
 @Deploy("org.nuxeo.ecm.platform.userworkspace.types")
 @RepositoryConfig(init = DefaultRepositoryInit.class, cleanup = Granularity.METHOD)
 public class AgendaServiceTest {
-    public static final String QUERY_LIST_ALL_EVENTS = "Select * from "
-            + VEVENT_TYPE;
 
-    public static final String QUERY_LIST_EVENTS_DIR = "Select * from "
-            + VEVENT_TYPE + " where ecm:path STARTSWITH '%s'";
+    public static final String QUERY_LIST_ALL_EVENTS = "Select * from " + VEVENT_TYPE;
+
+    public static final String QUERY_LIST_EVENTS_DIR = "Select * from " + VEVENT_TYPE
+            + " where ecm:path STARTSWITH '%s'";
 
     @Inject
     protected AgendaService agendaService;
@@ -82,20 +82,19 @@ public class AgendaServiceTest {
     @Test
     public void testEventCreation() {
         assertNotNull(agendaService);
-        AgendaEventBuilder build = AgendaEventBuilder.build("mon event",
-                NOW().toDate(), NOW().plusDays(2).toDate());
+        AgendaEventBuilder build = AgendaEventBuilder.build("mon event", new Date(),
+                Date.from(ZonedDateTime.now().plusDays(2).toInstant()));
         assertNotNull(agendaService.createEvent(session, "/", build.toMap()));
 
         build.summary("second event");
         assertNotNull(agendaService.createEvent(session, null, build.toMap()));
 
         build.summary("third event");
-        assertNotNull(agendaService.createEvent(session, "/default-domain/",
-                build.toMap()));
+        assertNotNull(agendaService.createEvent(session, "/default-domain/", build.toMap()));
         session.save();
 
-        DocumentModelList res = session.query(String.format(
-                QUERY_LIST_EVENTS_DIR, getUserWorkspace().getPathAsString()));
+        DocumentModelList res = session.query(
+                String.format(QUERY_LIST_EVENTS_DIR, getUserWorkspace().getPathAsString()));
         assertEquals(2, res.size());
 
         res = session.query(QUERY_LIST_ALL_EVENTS);
@@ -105,19 +104,20 @@ public class AgendaServiceTest {
     @Test
     public void testEventsList() {
         AgendaEventBuilder pastEvent = AgendaEventBuilder.build("past event",
-                NOW().minusDays(10).toDate(), NOW().minusDays(9).toDate());
-        AgendaEventBuilder incomingEvent = AgendaEventBuilder.build(
-                "incoming event", NOW().plusDays(2).toDate(),
-                NOW().plusDays(3).toDate());
-        AgendaEventBuilder currentEvent = AgendaEventBuilder.build(
-                "current event", NOW().minusDays(1).toDate(),
-                NOW().plusDays(1).toDate());
+                Date.from(ZonedDateTime.now().minusDays(10).toInstant()),
+                Date.from(ZonedDateTime.now().minusDays(9).toInstant()));
+        AgendaEventBuilder incomingEvent = AgendaEventBuilder.build("incoming event",
+                Date.from(ZonedDateTime.now().plusDays(2).toInstant()),
+                Date.from(ZonedDateTime.now().plusDays(3).toInstant()));
+        AgendaEventBuilder currentEvent = AgendaEventBuilder.build("current event",
+                Date.from(ZonedDateTime.now().minusDays(1).toInstant()),
+                Date.from(ZonedDateTime.now().plusDays(1).toInstant()));
         AgendaEventBuilder todayEvent = AgendaEventBuilder.build("today event",
-                NOW().withHourOfDay(4).toDate(),
-                NOW().withHourOfDay(6).toDate());
-        AgendaEventBuilder longCurrentEvent = AgendaEventBuilder.build(
-                "today event", NOW().minusDays(10).toDate(),
-                NOW().plusDays(20).toDate());
+                Date.from(ZonedDateTime.now().withHour(4).toInstant()),
+                Date.from(ZonedDateTime.now().withHour(6).toInstant()));
+        AgendaEventBuilder longCurrentEvent = AgendaEventBuilder.build("today event",
+                Date.from(ZonedDateTime.now().minusDays(10).toInstant()),
+                Date.from(ZonedDateTime.now().plusDays(20).toInstant()));
 
         agendaService.createEvent(session, null, pastEvent.toMap());
         agendaService.createEvent(session, null, incomingEvent.toMap());
@@ -129,33 +129,36 @@ public class AgendaServiceTest {
         assertEquals(5, session.query(QUERY_LIST_ALL_EVENTS).size());
 
         DocumentModelList events = agendaService.listEvents(session, "/",
-                NOW().withTime(0, 0, 0, 0).toDate(),
-                NOW().withTime(23, 59, 59, 999).toDate());
+                Date.from(ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0).toInstant()),
+                Date.from(ZonedDateTime.now().withHour(23).withMinute(59).withSecond(59).withNano(999999).toInstant()));
         assertEquals(3, events.size());
 
         events = agendaService.listEvents(session, "/",
-                NOW().withTime(0, 0, 0, 0).toDate(), NOW().plusDays(5).toDate());
+                Date.from(ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0).toInstant()),
+                Date.from(ZonedDateTime.now().plusDays(5).toInstant()));
         assertEquals(4, events.size());
 
-        events = agendaService.listEvents(session, "/",
-                NOW().minusDays(12).toDate(), NOW().minusDays(2).toDate());
+        events = agendaService.listEvents(session, "/", Date.from(ZonedDateTime.now().minusDays(12).toInstant()),
+                Date.from(ZonedDateTime.now().minusDays(2).toInstant()));
         assertEquals(2, events.size());
 
-        events = agendaService.listEvents(session, "/",
-                NOW().minusDays(3).toDate(), NOW().minusDays(2).toDate());
+        events = agendaService.listEvents(session, "/", Date.from(ZonedDateTime.now().minusDays(3).toInstant()),
+                Date.from(ZonedDateTime.now().minusDays(2).toInstant()));
         assertEquals(1, events.size());
 
-        events = agendaService.listEvents(session, "/",
-                NOW().minusDays(12).toDate(), NOW().minusDays(11).toDate());
+        events = agendaService.listEvents(session, "/", Date.from(ZonedDateTime.now().minusDays(12).toInstant()),
+                Date.from(ZonedDateTime.now().minusDays(11).toInstant()));
         assertEquals(0, events.size());
     }
 
     @Test
     public void testListWithLimit() {
         AgendaEventBuilder incEvent = AgendaEventBuilder.build("inc event",
-                NOW().plusDays(1).toDate(), NOW().plusDays(2).toDate());
+                Date.from(ZonedDateTime.now().plusDays(1).toInstant()),
+                Date.from(ZonedDateTime.now().plusDays(2).toInstant()));
         AgendaEventBuilder pastEvent = AgendaEventBuilder.build("inc event",
-                NOW().minusDays(1).toDate(), NOW().minusDays(1).toDate());
+                Date.from(ZonedDateTime.now().minusDays(1).toInstant()),
+                Date.from(ZonedDateTime.now().minusDays(1).toInstant()));
         // create 2 past events
         agendaService.createEvent(session, null, pastEvent.toMap());
         agendaService.createEvent(session, null, pastEvent.toMap());
@@ -174,67 +177,63 @@ public class AgendaServiceTest {
 
     @Test
     public void testLimitCase() {
-        AgendaEventBuilder midnightTickParty = AgendaEventBuilder.build(
-                "past event", NOW().withTime(0, 0, 0, 0).toDate(),
-                NOW().withTime(0, 0, 0, 0).toDate());
+
+        AgendaEventBuilder midnightTickParty = AgendaEventBuilder.build("past event",
+                Date.from(ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0).toInstant()),
+                Date.from(ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0).toInstant()));
         agendaService.createEvent(session, null, midnightTickParty.toMap());
 
-        midnightTickParty = AgendaEventBuilder.build("past event",
-                NOW().plusDays(1).withTime(0, 0, 0, 0).toDate(),
-                NOW().plusDays(2).withTime(0, 0, 0, 0).toDate());
+        midnightTickParty = AgendaEventBuilder.build("past event", Date.from(
+                ZonedDateTime.now().plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0).toInstant()),
+                Date.from(ZonedDateTime.now()
+                                       .plusDays(2)
+                                       .withHour(0)
+                                       .withMinute(0)
+                                       .withSecond(0)
+                                       .withNano(0)
+                                       .toInstant()));
         agendaService.createEvent(session, null, midnightTickParty.toMap());
         session.save();
 
         assertEquals(2, session.query(QUERY_LIST_ALL_EVENTS).size());
         DocumentModelList events = agendaService.listEvents(session, "/",
-                NOW().withTime(0, 0, 0, 0).toDate(), null);
+                Date.from(ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0).toInstant()), null);
         assertEquals(1, events.size());
     }
 
     @Test(expected = NuxeoException.class)
     public void withStartNull() {
-        agendaService.listEvents(session, "/", null, NOW().toDate());
+        agendaService.listEvents(session, "/", null, new Date());
     }
 
     @Test(expected = NuxeoException.class)
     public void withEndBeforeStart() {
-        agendaService.listEvents(session, "/", NOW().plusDays(2).toDate(),
-                NOW().toDate());
+        agendaService.listEvents(session, "/", Date.from(ZonedDateTime.now().plusDays(2).toInstant()), new Date());
     }
 
     @Test
     public void testBuilder() {
-        Date dtStart = NOW().withTime(0, 0, 0, 0).toDate();
-        Date dtEnd = NOW().withTime(1, 0, 0, 0).toDate();
-        AgendaEventBuilder aeb = AgendaEventBuilder.build("summary", dtStart,
-                dtEnd);
+        Date dtStart = Date.from(ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0).toInstant());
+        Date dtEnd = Date.from(ZonedDateTime.now().withHour(1).withMinute(0).withSecond(0).withNano(0).toInstant());
+
+        AgendaEventBuilder aeb = AgendaEventBuilder.build("summary", dtStart, dtEnd);
         aeb.description("description");
         aeb.location("location");
 
         Map<String, Serializable> properties = aeb.toMap();
         properties.put("dummy:content", "should not be thrown");
-        DocumentModel event = agendaService.createEvent(session, null,
-                properties);
+        DocumentModel event = agendaService.createEvent(session, null, properties);
 
         assertEquals(event.getPropertyValue("dc:title"), "summary");
         assertEquals(event.getPropertyValue("dc:description"), "description");
-        assertEquals(
-                ((GregorianCalendar) event.getPropertyValue("vevent:dtstart")).getTime(),
-                dtStart);
-        assertEquals(
-                ((GregorianCalendar) event.getPropertyValue("vevent:dtend")).getTime(),
-                dtEnd);
+        assertEquals(((GregorianCalendar) event.getPropertyValue("vevent:dtstart")).getTime(), dtStart);
+        assertEquals(((GregorianCalendar) event.getPropertyValue("vevent:dtend")).getTime(), dtEnd);
         assertEquals(event.getPropertyValue("vevent:location"), "location");
         assertEquals(event.getPropertyValue("vevent:status"), "CONFIRMED");
         assertEquals(event.getPropertyValue("vevent:transp"), "OPAQUE");
     }
 
-    protected static DateTime NOW() {
-        return new DateTime();
-    }
-
     protected DocumentModel getUserWorkspace() {
-        return userWorkspaceService.getCurrentUserPersonalWorkspace(session,
-                session.getRootDocument());
+        return userWorkspaceService.getCurrentUserPersonalWorkspace(session, session.getRootDocument());
     }
 }

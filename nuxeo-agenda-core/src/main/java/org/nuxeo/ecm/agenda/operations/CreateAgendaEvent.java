@@ -18,9 +18,9 @@
  */
 package org.nuxeo.ecm.agenda.operations;
 
+import java.time.Duration;
 import java.util.Date;
 
-import org.joda.time.DateTime;
 import org.nuxeo.ecm.agenda.AgendaEventBuilder;
 import org.nuxeo.ecm.agenda.AgendaService;
 import org.nuxeo.ecm.automation.core.Constants;
@@ -67,11 +67,11 @@ public class CreateAgendaEvent {
     @OperationMethod
     public void run() {
         if (dtEnd == null) {
-            dtEnd = new DateTime(dtStart).plusHours(1).toDate();
+            dtEnd = Date.from(dtStart.toInstant().plus(Duration.ofHours(1)));
         }
-
-        AgendaEventBuilder aeb = AgendaEventBuilder.build(summary, dtStart, dtEnd).description(description).location(
-                location);
+        AgendaEventBuilder aeb = AgendaEventBuilder.build(summary, dtStart, dtEnd)
+                                                   .description(description)
+                                                   .location(location);
         agendaService.createEvent(session, contextPath, aeb.toMap());
     }
 }
